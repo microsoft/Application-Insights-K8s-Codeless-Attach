@@ -32,6 +32,7 @@ subjectAltName = @alt_names
 DNS.1 = ${title}
 DNS.2 = ${title}.${namespace}
 DNS.3 = ${title}.${namespace}.svc
+DNS.4 = ${namespace}.svc
 EOF
 
 openssl genrsa -out ${tmpdir}/server-key.pem 2048
