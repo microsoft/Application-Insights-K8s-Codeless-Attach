@@ -1,10 +1,9 @@
-﻿import http = require('http');
-import https = require('https');
+﻿import https = require('https');
 import { ContentProcessor } from './ContentProcessor';
 const fs = require('fs');
 
 var port = process.env.port || 1337;
-
+// temporary values for testing purposes , not the final values
 const options = {
     key: fs.readFileSync('./server-key.pem'),
     cert: fs.readFileSync('./server-cert.pem')
