@@ -1,8 +1,9 @@
 ﻿import http = require('http');
 import https = require('https');
 import { ContentProcessor } from './ContentProcessor';
-var port = process.env.port || 1337;
 const fs = require('fs');
+
+var port = process.env.port || 1337;
 
 const options = {
     key: fs.readFileSync('./server-key.pem'),
