@@ -38,6 +38,9 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="AddedTypes.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ContentProcessor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
