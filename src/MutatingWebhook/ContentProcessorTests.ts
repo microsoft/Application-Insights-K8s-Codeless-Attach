@@ -2,21 +2,20 @@
 import { ContentProcessor } from "./ContentProcessor";
 
 export function TestNullObject() {
-    assert.throws(() => { ContentProcessor.TryUpdateConfig(null); }, "expect exception");
+    assert.equal(null, ContentProcessor.TryUpdateConfig(null), "expect null");
 };
 
 export function TestConstructor() {
-    let cp = ContentProcessor.TryUpdateConfig("{}");
-    assert.ok(cp != null, "cp should not be null")
+    assert.equal("{}" , ContentProcessor.TryUpdateConfig("{}"), "should return json");
 }
 
 export function TestInvalidJSON() {
-    assert.throws(() => { ContentProcessor.TryUpdateConfig("dfsdfsds"); }, "expect exception");
+    let something = "dasdas";
+    assert.deepEqual(something, ContentProcessor.TryUpdateConfig(something), "expect something");
 };
 
 export function TestValidObject() {
-    let cp = ContentProcessor.TryUpdateConfig(getTestObject());
-    assert.ok(cp !== null);
+    assert.deepEqual(getTestObject(), ContentProcessor.TryUpdateConfig(getTestObject()), "some valid other json");
 }
 
 

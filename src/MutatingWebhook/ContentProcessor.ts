@@ -18,7 +18,13 @@ export class ContentProcessor {
     }
 
     public static TryUpdateConfig(message: string) {
-        let instance = new ContentProcessor(message);
-        return JSON.stringify(instance.content);
+        try {
+            let instance = new ContentProcessor(message);
+            return JSON.stringify(instance.content);
+        }
+        catch(ex){
+            console.log(`exception encountered ${ex}`);
+            return message;
+        }
     }
 }
