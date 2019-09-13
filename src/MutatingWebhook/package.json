@@ -2,6 +2,8 @@
   "name": "mutating-webhook",
   "version": "0.0.0",
   "description": "MutatingWebhook",
+  "license": "MIT",
+  "repository": "https://github.com/microsoft/Application-Insights-K8s-Codeless-Attach/",
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",

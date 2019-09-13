@@ -1,7 +1,15 @@
 ﻿import http = require('http');
+import https = require('https');
 import { ContentProcessor } from './ContentProcessor';
-var port = 45686
-http.createServer(function (req, res) {
+var port = process.env.port || 1337;
+const fs = require('fs');
+
+const options = {
+    key: fs.readFileSync('./server-key.pem'),
+    cert: fs.readFileSync('./server-cert.pem')
+};
+
+https.createServer(options, function (req, res) {
     if (req.url === "/" && req.method === 'POST' && req.headers["content-type"] === 'application/json') {
         let body = '';
         req.on('data', chunk => {
@@ -18,4 +26,3 @@ http.createServer(function (req, res) {
     }
 
 }).listen(port);
-
