@@ -1,25 +1,12 @@
 ﻿import { isNullOrUndefined } from 'util';
 import { AddedTypes } from './AddedTypes';
+import { diff } from 'jiff';
+import { RootObject} from './RequestDefinition';
+
 export class ContentProcessor {
 
-    public readonly content: JSON;
-
-    // object fields we need to read 
-    private readonly _admission_review: string = 'AdmissionReview';
-    private readonly _containers: string = 'containers';
-    private readonly _create: string = 'CREATE';
-    private readonly _env: string = 'env';
-    private readonly _init_containers: string = 'initContainers';
-    private readonly _kind: string = 'kind';
-    private readonly _object: string = 'object'; 
-    private readonly _operation: string = 'operation';
-    private readonly _request: string = 'request';
-    private readonly _spec: string = 'spec';
-    private readonly _template: string = 'template';
-    private readonly _update: string = 'UPDATE';
-    private readonly _volume_mounts: string = 'volumeMounts';
-    private readonly _volumes: string = 'volumes';
-
+    public readonly content: RootObject;
+   
     private constructor(message: string) {
         if (message === "" || isNullOrUndefined(message)) {
             throw new RangeError('message');
@@ -42,26 +29,26 @@ export class ContentProcessor {
         }
         
 
-        if (isNullOrUndefined(this.content[this._request])
-            || isNullOrUndefined(this.content[this._request][this._operation])
-            || (this.content[this._request][this._operation] !== this._create
-                && this.content[this._request][this._operation] !== this._update)) {
+        if (isNullOrUndefined(this.content.request)
+            || isNullOrUndefined(this.content.request.operation)
+            || (this.content.request.operation !== 'CREATE'
+                && this.content.request.operation !== "UPDATE")) {
             console.log('invalid incoming operation');
             returnValue = false;
         }
        
-        if (isNullOrUndefined(this.content[this._kind])
-            || this.content[this._kind] !== this._admission_review) {
+        if (isNullOrUndefined(this.content.kind)
+            || this.content.kind !== 'AdmissionReview') {
             console.log('invalid incoming kind');
             returnValue = false;
         }
 
-        if (isNullOrUndefined(this.content[this._request][this._object])
-            || isNullOrUndefined(this.content[this._request][this._object][this._spec])
-            || isNullOrUndefined(this.content[this._request][this._object][this._spec][this._template])
-            || isNullOrUndefined(this.content[this._request][this._object][this._spec][this._template][this._spec])
-            || isNullOrUndefined(this.content[this._request][this._object][this._spec][this._template][this._spec][this._containers])
-            || !Array.isArray(this.content[this._request][this._object][this._spec][this._template][this._spec][this._containers])) {
+        if (isNullOrUndefined(this.content.request.object)
+            || isNullOrUndefined(this.content.request.object.spec)
+            || isNullOrUndefined(this.content.request.object.spec.template)
+            || isNullOrUndefined(this.content.request.object.spec.template.spec)
+            || isNullOrUndefined(this.content.request.object.spec.template.spec.containers)
+            || !Array.isArray(this.content.request.object.spec.template.spec.containers)) {
             console.log('missing spec in template');
             return false;
         }
@@ -70,34 +57,44 @@ export class ContentProcessor {
     }
 
     private update_content() {
-        let updated_content = this.content;
+        let updated_content:RootObject =  JSON.parse(JSON.stringify( this.content));
 
-        updated_content[this._request][this._object][this._spec][this._template][this._spec][this._init_containers] = AddedTypes.init_containers();
-        updated_content[this._request][this._object][this._spec][this._template][this._spec][this._volumes] = AddedTypes.volumes();
-        let length = updated_content[this._request][this._object][this._spec][this._template][this._spec][this._containers].length;
+        updated_content.request.object.spec.template.spec.initContainers = AddedTypes.init_containers();
+        updated_content.request.object.spec.template.spec.volumes = AddedTypes.volumes();
+
+        let length = updated_content.request.object.spec.template.spec.containers.length;
         for (let i = 0; i < length; i++) {
-            updated_content[this._request][this._object][this._spec][this._template][this._spec][this._containers][i][this._env] = AddedTypes.env();
-            updated_content[this._request][this._object][this._spec][this._template][this._spec][this._containers][i][this._volume_mounts] = AddedTypes.volume_mounts();
+            updated_content.request.object.spec.template.spec.containers[i].env = AddedTypes.env();
+            updated_content.request.object.spec.template.spec.containers[i].volumeMounts = AddedTypes.volume_mounts();
         };
 
-        return updated_content;
+        return diff(this.content.request.object, updated_content.request.object);
     }
 
     public static TryUpdateConfig(message: string): string {
+        let response = {
+            'response': {
+                'allowed': false,
+                'uid':'',
+                'patch': '',
+                'patchtype': 'JSONPATCH'
+            }
+        };
         try {
             let instance: ContentProcessor = new ContentProcessor(message);
 
-            if (!instance.validate_content()) {
-                throw new RangeError('error validating incoming content');
+            response.response.uid = instance.content.request.uid;
+
+            if (instance.validate_content()) {
+                response.response.allowed = true;
+                response.response.patch = instance.update_content();
             }
 
-            let updated = instance.update_content();
-
-            return JSON.stringify(updated);
+            return JSON.stringify(response);
         }
         catch (ex) {
             console.log(`exception encountered ${ex}`);
-            return message;
+            return JSON.stringify(response);
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿// temporary thingy i need a better way to serve this, maybe put it in the config map and read it from there as json and parse the json
 export class AddedTypes {
     public static init_containers() {
-        return {
+        return [{
             'name': 'agent - init',
             'image': 'mcr.microsoft.com / applicationinsights / attach - agents: v5',
             'command': ['cp', ' /java-agent-v1.jar', ' /agentconfig/java-agent-v1.jar'],
-            'volumeMounts': {
+            'volumeMounts': [{
                 'name': 'agentdisk',
                 'mountPath': '/agentconfig'
-            }
-        }
+            }]
+        }]
     }
 
     public static env() {
@@ -32,17 +32,17 @@ export class AddedTypes {
 
     public static volume_mounts() {
         return {
-            'volumeMounts': {
+            'volumeMounts': [{
                 'name': 'agentdisk',
                 'mountPath': '/agentconfig'
-            }
+            }]
         }
     }
 
     public static volumes() {
-        return {
+        return [{
             'name': 'agentdisk',
             'emptyDir': '{}'
-        }
+        }]
     }
 }
