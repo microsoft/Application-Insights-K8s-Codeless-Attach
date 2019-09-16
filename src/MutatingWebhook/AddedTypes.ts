@@ -2,9 +2,9 @@
 export class AddedTypes {
     public static init_containers() {
         return [{
-            'name': 'agent - init',
-            'image': 'mcr.microsoft.com / applicationinsights / attach - agents: v5',
-            'command': ['cp', ' /java-agent-v1.jar', ' /agentconfig/java-agent-v1.jar'],
+            'name': 'agent-init',
+            'image': 'mcr.microsoft.com/applicationinsights/attach-agents:v5',
+            'command': ['cp', '/java-agent-v1.jar', '/agentconfig/java-agent-v1.jar'],
             'volumeMounts': [{
                 'name': 'agentdisk',
                 'mountPath': '/agentconfig'

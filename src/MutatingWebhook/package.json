@@ -12,7 +12,7 @@
   "author": {
     "name": ""
   },
-  "devDependencies": {
+  "dependencies": {
     "@types/node": "^8.0.14",
     "typescript": "^3.2.2",
     "jiff": "0.7.3"

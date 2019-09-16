@@ -1,4 +1,4 @@
-﻿import https = require('https');
+﻿import http = require('http');
 import { ContentProcessor } from './ContentProcessor';
 const fs = require('fs');
 
@@ -9,7 +9,7 @@ const options = {
     cert: fs.readFileSync('./server-cert.pem')
 };
 
-https.createServer(options, function (req, res) {
+http.createServer(/*options,*/ function (req, res) {
     if (req.url === "/" && req.method === 'POST' && req.headers["content-type"] === 'application/json') {
         let body = '';
         req.on('data', chunk => {
