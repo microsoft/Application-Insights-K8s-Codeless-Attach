@@ -3,6 +3,7 @@ import { ContentProcessor } from './ContentProcessor';
 const fs = require('fs');
 
 var port = process.env.port || 1337;
+console.log(`listening on port ${port}`)
 // temporary values for testing purposes , not the final values
 const options = {
     key: fs.readFileSync('./server-key.pem'),

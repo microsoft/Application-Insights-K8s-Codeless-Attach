@@ -1,0 +1,36 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mutating-webhook
+  namespace: aks-webhook-ns
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mutating-webhook
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+        - name: mutating-webhook
+          image: gearamaaks.azurecr.io/webhook/mutating-webhook:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1337
+          resources:
+            requests:
+              cpu: 200m
+            limits:
+              cpu: 300m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mutating-webhook
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 1337
+  selector:
+    app: mutating-webhook
