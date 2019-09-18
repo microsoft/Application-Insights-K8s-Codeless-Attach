@@ -27,10 +27,15 @@ spec:
             - name: webhook-certs
               mountPath: /etc/webhook
               readOnly: true
+            - mountPath: "/mnt/agent-disk"
+              name: agent-volume
       volumes:
         - name: webhook-certs
           secret:
             secretName: aks-webhook
+        - name: agent-volume
+          persistentVolumeClaim:
+            claimName: agent-disk
 ---
 apiVersion: v1
 kind: Service
