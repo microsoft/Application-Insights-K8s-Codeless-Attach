@@ -195,15 +195,27 @@ let valid_result = {
                     "imagePullPolicy": "IfNotPresent",
                     "env": [
                         {
-                            "name": "_JAVA_OPTIONS",
-                            "value": "-javaagent:/agentconfig/java-agent-v1.jar"
+                            'name': '_JAVA_OPTIONS',
+                            'value': '-javaagent:/agentconfig/java-agent-v1.jar'
                         },
                         {
-                            "name": "APPINSIGHTS_CONNECTIONSTRING",
-                            "valueFrom": {
-                                "configMapKeyRef": {
-                                    "name": "attach-config",
-                                    "key": "ikey"
+                            'name': 'JAVA_TOOL_OPTIONS',
+                            'value': '-javaagent:/agentconfig/java-agent-v1.jar'
+                        },
+                        {
+                            'name': 'ASPNETCORE_HOSTINGSTARTUP',
+                            'value': '/agentconfig/aspnetcore-agent-v1.dll'
+                        },
+                        {
+                            'name': 'NODE_OPTIONS',
+                            'value': '/agentconfig/nodejs-agent-v1.js'
+                        },
+                        {
+                            'name': 'APPINSIGHTS_CONNECTIONSTRING',
+                            'valueFrom': {
+                                'configMapKeyRef': {
+                                    'name': 'attach-config',
+                                    'key': 'ikey'
                                 }
                             }
                         }
