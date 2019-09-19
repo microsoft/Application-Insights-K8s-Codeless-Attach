@@ -2,26 +2,26 @@
 import { ContentProcessor } from "./ContentProcessor";
 
 export function TestNullObject() {
-    assert.equal(JSON.stringify({ "response": { "allowed": false, "uid": "", "patch": "", "patchtype": "JSONPATCH" } }), ContentProcessor.TryUpdateConfig(null), "expect null");
+    assert.equal(JSON.stringify({ "response": { "allowed": true, "uid": "", "patch": "", "patchtype": "JSONPATCH" } }), ContentProcessor.TryUpdateConfig(null), "expect null");
 };
 
 export function TestConstructor() {
-    assert.deepEqual(JSON.stringify({"response":{"allowed":false,"uid":"","patch":"","patchtype":"JSONPATCH"}}) , ContentProcessor.TryUpdateConfig("{}"), "should return json");
+    assert.deepEqual(JSON.stringify({"response":{"allowed":true,"uid":"","patch":"","patchtype":"JSONPATCH"}}) , ContentProcessor.TryUpdateConfig("{}"), "should return json");
 }
 
 export function TestInvalidJSON() {
     let something = "dsasda"
-    assert.deepEqual(JSON.stringify({ "response": { "allowed": false, "uid": "", "patch": "", "patchtype": "JSONPATCH" } }), ContentProcessor.TryUpdateConfig(something), "expect something");
+    assert.deepEqual(JSON.stringify({ "response": { "allowed": true, "uid": "", "patch": "", "patchtype": "JSONPATCH" } }), ContentProcessor.TryUpdateConfig(something), "expect something");
 };
 
 export function TestValidObject() {
-    assert.deepEqual(JSON.stringify(valid_result), ContentProcessor.TryUpdateConfig(getTestObject()), "some valid other json");
+    assert.deepEqual(JSON.stringify(valid_result), ContentProcessor.TryUpdateConfig(test_object), "some valid other json");
 }
 
 export function TestValidInvalidObject() {
     assert.deepEqual(JSON.stringify({
         "response": {
-            "allowed": false,
+            "allowed": true,
             "uid": "6e55578b-9c4f-11e9-9685-b65b44598b61",
             "patch": "",
             "patchtype": "JSONPATCH"
@@ -30,18 +30,12 @@ export function TestValidInvalidObject() {
 }
 
 function getInvalidObject() {
-    let test = test_object;
+    let test = JSON.parse(test_object);
     test.kind = 'some other kind';
     return JSON.stringify(test);
 }
 
-function getTestObject() {
-    let test = test_object;
-    test.kind = 'AdmissionReview';
-    return JSON.stringify(test);
-}
-
-let test_object = {
+let test_object = JSON.stringify({
     "kind": "AdmissionReview",
     "apiVersion": "admission.k8s.io/v1beta1",
     "request": {
@@ -136,7 +130,7 @@ let test_object = {
         "oldObject": "None",
         "dryRun": "False"
     }
-}
+});
 
 let valid_result = {
     "response": {
@@ -158,12 +152,12 @@ let valid_result = {
                 "path": "/spec/template/spec/initContainers",
                 "value": [
                     {
-                        "name": "agent - init",
-                        "image": "mcr.microsoft.com / applicationinsights / attach - agents: v5",
+                        "name": "agent-init",
+                        "image": "mcr.microsoft.com/applicationinsights/attach-agents:v5",
                         "command": [
                             "cp",
-                            " /java-agent-v1.jar",
-                            " /agentconfig/java-agent-v1.jar"
+                            "/java-agent-v1.jar",
+                            "/agentconfig/java-agent-v1.jar"
                         ],
                         "volumeMounts": [
                             {
@@ -254,5 +248,5 @@ let valid_result = {
         ],
         "patchtype": "JSONPATCH"
     }
-}
+};
     

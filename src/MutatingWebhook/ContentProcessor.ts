@@ -74,7 +74,7 @@ export class ContentProcessor {
     public static TryUpdateConfig(message: string): string {
         let response = {
             'response': {
-                'allowed': false,
+                'allowed': true, // in order to no cause deploy failures we will allow with empty patch
                 'uid':'',
                 'patch': '',
                 'patchtype': 'JSONPATCH'
