@@ -3,7 +3,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: mutating-webhook
 webhooks:
-  - name: mutating-webhook.this.svc
+  - name: mutating-webhook.aks-webhook-ns.svc
     clientConfig:
       service:
         name: mutating-webhook
