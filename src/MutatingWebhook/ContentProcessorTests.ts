@@ -2,16 +2,16 @@
 import { ContentProcessor } from "./ContentProcessor";
 
 export function TestNullObject() {
-    assert.equal(JSON.stringify({ "response": { "allowed": true, "uid": "", "patch": "", "patchtype": "JSONPATCH" } }), ContentProcessor.TryUpdateConfig(null), "expect null");
+    assert.equal(JSON.stringify({ "response": { "allowed": false, "uid": "", "patch": "", "patchtype": "JSONPATCH" } }), ContentProcessor.TryUpdateConfig(null), "expect null");
 };
 
 export function TestConstructor() {
-    assert.deepEqual(JSON.stringify({"response":{"allowed":true,"uid":"","patch":"","patchtype":"JSONPATCH"}}) , ContentProcessor.TryUpdateConfig("{}"), "should return json");
+    assert.deepEqual(JSON.stringify({"response":{"allowed":false,"uid":"","patch":"","patchtype":"JSONPATCH"}}) , ContentProcessor.TryUpdateConfig("{}"), "should return json");
 }
 
 export function TestInvalidJSON() {
     let something = "dsasda"
-    assert.deepEqual(JSON.stringify({ "response": { "allowed": true, "uid": "", "patch": "", "patchtype": "JSONPATCH" } }), ContentProcessor.TryUpdateConfig(something), "expect something");
+    assert.deepEqual(JSON.stringify({ "response": { "allowed": false, "uid": "", "patch": "", "patchtype": "JSONPATCH" } }), ContentProcessor.TryUpdateConfig(something), "expect something");
 };
 
 export function TestValidObject() {
@@ -21,7 +21,7 @@ export function TestValidObject() {
 export function TestValidInvalidObject() {
     assert.deepEqual(JSON.stringify({
         "response": {
-            "allowed": true,
+            "allowed": false,
             "uid": "6e55578b-9c4f-11e9-9685-b65b44598b61",
             "patch": "",
             "patchtype": "JSONPATCH"

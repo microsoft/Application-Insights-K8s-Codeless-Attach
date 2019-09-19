@@ -9,7 +9,6 @@ webhooks:
         name: mutating-webhook
         namespace: mutating-webhook-ns
         path: "/"
-      caBundle: "${CA_BUNDLE}"
     rules:
       - operations: ["CREATE", "UPDATE"]
         apiGroups: ["*"]
