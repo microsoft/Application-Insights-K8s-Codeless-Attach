@@ -142,8 +142,10 @@ let valid_result = {
                 "path": "/spec/template/spec/volumes",
                 "value": [
                     {
-                        "name": "agentdisk",
-                        "emptyDir": "{}"
+                        "name": "agent-volume",
+                        "persistentVolumeClaim": {
+                            "claimName": "agent-disk"
+                        }
                     }
                 ]
             },
@@ -206,14 +208,12 @@ let valid_result = {
                             }
                         }
                     ],
-                    "volumeMounts": {
-                        "volumeMounts": [
-                            {
-                                "name": "agentdisk",
-                                "mountPath": "/agentconfig"
-                            }
-                        ]
-                    }
+                    "volumeMounts": [
+                        {
+                            "name": "agent-volume",
+                            "mountPath": "/agentconfig"
+                        }
+                    ]
                 }
             },
             {
@@ -249,4 +249,3 @@ let valid_result = {
         "patchtype": "JSONPATCH"
     }
 };
-    

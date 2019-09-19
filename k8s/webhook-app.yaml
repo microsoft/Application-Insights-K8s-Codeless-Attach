@@ -25,7 +25,7 @@ spec:
               cpu: 300m
           volumeMounts:
             - name: webhook-certs
-              mountPath: /etc/webhook
+              mountPath: /mnt/webhook
               readOnly: true
             - mountPath: "/mnt/agent-disk"
               name: agent-volume

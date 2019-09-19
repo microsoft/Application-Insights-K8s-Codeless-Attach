@@ -31,18 +31,18 @@ export class AddedTypes {
     }
 
     public static volume_mounts() {
-        return {
-            'volumeMounts': [{
-                'name': 'agentdisk',
-                'mountPath': '/agentconfig'
-            }]
-        }
+        return [{
+            'name': 'agent-volume',
+            'mountPath': '/agentconfig'
+        }];
     }
 
     public static volumes() {
         return [{
-            'name': 'agentdisk',
-            'emptyDir': '{}'
+            'name': 'agent-volume',
+            'persistentVolumeClaim': {
+                'claimName': 'agent-disk'
+            }
         }]
     }
 }

@@ -9,8 +9,8 @@ let options;
 
 try {
     options = {
-        key: fs.readFileSync('/etc/webhook/key.pem'),
-        cert: fs.readFileSync('/etc/webhook/cert.pem')
+        key: fs.readFileSync('/mnt/webhook/key.pem'),
+        cert: fs.readFileSync('/mnt/webhook/cert.pem')
     };
 } catch{
     options = {
