@@ -13,7 +13,7 @@ webhooks:
       - operations: ["CREATE", "UPDATE"]
         apiGroups: ["*"]
         apiVersions: ["*"]
-        resources: ["pods"]
+        resources: ["pods"] 
     failurePolicy: Ignore
     namespaceSelector:
       matchLabels:

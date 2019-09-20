@@ -6,7 +6,7 @@ import { RootObject} from './RequestDefinition';
 export class ContentProcessor {
 
     public readonly content: RootObject;
-   
+
     private constructor(message: string) {
         if (message === "" || isNullOrUndefined(message)) {
             throw new RangeError('message');
@@ -27,7 +27,6 @@ export class ContentProcessor {
         if (isNullOrUndefined(this.content)) {
             console.log('null content');
         }
-        
 
         if (isNullOrUndefined(this.content.request)
             || isNullOrUndefined(this.content.request.operation)
@@ -36,7 +35,7 @@ export class ContentProcessor {
             console.log('invalid incoming operation');
             returnValue = false;
         }
-       
+
         if (isNullOrUndefined(this.content.kind)
             || this.content.kind !== 'AdmissionReview') {
             console.log('invalid incoming kind');
@@ -55,17 +54,22 @@ export class ContentProcessor {
 
         return returnValue;
     }
-
+    //[[gearama]] console logs are visible  in the logs 
+    //[[gearama]] what happens when it fails , and what error looks like , foes it say what fails
+    //[[gearama]] trace success, and trace errors to std error
     private update_content() {
-        let updated_content:RootObject =  JSON.parse(JSON.stringify( this.content));
+        let updated_content: RootObject = JSON.parse(JSON.stringify(this.content));
 
-        updated_content.request.object.spec.template.spec.initContainers = AddedTypes.init_containers();
-        updated_content.request.object.spec.template.spec.volumes = AddedTypes.volumes();
+        let update_target = updated_content.request.object.spec.template.spec;
 
-        let length = updated_content.request.object.spec.template.spec.containers.length;
+        update_target.initContainers = AddedTypes.init_containers();
+        update_target.volumes = AddedTypes.volumes();
+
+        let length = update_target.containers.length;
+
         for (let i = 0; i < length; i++) {
-            updated_content.request.object.spec.template.spec.containers[i].env = AddedTypes.env();
-            updated_content.request.object.spec.template.spec.containers[i].volumeMounts = AddedTypes.volume_mounts();
+            update_target.containers[i].env = AddedTypes.env();
+            update_target.containers[i].volumeMounts = AddedTypes.volume_mounts();
         };
 
         return diff(this.content.request.object, updated_content.request.object);
@@ -75,11 +79,12 @@ export class ContentProcessor {
         let response = {
             'response': {
                 'allowed': false, // when error it is ignored as per the config
-                'uid':'',
+                'uid': '',
                 'patch': '',
                 'patchtype': 'JSONPATCH'
             }
         };
+
         try {
             let instance: ContentProcessor = new ContentProcessor(message);
 

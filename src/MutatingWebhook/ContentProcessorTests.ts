@@ -28,7 +28,7 @@ export function TestValidInvalidObject() {
         }
     }), ContentProcessor.TryUpdateConfig(getInvalidObject()), "fails validation");
 }
-
+//[[gearama]] multiple containers within the same pod
 function getInvalidObject() {
     let test = JSON.parse(test_object);
     test.kind = 'some other kind';
