@@ -14,8 +14,8 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
         - name: mutating-webhook
-          image: gearamaaks.azurecr.io/webhook/mutating-webhook:latest
-          imagePullPolicy: Always // [[gearama]]not always for prod [[gearama]] troubleshooting guide
+          image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev2
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 1337
           resources:

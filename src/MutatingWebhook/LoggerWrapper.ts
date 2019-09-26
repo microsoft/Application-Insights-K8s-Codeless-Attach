@@ -2,22 +2,22 @@
 
 configure({
     appenders: {
-        everything_file: {
+        file: {
             type: 'file',
             filename: 'all-the-logs.log',
             layout: {
-                type: 'basic'
+                type: 'coloured'
             }
         },
         console: {
             type: 'stdout',
             layout: {
-                type: 'basic'
+                type: 'coloured'
             }
         }
     },
     categories: {
-        default: { appenders: ['everything', 'console'], level: 'debug' },
+        default: { appenders: ['file', 'console'], level: 'debug' },
     }
 });
 

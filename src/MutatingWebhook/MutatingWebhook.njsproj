@@ -37,7 +37,6 @@
   <ItemGroup>
     <None Include="server.ts" />
     <Content Include="Dockerfile" />
-    <Content Include="LoggerWrapper.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="Web.config" />
@@ -55,6 +54,7 @@
       <SubType>Code</SubType>
       <TestFramework>ExportRunner</TestFramework>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="LoggerWrapper.ts" />
     <TypeScriptCompile Include="RequestDefinition.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
