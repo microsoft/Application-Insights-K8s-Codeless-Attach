@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "start": "node server"
+    "start": "node server",
+    "lint": "tslint --fix -c tslint.json *.ts"
   },
   "author": {
     "name": ""
@@ -15,8 +16,9 @@
   "dependencies": {
     "@types/node": "^8.0.14",
     "typescript": "^3.2.2",
-    "jiff": "^0.7.3",
-    "log4js": "^5.1.0"
+    "jiff": "0.7.3",
+    "log4js": "5.1.0",
+    "tslint": "^5.20.0"
   },
   "engines": {
     "node": "^8.0.0"

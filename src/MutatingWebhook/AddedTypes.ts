@@ -1,60 +1,59 @@
-﻿// temporary thingy i need a better way to serve this, maybe put it in the config map and read it from there as json and parse the json
-export class AddedTypes {
+﻿export class AddedTypes {
     public static init_containers() {
         return [{
-            'name': 'agent-init',
-            'image': 'mcr.microsoft.com/applicationinsights/attach-agents:v5',
-            'command': ['cp', '/java-agent-v1.jar', '/agentconfig/java-agent-v1.jar'],
-            'volumeMounts': [{
-                'name': 'agentdisk',
-                'mountPath': '/agentconfig'
-            }]
-        }]
+            command: ["cp", "/java-agent-v1.jar", "/agentconfig/java-agent-v1.jar"],
+            image: "mcr.microsoft.com/applicationinsights/attach-agents:v5",
+            name: "agent-init",
+            volumeMounts: [{
+                mountPath: "/agentconfig",
+                name: "agentdisk",
+            }],
+        }];
     }
 
     public static env() {
         return [
             {
-                'name': '_JAVA_OPTIONS',
-                'value': '-javaagent:/agentconfig/java-agent-v1.jar'
+                name: "_JAVA_OPTIONS",
+                value: "-javaagent:/agentconfig/java-agent-v1.jar",
             },
             {
-                'name': 'JAVA_TOOL_OPTIONS',
-                'value': '-javaagent:/agentconfig/java-agent-v1.jar'
+                name: "JAVA_TOOL_OPTIONS",
+                value: "-javaagent:/agentconfig/java-agent-v1.jar",
             },
             {
-                'name': 'ASPNETCORE_HOSTINGSTARTUP',
-                'value': '/agentconfig/aspnetcore-agent-v1.dll'
+                name: "ASPNETCORE_HOSTINGSTARTUP",
+                value: "/agentconfig/aspnetcore-agent-v1.dll",
             },
             {
-                'name': 'NODE_OPTIONS',
-                'value': '/agentconfig/nodejs-agent-v1.js'
+                name: "NODE_OPTIONS",
+                value: "/agentconfig/nodejs-agent-v1.js",
             },
             {
-                'name': 'APPINSIGHTS_CONNECTIONSTRING',
-                'valueFrom': {
-                    'configMapKeyRef': {
-                        'name': 'attach-config',
-                        'key': 'ikey'
-                    }
-                }
-            }
-        ]
+                name: "APPINSIGHTS_CONNECTIONSTRING",
+                valueFrom: {
+                    configMapKeyRef: {
+                        key: "ikey",
+                        name: "attach-config",
+                    },
+                },
+            },
+        ];
     }
 
     public static volume_mounts() {
         return [{
-            'name': 'agent-volume',
-            'mountPath': '/agentconfig'
+            mountPath: "/agentconfig",
+            name: "agent-volume",
         }];
     }
 
     public static volumes() {
         return [{
-            'name': 'agent-volume',
-            'persistentVolumeClaim': {
-                'claimName': 'agent-disk'
-            }
-        }]
+            name: "agent-volume",
+            persistentVolumeClaim: {
+                claimName: "agent-disk",
+            },
+        }];
     }
 }

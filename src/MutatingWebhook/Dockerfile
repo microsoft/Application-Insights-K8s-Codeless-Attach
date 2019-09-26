@@ -5,5 +5,5 @@ WORKDIR  /mutating-webhook
 COPY . /mutating-webhook
 RUN npm install
 
-EXPOSE 45686
+EXPOSE 1337
 CMD [ "npm", "start" ]

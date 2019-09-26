@@ -1,24 +1,27 @@
-﻿import { configure, getLogger } from 'log4js';
+﻿import { configure, getLogger } from "log4js";
 
 configure({
     appenders: {
-        file: {
-            type: 'file',
-            filename: 'all-the-logs.log',
-            layout: {
-                type: 'coloured'
-            }
-        },
         console: {
-            type: 'stdout',
             layout: {
-                type: 'coloured'
-            }
-        }
+                type: "coloured",
+            },
+            type: "stdout",
+        },
+        file: {
+            filename: "all-the-logs.log",
+            layout: {
+                type: "coloured",
+            },
+            type: "file",
+        },
     },
     categories: {
-        default: { appenders: ['file', 'console'], level: 'debug' },
-    }
+        default: {
+            appenders: ["file", "console"],
+            level: "debug",
+        },
+    },
 });
 
-export const logger = getLogger('default');
+export const logger = getLogger("default");

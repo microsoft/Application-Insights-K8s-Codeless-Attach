@@ -1,155 +1,139 @@
 ﻿
-
-    export interface Kind {
+    export interface IKind {
         group: string;
         version: string;
         kind: string;
     }
 
-    export interface Resource {
+    export interface IResource {
         group: string;
         version: string;
         resource: string;
     }
 
-    export interface UserInfo {
+    export interface IUserInfo {
         username: string;
         groups: string[];
     }
 
-    export interface Labels {
+    export interface ILabels {
         app: string;
     }
 
-    export interface Annotations {
-        'kubectl.kubernetes.io/last-applied-configuration': string;
-    }
-
-    export interface Metadata {
+    export interface IMetadata {
         name: string;
         namespace: string;
         creationTimestamp: string;
-        labels: Labels;
-        annotations: Annotations;
+        labels: ILabels;
+        annotations: object;
     }
 
-    export interface MatchLabels {
+    export interface IMatchLabels {
         app: string;
     }
 
-    export interface Selector {
-        matchLabels: MatchLabels;
+    export interface ISelector {
+        matchLabels: IMatchLabels;
     }
 
-    export interface Labels2 {
+    export interface ILabels2 {
         app: string;
     }
 
-    export interface Metadata2 {
+    export interface IMetadata2 {
         creationTimestamp: string;
-        labels: Labels2;
+        labels: ILabels2;
     }
 
-    export interface Port {
+    export interface IPort {
         containerPort: number;
         protocol: string;
     }
 
-    export interface Limits {
+    export interface ILimits {
         cpu: string;
     }
 
-    export interface Requests {
+    export interface IRequests {
         cpu: string;
     }
 
-    export interface Resources {
-        limits: Limits;
-        requests: Requests;
+    export interface IResources {
+        limits: ILimits;
+        requests: IRequests;
     }
 
-    export interface Container {
+    export interface IContainer {
         name: string;
         image: string;
-        ports: Port[];
-        resources: Resources;
+        ports: IPort[];
+        resources: IResources;
         terminationMessagePath: string;
         terminationMessagePolicy: string;
         imagePullPolicy: string;
-        env?: Object;
-        volumeMounts?: Object;
+        env?: object;
+        volumeMounts?: object;
     }
 
-    export interface NodeSelector {
-        'beta.kubernetes.io/os': string;
-    }
-
-    export interface SecurityContext {
-    }
-
-    export interface Spec2 {
-        containers: Container[];
+    export interface ISpec2 {
+        containers: IContainer[];
         restartPolicy: string;
         terminationGracePeriodSeconds: number;
         dnsPolicy: string;
-        nodeSelector: NodeSelector;
-        securityContext: SecurityContext;
+        nodeSelector: object;
+        securityContext: object;
         schedulerName: string;
-        initContainers?: Object;
-        volumes?: Object;
+        initContainers?: object;
+        volumes?: object;
     }
 
-    export interface Template {
-        metadata: Metadata2;
-        spec: Spec2;
+    export interface ITemplate {
+        metadata: IMetadata2;
+        spec: ISpec2;
     }
 
-    export interface RollingUpdate {
+    export interface IRollingUpdate {
         maxUnavailable: number;
         maxSurge: number;
     }
 
-    export interface Strategy {
+    export interface IStrategy {
         type: string;
-        rollingUpdate: RollingUpdate;
+        rollingUpdate: IRollingUpdate;
     }
 
-    export interface Spec {
+    export interface ISpec {
         replicas: number;
-        selector: Selector;
-        template: Template;
-        strategy: Strategy;
+        selector: ISelector;
+        template: ITemplate;
+        strategy: IStrategy;
         minReadySeconds: number;
         revisionHistoryLimit: number;
         progressDeadlineSeconds: number;
     }
 
-    export interface Status {
-    }
-
-    export interface ObjectType {
+    export interface IObjectType {
         kind: string;
         apiVersion: string;
-        metadata: Metadata;
-        spec: Spec;
-        status: Status;
+        metadata: IMetadata;
+        spec: ISpec;
+        status: object;
     }
 
-    export interface Request {
+    export interface IRequest {
         uid: string;
-        kind: Kind;
-        resource: Resource;
+        kind: IKind;
+        resource: IResource;
         namespace: string;
         operation: string;
-        userInfo: UserInfo;
-        object: ObjectType;
+        userInfo: IUserInfo;
+        object: IObjectType;
         oldObject: string;
         dryRun: string;
     }
 
-    export interface RootObject {
+    export interface IRootObject {
         kind: string;
         apiVersion: string;
-        request: Request;
+        request: IRequest;
     }
-
