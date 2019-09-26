@@ -15,7 +15,8 @@
   "dependencies": {
     "@types/node": "^8.0.14",
     "typescript": "^3.2.2",
-    "jiff": "0.7.3"
+    "jiff": "^0.7.3",
+    "log4js": "^5.1.0"
   },
   "engines": {
     "node": "^8.0.0"

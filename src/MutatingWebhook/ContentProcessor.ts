@@ -2,43 +2,46 @@
 import { AddedTypes } from './AddedTypes';
 import { diff } from 'jiff';
 import { RootObject} from './RequestDefinition';
-
+import { logger } from './LoggerWrapper';
 export class ContentProcessor {
 
     public readonly content: RootObject;
 
     private constructor(message: string) {
+
         if (message === "" || isNullOrUndefined(message)) {
             throw new RangeError('message');
         }
 
         try {
             this.content = JSON.parse(message);
+            logger.info(`parsed incoming message content: ${message}, Initialized ContentProcessor.`);
         }
         catch (ex) {
-            console.log(`exception encountered parsing input ${ex}`);
+            logger.error(`exception ${ex} encountered parsing input ${message}`);
             throw ex;
         }
     }
 
     private validate_content(): boolean {
-        let returnValue = true;
 
+        let returnValue = true;
+        logger.info(`validating content ${this.content}`);
         if (isNullOrUndefined(this.content)) {
-            console.log('null content');
+            logger.error('null content');
         }
 
         if (isNullOrUndefined(this.content.request)
             || isNullOrUndefined(this.content.request.operation)
             || (this.content.request.operation !== 'CREATE'
                 && this.content.request.operation !== "UPDATE")) {
-            console.log('invalid incoming operation');
+            logger.error('invalid incoming operation');
             returnValue = false;
         }
 
         if (isNullOrUndefined(this.content.kind)
             || this.content.kind !== 'AdmissionReview') {
-            console.log('invalid incoming kind');
+            logger.error('invalid incoming kind');
             returnValue = false;
         }
 
@@ -48,16 +51,17 @@ export class ContentProcessor {
             || isNullOrUndefined(this.content.request.object.spec.template.spec)
             || isNullOrUndefined(this.content.request.object.spec.template.spec.containers)
             || !Array.isArray(this.content.request.object.spec.template.spec.containers)) {
-            console.log('missing spec in template');
+            logger.error('missing spec in template');
             return false;
         }
 
+        logger.info(`succesfully validated content ${JSON.stringify(this.content)}`)
         return returnValue;
     }
-    //[[gearama]] console logs are visible  in the logs 
-    //[[gearama]] what happens when it fails , and what error looks like , foes it say what fails
-    //[[gearama]] trace success, and trace errors to std error
-    private update_content() {
+
+    private calculate_diff() {
+
+        logger.info(`calculating diff`);
         let updated_content: RootObject = JSON.parse(JSON.stringify(this.content));
 
         let update_target = updated_content.request.object.spec.template.spec;
@@ -72,10 +76,14 @@ export class ContentProcessor {
             update_target.containers[i].volumeMounts = AddedTypes.volume_mounts();
         };
 
-        return diff(this.content.request.object, updated_content.request.object);
+        let json_diff = diff(this.content.request.object, updated_content.request.object);
+
+        logger.info(`determined diff ${JSON.stringify(json_diff)}`);
+        return json_diff;
     }
 
     public static TryUpdateConfig(message: string): string {
+
         let response = {
             'response': {
                 'allowed': false, // when error it is ignored as per the config
@@ -84,7 +92,7 @@ export class ContentProcessor {
                 'patchtype': 'JSONPATCH'
             }
         };
-
+        
         try {
             let instance: ContentProcessor = new ContentProcessor(message);
 
@@ -92,13 +100,14 @@ export class ContentProcessor {
 
             if (instance.validate_content()) {
                 response.response.allowed = true;
-                response.response.patch = instance.update_content();
+                response.response.patch = instance.calculate_diff();
             }
-
-            return JSON.stringify(response);
+            let final_result = JSON.stringify(response)
+            logger.info(`determined final response ${final_result}`);
+            return final_result;
         }
         catch (ex) {
-            console.log(`exception encountered ${ex}`);
+            logger.error(`exception encountered ${ex}`);
             return JSON.stringify(response);
         }
     }

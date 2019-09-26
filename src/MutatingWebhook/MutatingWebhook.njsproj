@@ -37,6 +37,7 @@
   <ItemGroup>
     <None Include="server.ts" />
     <Content Include="Dockerfile" />
+    <Content Include="LoggerWrapper.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="Web.config" />
