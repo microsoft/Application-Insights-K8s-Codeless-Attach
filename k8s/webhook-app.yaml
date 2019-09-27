@@ -14,7 +14,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
         - name: mutating-webhook
-          image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev2
+          image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev5
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 1337
@@ -36,9 +36,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mutating-webhook
+  namespace: aks-webhook-ns
 spec:
-  type: LoadBalancer  // [[gearama]]for debug for prod cluster ip
+  type: LoadBalancer
   ports:
-    - port: 1337
+    - port: 47777
+      protocol: TCP
+      targetPort: 1337
   selector:
     app: mutating-webhook

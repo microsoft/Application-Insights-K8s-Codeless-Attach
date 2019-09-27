@@ -13,11 +13,13 @@ try {
         cert: fs.readFileSync("/mnt/webhook/cert.pem"),
         key: fs.readFileSync("/mnt/webhook/key.pem"),
     };
+    logger.info("loaded certificates from /mnt");
 } catch {
     options = {
-        cert: fs.readFileSync("./server-cert.pem"),
-        key: fs.readFileSync("./server-key.pem"),
+        cert: fs.readFileSync("./../../server-cert.pem"),
+        key: fs.readFileSync("./../../server-key.pem"),
     };
+    logger.info("loaded certs from local");
 }
 
 https.createServer(options, (req, res) => {
