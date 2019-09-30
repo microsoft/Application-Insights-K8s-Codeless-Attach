@@ -1,8 +1,8 @@
 ﻿export class AddedTypes {
     public static init_containers() {
         return [{
-            command: ["cp", "/java-agent-v1.jar", "/agentconfig/java-agent-v1.jar"],
-            image: "mcr.microsoft.com/applicationinsights/attach-agents:v5",
+            command: ["cp", "/applicationinsights-agent-codeless.jar", "/agentconfig/applicationinsights-agent-codeless.jar"],
+            image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:dev3",
             name: "agent-init",
             volumeMounts: [{
                 mountPath: "/agentconfig",
@@ -15,11 +15,11 @@
         return [
             {
                 name: "_JAVA_OPTIONS",
-                value: "-javaagent:/agentconfig/java-agent-v1.jar",
+                value: "-javaagent:/agentconfig/applicationinsights-agent-codeless.jar",
             },
             {
                 name: "JAVA_TOOL_OPTIONS",
-                value: "-javaagent:/agentconfig/java-agent-v1.jar",
+                value: "-javaagent:/agentconfig/applicationinsights-agent-codeless.jar",
             },
             {
                 name: "ASPNETCORE_HOSTINGSTARTUP",

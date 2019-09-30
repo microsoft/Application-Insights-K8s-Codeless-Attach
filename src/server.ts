@@ -3,11 +3,10 @@ import https = require("https");
 import { ContentProcessor } from "./ContentProcessor";
 import { logger } from "./LoggerWrapper";
 
-const port = process.env.port || 1337;
-logger.info(`listening on port ${port}`);
-
 let options;
+const port = process.env.port || 1337;
 
+logger.info(`listening on port ${port}`);
 try {
     options = {
         cert: fs.readFileSync("/mnt/webhook/cert.pem"),

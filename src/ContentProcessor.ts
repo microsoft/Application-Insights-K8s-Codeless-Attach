@@ -54,7 +54,8 @@ export class ContentProcessor {
     private validate_content(): boolean {
 
         let returnValue = true;
-        logger.info(`validating content ${this.content}`);
+        logger.info(`validating content ${JSON.stringify(this.content)}`);
+
         if (isNullOrUndefined(this.content)) {
             logger.error("null content");
         }
@@ -63,12 +64,14 @@ export class ContentProcessor {
             || isNullOrUndefined(this.content.request.operation)
             || (this.content.request.operation !== "CREATE"
                 && this.content.request.operation !== "UPDATE")) {
+
             logger.error("invalid incoming operation");
             returnValue = false;
         }
 
         if (isNullOrUndefined(this.content.kind)
             || this.content.kind !== "AdmissionReview") {
+
             logger.error("invalid incoming kind");
             returnValue = false;
         }
@@ -79,6 +82,7 @@ export class ContentProcessor {
             || isNullOrUndefined(this.content.request.object.spec.template.spec)
             || isNullOrUndefined(this.content.request.object.spec.template.spec.containers)
             || !Array.isArray(this.content.request.object.spec.template.spec.containers)) {
+
             logger.error("missing spec in template");
             return false;
         }

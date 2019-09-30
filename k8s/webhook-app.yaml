@@ -14,7 +14,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
         - name: mutating-webhook
-          image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev5
+          image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev7
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 1337
