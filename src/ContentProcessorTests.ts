@@ -143,132 +143,132 @@ const testObject = JSON.stringify({
 });
 
 const validResult = {
-    response: {
-        allowed: true,
-        patch: [
+    "response": {
+        "allowed": true,
+        "patch": [
             {
-                op: "add",
-                path: "/spec/template/spec/volumes",
-                value: [
+                "op": "add",
+                "path": "/spec/template/spec/volumes",
+                "value": [
                     {
-                        name: "agent-volume",
-                        persistentVolumeClaim: {
-                            claimName: "agent-disk",
-                        },
-                    },
-                ],
+                        "name": "agent-volume",
+                        "persistentVolumeClaim": {
+                            "claimName": "agent-disk"
+                        }
+                    }
+                ]
             },
             {
-                op: "add",
-                path: "/spec/template/spec/initContainers",
-                value: [
+                "op": "add",
+                "path": "/spec/template/spec/initContainers",
+                "value": [
                     {
-                        command: [
+                        "command": [
                             "cp",
-                            "/java-agent-v1.jar",
-                            "/agentconfig/java-agent-v1.jar",
+                            "/applicationinsights-agent-codeless.jar",
+                            "/agentconfig/applicationinsights-agent-codeless.jar"
                         ],
-                        image: "mcr.microsoft.com/applicationinsights/attach-agents:v5",
-                        name: "agent-init",
-                        volumeMounts: [
+                        "image": "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:dev3",
+                        "name": "agent-init",
+                        "volumeMounts": [
                             {
-                                mountPath: "/agentconfig",
-                                name: "agentdisk",
-                            },
-                        ],
-                    },
-                ],
+                                "mountPath": "/agentconfig",
+                                "name": "agentdisk"
+                            }
+                        ]
+                    }
+                ]
             },
             {
-                op: "add",
-                path: "/spec/template/spec/containers/0",
-                value: {
-                    name: "spring-simple",
-                    image: "tamhariacr.azurecr.io/spring-simple:v1",
-                    ports: [
+                "op": "add",
+                "path": "/spec/template/spec/containers/0",
+                "value": {
+                    "name": "spring-simple",
+                    "image": "tamhariacr.azurecr.io/spring-simple:v1",
+                    "ports": [
                         {
-                            containerPort: 8080,
-                            protocol: "TCP",
-                        },
+                            "containerPort": 8080,
+                            "protocol": "TCP"
+                        }
                     ],
-                    resources: {
-                        limits: {
-                            cpu: "200m",
+                    "resources": {
+                        "limits": {
+                            "cpu": "200m"
                         },
-                        requests: {
-                            cpu: "150m",
-                        },
+                        "requests": {
+                            "cpu": "150m"
+                        }
                     },
-                    terminationMessagePath: "/dev/termination-log",
-                    terminationMessagePolicy: "File",
-                    imagePullPolicy: "IfNotPresent",
-                    env: [
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent",
+                    "env": [
                         {
-                            name: "_JAVA_OPTIONS",
-                            value: "-javaagent:/agentconfig/java-agent-v1.jar",
+                            "name": "_JAVA_OPTIONS",
+                            "value": "-javaagent:/agentconfig/applicationinsights-agent-codeless.jar"
                         },
                         {
-                            name: "JAVA_TOOL_OPTIONS",
-                            value: "-javaagent:/agentconfig/java-agent-v1.jar",
+                            "name": "JAVA_TOOL_OPTIONS",
+                            "value": "-javaagent:/agentconfig/applicationinsights-agent-codeless.jar"
                         },
                         {
-                            name: "ASPNETCORE_HOSTINGSTARTUP",
-                            value: "/agentconfig/aspnetcore-agent-v1.dll",
+                            "name": "ASPNETCORE_HOSTINGSTARTUP",
+                            "value": "/agentconfig/aspnetcore-agent-v1.dll"
                         },
                         {
-                            name: "NODE_OPTIONS",
-                            value: "/agentconfig/nodejs-agent-v1.js",
+                            "name": "NODE_OPTIONS",
+                            "value": "/agentconfig/nodejs-agent-v1.js"
                         },
                         {
-                            name: "APPINSIGHTS_CONNECTIONSTRING",
-                            valueFrom: {
-                                configMapKeyRef: {
-                                    key: "ikey",
-                                    name: "attach-config",
-                                },
-                            },
-                        },
+                            "name": "APPINSIGHTS_CONNECTIONSTRING",
+                            "valueFrom": {
+                                "configMapKeyRef": {
+                                    "key": "ikey",
+                                    "name": "attach-config"
+                                }
+                            }
+                        }
                     ],
-                    volumeMounts: [
+                    "volumeMounts": [
                         {
-                            mountPath: "/agentconfig",
-                            name: "agent-volume",
-                        },
-                    ],
-                },
+                            "mountPath": "/agentconfig",
+                            "name": "agent-volume"
+                        }
+                    ]
+                }
             },
             {
-                op: "test",
-                path: "/spec/template/spec/containers/1",
-                value: {
-                    name: "spring-simple",
-                    image: "tamhariacr.azurecr.io/spring-simple:v1",
-                    ports: [
+                "op": "test",
+                "path": "/spec/template/spec/containers/1",
+                "value": {
+                    "name": "spring-simple",
+                    "image": "tamhariacr.azurecr.io/spring-simple:v1",
+                    "ports": [
                         {
-                            containerPort: 8080,
-                            protocol: "TCP",
-                        },
+                            "containerPort": 8080,
+                            "protocol": "TCP"
+                        }
                     ],
-                    resources: {
-                        limits: {
-                            cpu: "200m",
+                    "resources": {
+                        "limits": {
+                            "cpu": "200m"
                         },
-                        requests: {
-                            cpu: "150m",
-                        },
+                        "requests": {
+                            "cpu": "150m"
+                        }
                     },
-                    terminationMessagePath: "/dev/termination-log",
-                    terminationMessagePolicy: "File",
-                    imagePullPolicy: "IfNotPresent",
-                },
+                    "terminationMessagePath": "/dev/termination-log",
+                    "terminationMessagePolicy": "File",
+                    "imagePullPolicy": "IfNotPresent"
+                }
             },
             {
-                op: "remove",
-                path: "/spec/template/spec/containers/1",
-            },
+                "op": "remove",
+                "path": "/spec/template/spec/containers/1"
+            }
         ],
-        patchtype: "JSONPATCH",
-        uid: "6e55578b-9c4f-11e9-9685-b65b44598b61",
-    },
+        "patchtype": "JSONPATCH",
+        "uid": "6e55578b-9c4f-11e9-9685-b65b44598b61"
+    }
 };
 /* tslint:enable */
