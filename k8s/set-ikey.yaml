@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2016-02-18T18:52:05Z
+  name: attach-config
+  namespace: aks-webhook-ns
+data:
+  ikey: 0ea304c8-8ce6-4626-8515-5407d2c7bdd1

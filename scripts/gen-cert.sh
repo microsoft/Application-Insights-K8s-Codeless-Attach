@@ -2,7 +2,7 @@
 
 set -e
 
-title="aks-webhook"
+title="mutating-webhook"
 namespace="aks-webhook-ns"
 
 [ -z ${title} ] && title=aks-webhook
