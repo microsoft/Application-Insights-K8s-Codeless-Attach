@@ -5,7 +5,7 @@ set -e
 title="mutating-webhook"
 namespace="aks-webhook-ns"
 
-[ -z ${title} ] && title=aks-webhook
+[ -z ${title} ] && title=mutating-webhook
 [ -z ${namespace} ] && namespace=aks-webhook-ns
 
 if [ ! -x "$(command -v openssl)" ]; then
@@ -13,7 +13,6 @@ if [ ! -x "$(command -v openssl)" ]; then
     exit 1
 fi
 
-# csrName=${service}.${namespace}
 csrName=${title}.${namespace}
 tmpdir=$(mktemp -d)
 echo "creating certs in tmpdir ${tmpdir} "
@@ -32,15 +31,18 @@ subjectAltName = @alt_names
 DNS.1 = ${title}
 DNS.2 = ${title}.${namespace}
 DNS.3 = ${title}.${namespace}.svc
+DNS.4 = ${namespace}.svc
 EOF
 
 openssl genrsa -out ${tmpdir}/server-key.pem 2048
 openssl req -new -key ${tmpdir}/server-key.pem -subj "/CN=${title}.${namespace}.svc" -out ${tmpdir}/server.csr -config ${tmpdir}/csr.conf
 
 # clean-up any previously created CSR for our service. Ignore errors if not present.
+echo "delete previous csr certs if they exist"
 kubectl delete csr ${csrName} 2>/dev/null || true
 
 # create server cert/key CSR and send to k8s API
+echo "create server cert/key CSR and send to k8s API"
 cat <<EOF | kubectl create -f -
 apiVersion: certificates.k8s.io/v1beta1
 kind: CertificateSigningRequest
@@ -57,6 +59,7 @@ spec:
 EOF
 
 # verify CSR has been created
+echo "verify CSR has been created"
 while true; do
     kubectl get csr ${csrName}
     if [ "$?" -eq 0 ]; then
@@ -65,8 +68,10 @@ while true; do
 done
 
 # approve and fetch the signed certificate
+echo "approve and fetch the signed certificate"
 kubectl certificate approve ${csrName}
 # verify certificate has been signed
+
 for x in $(seq 10); do
     serverCert=$(kubectl get csr ${csrName} -o jsonpath='{.status.certificate}')
     if [[ ${serverCert} != '' ]]; then
@@ -84,6 +89,7 @@ dos2unix ${tmpdir}/server-key.pem
 dos2unix ${tmpdir}/server-cert.pem
 
 # create the secret with CA cert and server cert/key
+echo "create the secret with CA cert and server cert/key"
 kubectl create secret generic ${title} \
         --from-file=key.pem=${tmpdir}/server-key.pem \
         --from-file=cert.pem=${tmpdir}/server-cert.pem \
