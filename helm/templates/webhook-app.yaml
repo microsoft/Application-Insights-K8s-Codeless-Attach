@@ -2,21 +2,12 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: {{ .Values.app.name }}
-  namespace: {{ .Values.namespace }}
-  labels: 
-    version: {{ .Chart.Version }}
-    environment: {{ .Values.app.environment }}
-    owner: {{ .Values.app.owner }}
-    app: {{ .Values.app.name }}
+  {{- template "common.metadata" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      labels: 
-        version: {{ .Chart.Version }}
-        environment: {{ .Values.app.environment }}
-        owner: {{ .Values.app.owner }}
-        app: {{ .Values.app.name }}
+      {{- template "common.metadata" . }}
     spec:
       nodeSelector: {{ .Values.app.nodeSelector }}
       containers:
