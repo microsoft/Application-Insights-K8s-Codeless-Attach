@@ -1,17 +1,11 @@
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
-  name: {{ .Values.app.name }}
+  name: attach-config
   namespace: {{ .Values.namespace }}
   labels: 
     environment: {{ .Values.app.environment }}
     owner: {{ .Values.app.owner }}
     app: {{ .Values.app.name }}
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 47777
-      protocol: TCP
-      targetPort: 1337
-  selector:
-    app: {{ .Values.app.name }}
+data:
+  ikey: {{ .Values.app.ikey }}

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.disk.name }}
+  namespace: {{ .Values.namespace }}
+  labels: 
+    environment: {{ .Values.app.environment }}
+    owner: {{ .Values.app.owner }}
+    app: {{ .Values.app.name }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: default
+  persistentVolumeReclaimPolicy: Retain
+  resources:
+    requests:
+      storage: {{ .Values.disk.size }}
