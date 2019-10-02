@@ -19,7 +19,3 @@ disk:
 nodeSelector: {
   "beta.kubernetes.io/os": linux
 }
-
-tolerations: []
-
-affinity: {}
