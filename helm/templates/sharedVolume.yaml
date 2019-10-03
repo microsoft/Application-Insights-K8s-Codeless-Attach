@@ -4,9 +4,9 @@ metadata:
   name: {{ .Values.disk.name }}
 spec:
   accessModes:
-  - ReadWriteOnce
-  storageClassName: default
-  persistentVolumeReclaimPolicy: Retain
+    - ReadWriteOnce
+  storageClassName: managed-premium
   resources:
     requests:
       storage: {{ .Values.disk.size }}
+  volumeMode: Filesystem
