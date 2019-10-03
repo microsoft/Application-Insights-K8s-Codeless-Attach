@@ -23,7 +23,7 @@ try {
 
 https.createServer(options, (req, res) => {
     logger.info(`received request with url: ${req.url}, method: ${req.method}, content-type: ${req.headers["content-type"]}`);
-    if (req.url === "/" && req.method === "POST" && req.headers["content-type"] === "application/json") {
+    if (req.method === "POST" && req.headers["content-type"] === "application/json") {
         let body = "";
         req.on("data", (chunk) => {
             body += chunk.toString(); // convert Buffer to string

@@ -6,7 +6,7 @@
             name: "agent-init",
             volumeMounts: [{
                 mountPath: "/agentconfig",
-                name: "agentdisk",
+                name: "agent-volume",
             }],
         }];
     }

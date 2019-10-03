@@ -10,13 +10,13 @@ webhooks:
         name: {{ .Values.app.name }}
         namespace: {{ .Values.namespace }}
         path: "/"
-        port: 1337
+      caBundle: "${CA_BUNDLE}"
     rules:
       - operations: ["CREATE", "UPDATE"]
         apiGroups: ["*"]
         apiVersions: ["*"]
         resources: ["pods"] 
     failurePolicy: Ignore
-    namespaceSelector:
-      matchLabels:
-        mutating-webhook: enabled
+    #namespaceSelector:
+    #  matchLabels:
+    #    mutating-webhook: enabled

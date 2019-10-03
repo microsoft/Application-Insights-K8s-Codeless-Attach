@@ -110,6 +110,9 @@
         minReadySeconds: number;
         revisionHistoryLimit: number;
         progressDeadlineSeconds: number;
+        initContainers?: object;
+        volumes?: object;
+        containers?: IContainer[];
     }
 
     export interface IObjectType {
@@ -136,4 +139,5 @@
         kind: string;
         apiVersion: string;
         request: IRequest;
+        response?: object;
     }

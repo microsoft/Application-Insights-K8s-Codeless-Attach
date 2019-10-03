@@ -7,12 +7,13 @@ spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      {{- template "common.metadata" . }}
+      labels:
+        app: {{ .Values.app.name }}
     spec:
       nodeSelector: {{ .Values.app.nodeSelector }}
       containers:
         - name: {{ .Values.app.name }}
-          image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev7
+          image: {{ .Values.app.image }}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 1337
