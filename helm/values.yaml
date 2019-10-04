@@ -9,13 +9,13 @@ app:
   environment: "test"
   owner : "Microsoft"
   iKey: "0ea304c8-8ce6-4626-8515-5407d2c7bdd1"
-  image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev29
+  image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev39
 
 replicaCount: 2
 
 disk:
   size: 1Gi
-  name: "agent-disk"
+  name: "agent-disk2"
 
 nodeSelector: {
   "beta.kubernetes.io/os": linux

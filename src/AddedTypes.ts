@@ -1,7 +1,7 @@
 ﻿export class AddedTypes {
     public static init_containers() {
         return [{
-            command: ["cp", "/applicationinsights-agent-codeless.jar", "/agentconfig/applicationinsights-agent-codeless.jar"],
+            command: ["cp", "/applicationinsights-agent-codeless.jar", "/agentconfig"],
             image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:dev3",
             name: "agent-init",
             volumeMounts: [{
@@ -50,10 +50,8 @@
 
     public static volumes() {
         return [{
+            emptyDir: {},
             name: "agent-volume",
-            persistentVolumeClaim: {
-                claimName: "agent-disk",
-            },
         }];
     }
 }
