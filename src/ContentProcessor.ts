@@ -140,7 +140,7 @@ export class ContentProcessor {
 
         const jsonDiff = diff(this.content.request.object, updatedContent.request.object);
 /* tslint:enable */
-        // logger.info(`determined diff ${JSON.stringify(jsonDiff)}`);
+        logger.info(`determined diff ${JSON.stringify(jsonDiff)}`);
         return jsonDiff;
     }
 }

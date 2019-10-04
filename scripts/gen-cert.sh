@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-
+kubectl apply -f ./namespace.yaml
 title="mutating-webhook"
 namespace="aks-webhook-ns"
 

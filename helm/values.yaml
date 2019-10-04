@@ -13,10 +13,6 @@ app:
 
 replicaCount: 2
 
-disk:
-  size: 1Gi
-  name: "agent-disk2"
-
 nodeSelector: {
   "beta.kubernetes.io/os": linux
 }
