@@ -1,0 +1,32 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  {{- template "common.metadata" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      nodeSelector: {{ .Values.app.nodeSelector }}
+      containers:
+        - name: {{ .Values.app.name }}
+          image: {{ .Values.app.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 1337
+          resources:
+            requests:
+              cpu: 200m
+            limits:
+              cpu: 300m
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /mnt/webhook
+              readOnly: true
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: {{ .Values.app.name }}
