@@ -17,6 +17,6 @@ webhooks:
         apiVersions: ["*"]
         resources: ["pods"] 
     failurePolicy: Ignore
-    namespaceSelector:
-      matchLabels:
-        mutating-webhook: enabled
+    #namespaceSelector:
+    #  matchLabels:
+    #    mutating-webhook: enabled
