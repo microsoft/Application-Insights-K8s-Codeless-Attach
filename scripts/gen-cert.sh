@@ -17,6 +17,11 @@ echo "namespace created"
 [ -z ${title} ] && title=mutating-webhook
 [ -z ${namespace} ] && namespace=aks-webhook-ns
 
+if [ ! -x "$(command -v dos2unix)" ]; then
+    echo "dos2unix not found"
+    exit 1
+fi
+
 if [ ! -x "$(command -v openssl)" ]; then
     echo "openssl not found"
     exit 1

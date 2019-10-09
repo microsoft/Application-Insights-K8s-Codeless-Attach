@@ -1,8 +1,9 @@
 ﻿export class AddedTypes {
     public static init_containers() {
         return [{
-            command: ["cp", "/applicationinsights-agent-codeless.jar", "/agentconfig"],
-            image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:dev3",
+            args: ["-a", "/agents/.", "/agentconfig"],
+            command: ["cp"],
+            image: process.env.AGENTS_IMAGE || "ERROR",
             name: "agent-init",
             volumeMounts: [{
                 mountPath: "/agentconfig",
@@ -30,7 +31,7 @@
                 value: "/agentconfig/nodejs-agent-v1.js",
             },
             {
-                name: "APPINSIGHTS_CONNECTIONSTRING",
+                name: "APPINSIGHTS_INSTRUMENTATIONKEY",
                 valueFrom: {
                     configMapKeyRef: {
                         key: "ikey",

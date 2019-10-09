@@ -4,12 +4,16 @@
 
 namespace: "aks-webhook-ns"
 
+configMap: 
+  targetNamespace : "default"
+  iKey: "0ea304c8-8ce6-4626-8515-5407d2c7bdd1"
+
 app:
   name: "mutating-webhook"
   environment: "test"
   owner : "Microsoft"
-  iKey: "0ea304c8-8ce6-4626-8515-5407d2c7bdd1"
-  image: mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:dev39
+  image: gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:dev12
+  agents: gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:dev12
 
 replicaCount: 2
 

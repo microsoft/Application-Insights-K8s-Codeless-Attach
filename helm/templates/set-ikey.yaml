@@ -2,5 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: attach-config
+  namespace: {{ .Values.configMap.targetNamespace }}
+  {{- template "common.labels" . }}
 data:
-  ikey: {{ .Values.app.iKey }}
+  ikey: {{ .Values.configMap.iKey }}
