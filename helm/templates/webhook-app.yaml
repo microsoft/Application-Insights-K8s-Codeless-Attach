@@ -29,19 +29,7 @@ spec:
             - name: webhook-certs
               mountPath: /mnt/webhook
               readOnly: true
-            - mountPath: "/agentconfig"
-              name: "agent-volume"
-      initContainers:
-        - command: ["cp"]
-          args: ["-a", "/agents/.", "/agentconfig"]
-          image: {{ .Values.app.agents }}
-          name: "agent-init"
-          volumeMounts: 
-            - mountPath: "/agentconfig"
-              name: "agent-volume"
       volumes:
         - name: webhook-certs
           secret:
             secretName: {{ .Values.app.name }}
-        - emptyDir: {}
-          name: agent-volume

@@ -12,8 +12,8 @@ app:
   name: "mutating-webhook"
   environment: "test"
   owner : "Microsoft"
-  image: gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:dev12
-  agents: gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:dev12
+  image: gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:dev-node1
+  agents: gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:dev_node4
 
 replicaCount: 2
 
