@@ -1,4 +1,5 @@
 FROM alpine:3.10
 
-ADD ./applicationinsights-agent-codeless-2.5.0.jar /agents/applicationinsights-agent-codeless.jar
-ADD ./ApplicationInsights.json /agents/ApplicationInsights.json
+ADD ./java/applicationinsights-agent-codeless-2.5.0.jar /agents/java/applicationinsights-agent-codeless.jar
+ADD ./java/ApplicationInsights.json /agents/java/ApplicationInsights.json
+ADD ./node /agents/node
