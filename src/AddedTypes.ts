@@ -15,16 +15,20 @@
     public static env() {
         return [
             {
-                name: "_JAVA_OPTIONS",
-                value: "-javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar",
-            },
-            {
                 name: "JAVA_TOOL_OPTIONS",
                 value: "-javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar",
             },
             {
-                name: "ASPNETCORE_HOSTINGSTARTUP",
-                value: "/agentfiles/aspnetcore-agent-v1.dll",
+                name: "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES",
+                value: "StartupBootstrapper",
+            },
+            {
+                name:"DOTNET_ADDITIONAL_DEPS",
+                value: "\\agentfiles\\core\\additionalDeps\\;%ProgramFiles(x86)%\\dotnet\\additionalDeps\\Microsoft.AspNetCore.ApplicationInsights.HostingStartup"
+            },
+            {
+                name: "DOTNET_SHARED_STORE",
+                value: "\\agentfiles\\core\\store\\"
             },
             {
                 name: "NODE_OPTIONS",
