@@ -1,0 +1,18 @@
+{
+  "name": "polyglot-cross-correlation",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "description": "PolyglotCrossCorrelation",
+  "author": {
+    "name": "osrosado"
+  },
+  "dependencies": {
+    "azure-storage": "^2.10.3",
+    "body-parser": "^1.15.0",
+    "express": "^4.14.0",
+    "redis": "^2.8.0"
+  }
+}

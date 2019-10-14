@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="com.microsoft.applicationinsights.log4j.v2">
+    <Appenders>
+
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+
+        <ApplicationInsightsAppender name="aiAppender">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %m%n</pattern>
+        </PatternLayout>
+        </ApplicationInsightsAppender>
+
+
+    </Appenders>
+
+    <Loggers>
+        <!-- Log everything in custom package -->
+        <Logger name="com.dhaval.demo" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="aiAppender"/>
+        </Logger>
+
+        <!-- Log everything in Spring Boot -->
+        <Logger name="org.springframework.boot" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="aiAppender"/>
+        </Logger>
+
+        <!-- Log everything in Spring Core -->
+        <Logger name="org.springframework.core" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="aiAppender"/>
+        </Logger>
+
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="aiAppender"/>
+        </Root>
+
+    </Loggers>
+</Configuration>
