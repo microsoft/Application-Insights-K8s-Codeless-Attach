@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29409.12
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Inventory Management", "Inventory Management.njsproj", "{F4EAB823-E04E-4603-8053-F433C5C331F6}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "codelessAttachNode", "codelessAttachNode.njsproj", "{F4EAB823-E04E-4603-8053-F433C5C331F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
