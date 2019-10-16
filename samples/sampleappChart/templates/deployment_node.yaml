@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.node.name }}
+  {{- template "common.metadata" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.node.name }}
+    spec:
+      nodeSelector: {{ .Values.nodeSelector }}
+      containers:
+        - name: {{ .Values.app.node.name }}
+          image: {{ .Values.app.node.image }}
+          imagePullPolicy: IfNotPresent
+          env: 
+            - name: AZURESTORAGE_CONNECTION
+              value: {{ .Values.env.connStr }}
+          ports:
+            - containerPort: 1337
+          resources:
+            requests:
+              cpu: 200m
+            limits:
+              cpu: 300m

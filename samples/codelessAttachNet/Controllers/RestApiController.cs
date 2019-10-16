@@ -99,10 +99,12 @@ namespace codelessAttachNet.Controllers
 
         private async Task<String> SubsequentCallHttp(String uri)
         {
+            _logger.LogInformation("Calling URL {0}", uri);
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             var client = new HttpClient();
             var response = await client.SendAsync(request);
             var content = "";
+            _logger.LogInformation("{0} responded with: {1}", uri, response.StatusCode);
             if (response.IsSuccessStatusCode)
             {
                 content = await response.Content.ReadAsStringAsync();
@@ -113,16 +115,18 @@ namespace codelessAttachNet.Controllers
         private async Task SubsequentCallDatabase(dynamic parameters)
         {
             await this.PopulateValues();
-
+            _logger.LogInformation("Calling blob storage");
             CloudStorageAccount account = CloudStorageAccount.Parse(this.dbConnString);
             CloudBlobClient serviceClient = account.CreateCloudBlobClient();
 
             // Create container. Name must be lower case.
-            var container = serviceClient.GetContainerReference("demoContainer");
+            var container = serviceClient.GetContainerReference("democontainer");
             container.CreateIfNotExistsAsync().Wait();
             // write a blob to the container
             CloudBlockBlob blob = container.GetBlockBlobReference("codelessDemo.txt");
-            blob.UploadTextAsync((new EntryTable(parameters)).ToString()).Wait();
+            var toUpload = (new EntryTable(parameters)).ToString();
+            blob.UploadTextAsync(toUpload).Wait();
+            _logger.LogInformation("uploaded \"{0}\"", toUpload);
         }
 
         public async Task<string> GetCreds(string secretName)

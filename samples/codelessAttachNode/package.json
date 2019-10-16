@@ -1,13 +1,13 @@
 {
-  "name": "polyglot-cross-correlation",
+  "name": "codeleddDemo-Nodejs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
-  "description": "PolyglotCrossCorrelation",
+  "description": "codelessDemo-Nodejs",
   "author": {
-    "name": "osrosado"
+    "name": "gearama"
   },
   "dependencies": {
     "azure-storage": "^2.10.3",
