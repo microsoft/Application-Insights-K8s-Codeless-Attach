@@ -11,6 +11,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.KeyVault.Models;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.WindowsAzure.Storage.Auth;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace codelessAttachNet.Controllers
 {
@@ -19,6 +27,8 @@ namespace codelessAttachNet.Controllers
     public class RestApiController : ControllerBase
     {
         private readonly ILogger<RestApiController> _logger;
+        private string dbConnString;
+        private string dbKey;
 
         public RestApiController(ILogger<RestApiController> logger)
         {
@@ -38,19 +48,19 @@ namespace codelessAttachNet.Controllers
 
                 var rand = new Random();
 
-                if(parsedJson["DelayMs"] != null 
+                if (parsedJson["DelayMs"] != null
                     && parsedJson.DelayMs > 0)
                 {
                     await Task.Delay(TimeSpan.FromMilliseconds((double)parsedJson.DelayMs));
                 }
 
-                if(parsedJson["FailureChance"] != null
+                if (parsedJson["FailureChance"] != null
                     && (double)parsedJson.FailureChance > rand.NextDouble())
                 {
                     throw new Exception();
                 }
 
-                if (parsedJson["SubsequentCalls"]!= null)
+                if (parsedJson["SubsequentCalls"] != null)
                 {
                     foreach (dynamic call in parsedJson.SubsequentCalls)
                     {
@@ -67,11 +77,24 @@ namespace codelessAttachNet.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                _logger.LogError(ex.ToString());
                 HttpContext.Response.StatusCode = 500;
             }
 
             return "ok";
+        }
+
+        private async Task PopulateValues()
+        {
+            if (String.IsNullOrEmpty(this.dbConnString))
+            {
+                this.dbConnString = await this.GetCreds("DBConnString");
+            }
+
+            if (String.IsNullOrEmpty(this.dbKey))
+            {
+                this.dbKey = await this.GetCreds("DbKey");
+            }
         }
 
         private async Task<String> SubsequentCallHttp(String uri)
@@ -87,9 +110,73 @@ namespace codelessAttachNet.Controllers
             return content;
         }
 
-        private async Task<String> SubsequentCallDatabase(dynamic parameters)
+        private async Task SubsequentCallDatabase(dynamic parameters)
         {
-            return "DB";
+            await this.PopulateValues();
+
+            CloudStorageAccount account = CloudStorageAccount.Parse(this.dbConnString);
+            CloudBlobClient serviceClient = account.CreateCloudBlobClient();
+
+            // Create container. Name must be lower case.
+            var container = serviceClient.GetContainerReference("demoContainer");
+            container.CreateIfNotExistsAsync().Wait();
+            // write a blob to the container
+            CloudBlockBlob blob = container.GetBlockBlobReference("codelessDemo.txt");
+            blob.UploadTextAsync((new EntryTable(parameters)).ToString()).Wait();
+        }
+
+        public async Task<string> GetCreds(string secretName)
+        {
+            string result = "";
+
+            _logger.LogInformation("getting secret {0}", secretName);
+
+            try
+            {
+                /* The next four lines of code show you how to use AppAuthentication library to fetch secrets from your key vault */
+                AzureServiceTokenProvider azureServiceTokenProvider = new AzureServiceTokenProvider();
+                KeyVaultClient keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+                var secret = await keyVaultClient.GetSecretAsync(String.Format("https://codelessdemo.vault.azure.net/secrets/{0}", secretName))
+                            .ConfigureAwait(false);
+                result = secret.Value;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+            }
+
+            return result;
+        }
+
+        // This method fetches a token from Azure Active Directory, which can then be provided to Azure Key Vault to authenticate
+        public async Task<string> GetAccessTokenAsync()
+        {
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            string accessToken = await azureServiceTokenProvider.GetAccessTokenAsync("https://vault.azure.net");
+            return accessToken;
+        }
+
+    }
+
+    public class EntryTable : TableEntity
+    {
+        public EntryTable(dynamic parameters)
+        {
+            if (parameters["PartitionKey"] != null && parameters["RowKey"] != null)
+            {
+                this.PartitionKey = (String)parameters.PartitionKey;
+                this.RowKey = (String)parameters.RowKey;
+            }
+
+            this.CustomKey = (String)parameters.CustomKey;
+        }
+
+        public string CustomKey { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0} {1} {2}", this.PartitionKey, this.RowKey, this.CustomKey);
         }
     }
 }
+
