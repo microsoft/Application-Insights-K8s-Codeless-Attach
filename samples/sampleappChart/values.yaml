@@ -1,17 +1,17 @@
-replicaCount: 2
+replicaCount: 1
 
 app:
   environment: "test"
   owner : "Microsoft"
   name: "codeless-attach-polyglot"
   node:
-    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/nodejs-sample:v1"
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/nodejs-sample:v7"
     name: "codeless-attach-nodejs"
   java: 
-    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/java-sample:v1"
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/java-sample:v7"
     name: "codeless-attach-java"
   netcore:
-    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/netcore-sample:v1"
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/netcore-sample:v7"
     name: "codeless-attach-core"
     
 env:

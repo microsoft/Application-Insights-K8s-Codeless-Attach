@@ -28,15 +28,14 @@ namespace codelessAttachNet.Controllers
     {
         private readonly ILogger<RestApiController> _logger;
         private string dbConnString;
-        private string dbKey;
 
         public RestApiController(ILogger<RestApiController> logger)
         {
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<string> GetAsync()
+        [HttpPost]
+        public async Task<string> PostAsync()
         {
             try
             {
@@ -86,14 +85,10 @@ namespace codelessAttachNet.Controllers
 
         private async Task PopulateValues()
         {
+            this.dbConnString = Environment.GetEnvironmentVariable("AZURESTORAGE_CONNECTION");
             if (String.IsNullOrEmpty(this.dbConnString))
             {
                 this.dbConnString = await this.GetCreds("DBConnString");
-            }
-
-            if (String.IsNullOrEmpty(this.dbKey))
-            {
-                this.dbKey = await this.GetCreds("DbKey");
             }
         }
 

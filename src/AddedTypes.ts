@@ -22,14 +22,14 @@
                 name: "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES",
                 value: "StartupBootstrapper",
             },
-            {
+          /*  {
                 name: "DOTNET_ADDITIONAL_DEPS",
                 value: "/agentfiles/core/additionalDeps/",
             },
             {
                 name: "DOTNET_SHARED_STORE",
                 value: "/agentfiles/core/store/",
-            },
+            },*/
             {
                 name: "NODE_OPTIONS",
                 value: "--require /agentfiles/node/ai-bootstrap.js",

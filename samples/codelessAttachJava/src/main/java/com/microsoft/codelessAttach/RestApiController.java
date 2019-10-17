@@ -1,7 +1,9 @@
 package com.microsoft.codelessAttach;
 
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,14 +22,15 @@ public class RestApiController {
 
     public static final Logger logger = LoggerFactory.getLogger(RestApiController.class);
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<String> getMethod(@RequestBody String json) {
         try {
             
             JSONObject parsedJson = new JSONObject(json);
 
-            if (parsedJson.has("Delay")) {
-                Thread.sleep(parsedJson.getLong("Delay"));
+            if (parsedJson.has("DelayMs")) {
+                System.out.printf("\n delay %d", parsedJson.getLong("DelayMs"));
+                Thread.sleep(parsedJson.getLong("DelayMs"));
             }
 
             if(parsedJson.has("FailureChance")){
@@ -41,7 +44,9 @@ public class RestApiController {
                 for(int i =0; i< calls.length(); i++){
                     String uri = calls.getJSONObject(i).getString("Uri");
                     if(uri.startsWith("http")){
+                        System.out.printf("\n calling uri %s", uri);
                         this.HttpRequest(uri);
+                        System.out.printf("\n done calling uri %s", uri);
                     }
                 }
             }
