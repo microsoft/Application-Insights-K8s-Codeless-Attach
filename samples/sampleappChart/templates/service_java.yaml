@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: {{ .Values.app.java.name }}
   {{- template "common.metadata" . }}
+  annotations:
+        service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
   type: LoadBalancer
   ports:

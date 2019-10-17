@@ -23,12 +23,12 @@
                 value: "StartupBootstrapper",
             },
             {
-                name:"DOTNET_ADDITIONAL_DEPS",
-                value: "\\agentfiles\\core\\additionalDeps\\;%ProgramFiles(x86)%\\dotnet\\additionalDeps\\Microsoft.AspNetCore.ApplicationInsights.HostingStartup"
+                name: "DOTNET_ADDITIONAL_DEPS",
+                value: "/agentfiles/core/additionalDeps/",
             },
             {
                 name: "DOTNET_SHARED_STORE",
-                value: "\\agentfiles\\core\\store\\"
+                value: "/agentfiles/core/store/",
             },
             {
                 name: "NODE_OPTIONS",
