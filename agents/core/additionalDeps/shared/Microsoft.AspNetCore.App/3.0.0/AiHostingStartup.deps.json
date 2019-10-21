@@ -11,7 +11,7 @@
           "Microsoft.ApplicationInsights.AspNetCore": "2.8.0"
         },
         "runtime": {
-          "../../../netcoreapp3.0/AiHostingStartup/2.8.23.1379/lib/netcoreapp3.0/AiHostingStartup.dll": {}
+          "/agentfiles/core/store/x64/netcoreapp3.0/aihostingstartup/2.8.23.1379/lib/netcoreapp3.0/AiHostingStartup.dll": {}
         }
       },
       "Microsoft.ApplicationInsights/2.11.0": {

@@ -166,7 +166,7 @@ namespace codelessAttachNet.Controllers
                 this.PartitionKey = (String)parameters.PartitionKey;
                 this.RowKey = (String)parameters.RowKey;
             }
-
+            
             this.CustomKey = (String)parameters.CustomKey;
         }
 

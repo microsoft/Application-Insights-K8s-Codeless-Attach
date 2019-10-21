@@ -141,3 +141,8 @@
         request: IRequest;
         response?: object;
     }
+
+export class DeployReplica {
+    public replicaName: string;
+    public deploymentName: string;
+}

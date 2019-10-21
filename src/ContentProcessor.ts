@@ -2,11 +2,13 @@
 import { isNullOrUndefined } from "util";
 import { AddedTypes } from "./AddedTypes";
 import { logger } from "./LoggerWrapper";
-import { IRootObject} from "./RequestDefinition";
+import { IRootObject, DeployReplica } from "./RequestDefinition";
+import * as k8s from '@kubernetes/client-node';
+import { resolve } from "url";
+
 export class ContentProcessor {
 
-    public static TryUpdateConfig(message: string): string {
-
+    public static async TryUpdateConfig(message: string): Promise<string> {
         const response = {
             apiVersion: "admission.k8s.io/v1beta1",
             kind: "AdmissionReview",
@@ -18,33 +20,35 @@ export class ContentProcessor {
                 uid: "",
             },
         };
-
-        try {
-            const instance: ContentProcessor = new ContentProcessor(message);
+        const instance: ContentProcessor = new ContentProcessor(message);
+        return new Promise<Object>((resolve, reject) => {
             response.request = instance.content.request;
             response.apiVersion = instance.content.apiVersion;
             response.response.uid = instance.content.request.uid;
             response.kind = instance.content.kind;
+            response.response.allowed = instance.validate_content();
 
-            if (instance.validate_content()) {
-                response.response.allowed = true;
+            resolve(instance.getDeploymentName());
+        }).then(result => {
+
+            let deploymentName = result;
+            if (response.response.allowed) {
                 response.response.patch = Buffer.from(JSON.stringify(instance.calculate_diff())).toString("base64");
             }
 
             const finalResult = JSON.stringify(response);
-
             logger.info(`determined final response ${finalResult}`);
             return finalResult;
-        } catch (ex) {
+        }).catch(ex => {
             logger.error(`exception encountered ${ex}`);
             return JSON.stringify(response);
-        }
+        })
     }
 
     public readonly content: IRootObject;
 
     private constructor(message: string) {
-
+        
         if (message === "" || isNullOrUndefined(message)) {
             throw new RangeError("message");
         }
@@ -58,8 +62,7 @@ export class ContentProcessor {
         }
     }
 
-    private validate_content(): boolean {
-
+    private validate_content() {
         let returnValue = true;
         logger.info(`validating content ${JSON.stringify(this.content)}`);
 
@@ -87,14 +90,14 @@ export class ContentProcessor {
             || isNullOrUndefined(this.content.request.object.spec)) {
 
             logger.error("missing spec in template");
-            return false;
+            returnValue = false;
         }
 
         logger.info(`succesfully validated content ${JSON.stringify(this.content)}`);
         return returnValue;
     }
 
-    private calculate_diff() {
+    private calculate_diff() : string {
 /* tslint:disable */
         logger.info(`calculating diff`);
         const updatedContent: IRootObject = JSON.parse(JSON.stringify(this.content));
@@ -142,5 +145,23 @@ export class ContentProcessor {
 /* tslint:enable */
         logger.info(`determined diff ${JSON.stringify(jsonDiff)}`);
         return jsonDiff;
+    }
+
+
+    private getDeploymentName(): Promise<DeployReplica> {
+        const kc = new k8s.KubeConfig();
+        kc.loadFromDefault();
+
+        const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
+        let namespaceName = this.content.request.namespace;
+        let replicaName = this.content.request.object.metadata["ownerReferences"][0]["name"];
+        return k8sApi.readNamespacedReplicaSet("codeless-attach-core-6c5f5bd64d", namespaceName).then(result => {
+            let extraData: DeployReplica = new DeployReplica(); 
+            extraData.deploymentName = result.body.metadata.ownerReferences[0].name;
+            extraData.replicaName = result.body.metadata.name
+            return extraData;
+        }).catch(error => {
+            return null;
+        });
     }
 }
