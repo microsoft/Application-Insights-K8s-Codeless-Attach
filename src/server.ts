@@ -29,11 +29,13 @@ https.createServer(options, (req, res) => {
             body += chunk.toString(); // convert Buffer to string
         });
         req.on("end", () => {
-            const updatedConfig = ContentProcessor.TryUpdateConfig(body);
-            logger.info("done processing request");
-            res.writeHead(200, { "Content-Type": "application/json" });
-            res.end(updatedConfig);
-
+            ContentProcessor.TryUpdateConfig(body).then((updatedConfig) => {
+                logger.info("done processing request");
+                res.writeHead(200, { "Content-Type": "application/json" });
+                res.end(updatedConfig);
+            }).catch((error) => {
+                logger.error(`error while processing request ${JSON.stringify(error)}`);
+            });
         });
     } else {
         logger.error("unaccepable method, returning 404");

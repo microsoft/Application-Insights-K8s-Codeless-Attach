@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.java.name }}
+  {{- template "common.metadata" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.java.name }}
+    spec:
+      nodeSelector: {{ .Values.nodeSelector }}
+      containers:
+        - name: {{ .Values.app.java.name }}
+          image: {{ .Values.app.java.image }}
+          imagePullPolicy: IfNotPresent
+          env: 
+            - name: AZURESTORAGE_CONNECTION
+              value: {{ .Values.env.connStr }}
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 200m
+            limits:
+              cpu: 900m

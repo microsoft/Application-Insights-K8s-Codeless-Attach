@@ -1,12 +1,13 @@
-﻿import { diff, patch } from "jiff";
+﻿import * as k8s from "@kubernetes/client-node";
+import { diff } from "jiff";
 import { isNullOrUndefined } from "util";
 import { AddedTypes } from "./AddedTypes";
 import { logger } from "./LoggerWrapper";
-import { IRootObject} from "./RequestDefinition";
+import { DeployReplica, IRootObject } from "./RequestDefinition";
+
 export class ContentProcessor {
 
-    public static TryUpdateConfig(message: string): string {
-
+    public static async TryUpdateConfig(message: string): Promise<string> {
         const response = {
             apiVersion: "admission.k8s.io/v1beta1",
             kind: "AdmissionReview",
@@ -18,27 +19,33 @@ export class ContentProcessor {
                 uid: "",
             },
         };
-
-        try {
-            const instance: ContentProcessor = new ContentProcessor(message);
+        const instance: ContentProcessor = new ContentProcessor(message);
+/* tslint:disable */
+        return new Promise<object>((resolve, reject) => {
+/* tslint:enable */
             response.request = instance.content.request;
             response.apiVersion = instance.content.apiVersion;
             response.response.uid = instance.content.request.uid;
             response.kind = instance.content.kind;
+            response.response.allowed = instance.validate_content();
 
-            if (instance.validate_content()) {
-                response.response.allowed = true;
-                response.response.patch = Buffer.from(JSON.stringify(instance.calculate_diff())).toString("base64");
+            resolve(instance.getPodExtraData());
+        }).then((extraData) => {
+
+            if (response.response.allowed) {
+                response.response.patch = Buffer.from(
+                    JSON.stringify(
+                        instance.calculate_diff(extraData as DeployReplica)))
+                    .toString("base64");
             }
 
             const finalResult = JSON.stringify(response);
-
             logger.info(`determined final response ${finalResult}`);
             return finalResult;
-        } catch (ex) {
+        }).catch((ex) => {
             logger.error(`exception encountered ${ex}`);
             return JSON.stringify(response);
-        }
+        });
     }
 
     public readonly content: IRootObject;
@@ -58,8 +65,7 @@ export class ContentProcessor {
         }
     }
 
-    private validate_content(): boolean {
-
+    private validate_content() {
         let returnValue = true;
         logger.info(`validating content ${JSON.stringify(this.content)}`);
 
@@ -87,14 +93,14 @@ export class ContentProcessor {
             || isNullOrUndefined(this.content.request.object.spec)) {
 
             logger.error("missing spec in template");
-            return false;
+            returnValue = false;
         }
 
         logger.info(`succesfully validated content ${JSON.stringify(this.content)}`);
         return returnValue;
     }
 
-    private calculate_diff() {
+    private calculate_diff(extraData: DeployReplica): string {
 /* tslint:disable */
         logger.info(`calculating diff`);
         const updatedContent: IRootObject = JSON.parse(JSON.stringify(this.content));
@@ -126,9 +132,9 @@ export class ContentProcessor {
 
         for (let i = 0; i < length; i++) {
             if (updateTarget["containers"][i].env) {
-                Array.prototype.push.apply(updateTarget["containers"][i].env, AddedTypes.env());
+                Array.prototype.push.apply(updateTarget["containers"][i].env, AddedTypes.env(extraData));
             } else {
-                updateTarget["containers"][i].env = AddedTypes.env();
+                updateTarget["containers"][i].env = AddedTypes.env(extraData);
             }
 
             if (updateTarget["containers"][i].volumeMounts) {
@@ -142,5 +148,34 @@ export class ContentProcessor {
 /* tslint:enable */
         logger.info(`determined diff ${JSON.stringify(jsonDiff)}`);
         return jsonDiff;
+    }
+
+    private getPodExtraData(): Promise<DeployReplica> {
+
+        logger.info("attempting to get owner info");
+        const extraData: DeployReplica = new DeployReplica();
+        extraData.podName = this.content.request.object.metadata.generateName;
+
+        const kc = new k8s.KubeConfig();
+        kc.loadFromDefault();
+        const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
+        const namespaceName = this.content.request.namespace;
+ /* tslint:disable */
+        const replicaName = this.content.request.object.metadata["ownerReferences"][0].name;
+ /* tslint:enable */
+
+        logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
+
+        return k8sApi.readNamespacedReplicaSet(replicaName, namespaceName).then((result) => {
+            extraData.deploymentName = result.body.metadata.ownerReferences[0].name;
+            extraData.replicaName = result.body.metadata.name;
+            extraData.namespace = namespaceName;
+
+            logger.info(`got the following extra data ${JSON.stringify(extraData)}`);
+            return extraData;
+        }).catch((error) => {
+            logger.info(`failed to get extra data error ${JSON.stringify(error)}`);
+            return extraData;
+        });
     }
 }

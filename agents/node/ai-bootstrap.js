@@ -11,6 +11,12 @@ if (ikey) {
     appInsights.setup(ikey)
               .setAutoCollectRequests(true)
               .setSendLiveMetrics(true);
+    
+    appInsights.defaultClient.addTelemetryProcessor(envelope => {
+        envelope.tags["ai.cloud.role"] = process.env.APPLICATIONINSIGHTS_ROLE_NAME;
+        envelope.tags["ai.cloud.roleInstance"] = process.env.APPLICATIONINSIGHTS_ROLE_INSTANCE
+    });
+    
     appInsights.start();
 } else {
   // TODO: log to etw that ikey is not set, hence attach is skipped

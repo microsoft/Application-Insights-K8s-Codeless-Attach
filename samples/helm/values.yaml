@@ -1,0 +1,20 @@
+replicaCount: 1
+
+app:
+  environment: "test"
+  owner : "Microsoft"
+  name: "codeless-attach-polyglot"
+  node:
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/nodejs-sample:v7"
+    name: "codeless-attach-nodejs"
+  java: 
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/java-sample:v7"
+    name: "codeless-attach-java"
+  netcore:
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/netcore-sample:v7"
+    name: "codeless-attach-core"
+    
+env:
+  connStr: "DefaultEndpointsProtocol=https;AccountName=codelessdemo;AccountKey=BushQSzEVIWosX2eK6CGsnn+0PMgLxcgIgYUtt4elmTOs3klY8egokDlGHJ5vyGWjo91UuBBteoNJoZgiRIIKw==;EndpointSuffix=core.windows.net"
+
+nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

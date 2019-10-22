@@ -1,5 +1,5 @@
 <StoreArtifacts>
-  <Package Id="AiHostingStartup" Version="2.8.23.1379" />
+  <Package Id="AiHostingStartup" Version="2.8.25.1075" />
   <Package Id="Microsoft.ApplicationInsights" Version="2.11.0" />
   <Package Id="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0" />
   <Package Id="Microsoft.ApplicationInsights.DependencyCollector" Version="2.11.0" />
@@ -13,5 +13,5 @@
   <Package Id="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
   <Package Id="System.Diagnostics.PerformanceCounter" Version="4.5.0" />
   <Package Id="System.Security.Cryptography.ProtectedData" Version="4.5.0" />
-  <Package Id="StartupBootstrapper" Version="2.8.23.1379" />
+  <Package Id="StartupBootstrapper" Version="2.8.25.1075" />
 </StoreArtifacts>

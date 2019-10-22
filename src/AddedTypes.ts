@@ -1,4 +1,5 @@
-﻿export class AddedTypes {
+﻿import { DeployReplica } from "./RequestDefinition";
+export class AddedTypes {
     public static init_containers() {
         return [{
             args: ["-a", "/agents/.", "/agentfiles"],
@@ -12,8 +13,8 @@
         }];
     }
 
-    public static env() {
-        return [
+    public static env(extraData: DeployReplica) {
+        const returnValue = [
             {
                 name: "JAVA_TOOL_OPTIONS",
                 value: "-javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar",
@@ -23,12 +24,12 @@
                 value: "StartupBootstrapper",
             },
             {
-                name:"DOTNET_ADDITIONAL_DEPS",
-                value: "\\agentfiles\\core\\additionalDeps\\;%ProgramFiles(x86)%\\dotnet\\additionalDeps\\Microsoft.AspNetCore.ApplicationInsights.HostingStartup"
+                name: "DOTNET_ADDITIONAL_DEPS",
+                value: "/agentfiles/core/additionalDeps",
             },
             {
                 name: "DOTNET_SHARED_STORE",
-                value: "\\agentfiles\\core\\store\\"
+                value: "/agentfiles/core/store",
             },
             {
                 name: "NODE_OPTIONS",
@@ -44,6 +45,22 @@
                 },
             },
         ];
+
+        if (extraData && extraData.deploymentName) {
+            returnValue.push({
+                name: "APPLICATIONINSIGHTS_ROLE_NAME",
+                value: extraData.deploymentName,
+            });
+        }
+
+        if (extraData && extraData.podName) {
+            returnValue.push({
+                name: "APPLICATIONINSIGHTS_ROLE_INSTANCE",
+                value: extraData.podName,
+            });
+        }
+
+        return returnValue;
     }
 
     public static volume_mounts() {
