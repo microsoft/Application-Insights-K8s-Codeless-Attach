@@ -26,6 +26,7 @@
         creationTimestamp: string;
         labels: ILabels;
         annotations: object;
+        generateName?: string;
     }
 
     export interface IMatchLabels {
@@ -142,7 +143,9 @@
         response?: object;
     }
 
-export class DeployReplica {
+    export class DeployReplica {
+    public podName: string;
     public replicaName: string;
     public deploymentName: string;
+    public namespace: string;
 }

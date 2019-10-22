@@ -1,5 +1,5 @@
 <StoreArtifacts>
-  <Package Id="AiHostingStartup" Version="2.8.23.1379" />
+  <Package Id="AiHostingStartup" Version="2.8.25.1075" />
   <Package Id="Microsoft.ApplicationInsights" Version="2.4.0" />
   <Package Id="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
   <Package Id="Microsoft.ApplicationInsights.DependencyCollector" Version="2.4.1" />
@@ -39,5 +39,5 @@
   <Package Id="Newtonsoft.Json" Version="10.0.1" />
   <Package Id="System.Runtime.CompilerServices.Unsafe" Version="4.4.0" />
   <Package Id="System.Text.Encodings.Web" Version="4.4.0" />
-  <Package Id="StartupBootstrapper" Version="2.8.23.1379" />
+  <Package Id="StartupBootstrapper" Version="2.8.25.1075" />
 </StoreArtifacts>

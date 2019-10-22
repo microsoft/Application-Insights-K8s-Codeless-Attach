@@ -1,10 +1,9 @@
-﻿import { diff, patch } from "jiff";
+﻿import * as k8s from "@kubernetes/client-node";
+import { diff } from "jiff";
 import { isNullOrUndefined } from "util";
 import { AddedTypes } from "./AddedTypes";
 import { logger } from "./LoggerWrapper";
-import { IRootObject, DeployReplica } from "./RequestDefinition";
-import * as k8s from '@kubernetes/client-node';
-import { resolve } from "url";
+import { DeployReplica, IRootObject } from "./RequestDefinition";
 
 export class ContentProcessor {
 
@@ -21,34 +20,38 @@ export class ContentProcessor {
             },
         };
         const instance: ContentProcessor = new ContentProcessor(message);
-        return new Promise<Object>((resolve, reject) => {
+/* tslint:disable */
+        return new Promise<object>((resolve, reject) => {
+/* tslint:enable */
             response.request = instance.content.request;
             response.apiVersion = instance.content.apiVersion;
             response.response.uid = instance.content.request.uid;
             response.kind = instance.content.kind;
             response.response.allowed = instance.validate_content();
 
-            resolve(instance.getDeploymentName());
-        }).then(result => {
+            resolve(instance.getPodExtraData());
+        }).then((extraData) => {
 
-            let deploymentName = result;
             if (response.response.allowed) {
-                response.response.patch = Buffer.from(JSON.stringify(instance.calculate_diff())).toString("base64");
+                response.response.patch = Buffer.from(
+                    JSON.stringify(
+                        instance.calculate_diff(extraData as DeployReplica)))
+                    .toString("base64");
             }
 
             const finalResult = JSON.stringify(response);
             logger.info(`determined final response ${finalResult}`);
             return finalResult;
-        }).catch(ex => {
+        }).catch((ex) => {
             logger.error(`exception encountered ${ex}`);
             return JSON.stringify(response);
-        })
+        });
     }
 
     public readonly content: IRootObject;
 
     private constructor(message: string) {
-        
+
         if (message === "" || isNullOrUndefined(message)) {
             throw new RangeError("message");
         }
@@ -97,7 +100,7 @@ export class ContentProcessor {
         return returnValue;
     }
 
-    private calculate_diff() : string {
+    private calculate_diff(extraData: DeployReplica): string {
 /* tslint:disable */
         logger.info(`calculating diff`);
         const updatedContent: IRootObject = JSON.parse(JSON.stringify(this.content));
@@ -129,9 +132,9 @@ export class ContentProcessor {
 
         for (let i = 0; i < length; i++) {
             if (updateTarget["containers"][i].env) {
-                Array.prototype.push.apply(updateTarget["containers"][i].env, AddedTypes.env());
+                Array.prototype.push.apply(updateTarget["containers"][i].env, AddedTypes.env(extraData));
             } else {
-                updateTarget["containers"][i].env = AddedTypes.env();
+                updateTarget["containers"][i].env = AddedTypes.env(extraData);
             }
 
             if (updateTarget["containers"][i].volumeMounts) {
@@ -147,21 +150,32 @@ export class ContentProcessor {
         return jsonDiff;
     }
 
+    private getPodExtraData(): Promise<DeployReplica> {
 
-    private getDeploymentName(): Promise<DeployReplica> {
+        logger.info("attempting to get owner info");
+        const extraData: DeployReplica = new DeployReplica();
+        extraData.podName = this.content.request.object.metadata.generateName;
+
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
-
         const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
-        let namespaceName = this.content.request.namespace;
-        let replicaName = this.content.request.object.metadata["ownerReferences"][0]["name"];
-        return k8sApi.readNamespacedReplicaSet("codeless-attach-core-6c5f5bd64d", namespaceName).then(result => {
-            let extraData: DeployReplica = new DeployReplica(); 
+        const namespaceName = this.content.request.namespace;
+ /* tslint:disable */
+        const replicaName = this.content.request.object.metadata["ownerReferences"][0].name;
+ /* tslint:enable */
+
+        logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
+
+        return k8sApi.readNamespacedReplicaSet(replicaName, namespaceName).then((result) => {
             extraData.deploymentName = result.body.metadata.ownerReferences[0].name;
-            extraData.replicaName = result.body.metadata.name
+            extraData.replicaName = result.body.metadata.name;
+            extraData.namespace = namespaceName;
+
+            logger.info(`got the following extra data ${JSON.stringify(extraData)}`);
             return extraData;
-        }).catch(error => {
-            return null;
+        }).catch((error) => {
+            logger.info(`failed to get extra data error ${JSON.stringify(error)}`);
+            return extraData;
         });
     }
 }

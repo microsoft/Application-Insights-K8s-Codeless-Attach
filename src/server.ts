@@ -29,11 +29,11 @@ https.createServer(options, (req, res) => {
             body += chunk.toString(); // convert Buffer to string
         });
         req.on("end", () => {
-            ContentProcessor.TryUpdateConfig(body).then(updatedConfig => {
+            ContentProcessor.TryUpdateConfig(body).then((updatedConfig) => {
                 logger.info("done processing request");
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(updatedConfig);
-            }).catch(error => {
+            }).catch((error) => {
                 logger.error(`error while processing request ${JSON.stringify(error)}`);
             });
         });
