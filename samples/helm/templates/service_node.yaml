@@ -5,6 +5,7 @@ metadata:
   {{- template "common.metadata" . }}
 spec:
   type: LoadBalancer
+  loadBalancerIP: 51.141.160.241
   ports:
     - port: 80
       protocol: TCP
