@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadGenerator", "LoadGenerator.csproj", "{4FD408F2-6A1E-436F-B819-A26C0A1C80FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadGenerator", "LoadGenerator.csproj", "{4FD408F2-6A1E-436F-B819-A26C0A1C80FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -13,8 +13,8 @@ app:
   environment: "test"
   owner : "Microsoft"
   image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:v24"
-  agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v26"
-
+  agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
+#v26
 replicaCount: 1
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

@@ -20,6 +20,15 @@ router.post('/', function (req, res) {
     });
 })
 
+/* GET home page. */
+router.get('/spike', function (req, res) {
+    return fetch("http://codeless-attach-java/spike").then(() => {
+        res.end("OK");
+    }).catch(() => {
+        res.end("Failed");
+    });
+})
+
 function handleRequest(req,res){
     return new Promise((resolve, reject) => {
         console.log("received call");

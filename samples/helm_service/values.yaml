@@ -1,0 +1,14 @@
+replicaCount: 1
+
+app:
+  environment: "test"
+  owner : "Microsoft"
+  name: "codeless-attach-polyglot"
+  node:
+    name: "codeless-attach-nodejs"
+  java: 
+    name: "codeless-attach-java"
+  netcore:
+    name: "codeless-attach-core"
+cd he 
+nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
