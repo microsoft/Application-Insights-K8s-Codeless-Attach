@@ -16,7 +16,7 @@ router.post('/', function (req, res) {
     return Promise.all(retriesPromise).then(values => {
         let status = 200;
         for (let i = 0; i < values.length; i++) {
-            if (values[i].status != 200) {
+            if (values[i].status > 299) {
                 status = values[i].status;
             }
         }
@@ -25,7 +25,7 @@ router.post('/', function (req, res) {
         res.end();
     }).catch(ex => {
         res.sendStatus(500)
-            res.end();
+        res.end();
         console.log(`exception ${ex}`);
     });
 })
@@ -40,12 +40,14 @@ router.get('/spike', function (req, res) {
             }
         }
         console.log('done')
-        res.sendStatus(status);
+        res.status(status);
+        res.end();
     }).catch(ex => {
-        res.statusCode = 500;
+        res.status(500);
+        res.end();
         console.log(`exception ${ex}`);
     });
-    res.end();
+    
 })
 
 function handleRequest(req, res) {
@@ -60,10 +62,10 @@ function handleRequest(req, res) {
         setTimeout(resolve, delay);
     }).then(() => {
         let failureChance = req.body.FailureChance;
-        res.statusCode = 200;
+        res.status(200);
         console.log(`failure chance ${failureChance}`)
         if (failureChance > Math.random()) {
-            res.statusCode = 400;
+            res.status(400);
             reject("Failure");
         }
     }).then(() => {
@@ -98,10 +100,10 @@ function handleRequest(req, res) {
             }
         }
         console.log('done')
-        res.statusCode = status;
+        return { status: status };
     }).catch(ex => {
-        res.statusCode = 500;
-        console.log (`exception ${ex}`);
+        console.log(`exception ${ex}`);
+        return { status: 500};
     });
 }
 
@@ -109,7 +111,7 @@ function DBSubsequentCall(param) {
     return new Promise((resolve, reject) => {
         return database.insertOrReplaceEntity('table1', param, (error, result, response) => {
             if (error) {
-                resolve({ status: 500 })
+                reject({ status: 500 })
             } else {
                 resolve({ status: 200 });
             }
