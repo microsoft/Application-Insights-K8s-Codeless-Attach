@@ -19,6 +19,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage.Auth;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.WindowsAzure.Storage.Blob;
+using System.Net;
 
 namespace codelessAttachNet.Controllers
 {
@@ -35,8 +36,9 @@ namespace codelessAttachNet.Controllers
         }
 
         [HttpPost]
-        public async Task<string> PostAsync()
+        public async Task PostAsync()
         {
+            HttpStatusCode response = HttpStatusCode.OK;
             try
             {
                 HttpContext.Response.StatusCode = 200;
@@ -63,24 +65,34 @@ namespace codelessAttachNet.Controllers
                 {
                     foreach (dynamic call in parsedJson.SubsequentCalls)
                     {
-                        if (call["Uri"] != null && call.Uri != null && ((String)call.Uri).StartsWith("http"))
+                        if (call["Uri"] != null && call.Uri != null && ((String)call.Uri).StartsWith("database"))
                         {
-                            await SubsequentCallHttp((String)call.Uri);
+                            HttpStatusCode localResponse = await SubsequentCallDatabase(call.Params);
+                            if ((int)localResponse > 299)
+                            {
+                                response = localResponse;
+                            }
+
                         }
-                        else if (call["Uri"] != null && call.Uri != null && ((String)call.Uri).StartsWith("database"))
+                        else if (call["Uri"] != null && call.Uri != null && ((String)call.Uri).StartsWith("http"))
                         {
-                            await SubsequentCallDatabase(call.Params);
+                            HttpStatusCode localResponse = await SubsequentCallHttp((String)call.Uri);
+                            if ((int)localResponse > 299)
+                            {
+                                response = localResponse;
+                            }
                         }
+
                     }
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                HttpContext.Response.StatusCode = 500;
+                response = HttpStatusCode.InternalServerError;
             }
-
-            return "ok";
+            HttpContext.Response.StatusCode = (int)response;
+            return;
         }
 
         private async Task PopulateValues()
@@ -92,7 +104,7 @@ namespace codelessAttachNet.Controllers
             }
         }
 
-        private async Task<String> SubsequentCallHttp(String uri)
+        private async Task<HttpStatusCode> SubsequentCallHttp(String uri)
         {
             _logger.LogInformation("Calling URL {0}", uri);
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
@@ -104,24 +116,22 @@ namespace codelessAttachNet.Controllers
             {
                 content = await response.Content.ReadAsStringAsync();
             }
-            return content;
+            return response.StatusCode;
         }
 
-        private async Task SubsequentCallDatabase(dynamic parameters)
+        private async Task<HttpStatusCode> SubsequentCallDatabase(dynamic parameters)
         {
             await this.PopulateValues();
-            _logger.LogInformation("Calling blob storage");
+            _logger.LogInformation("Calling table storage");
             CloudStorageAccount account = CloudStorageAccount.Parse(this.dbConnString);
-            CloudBlobClient serviceClient = account.CreateCloudBlobClient();
+            CloudTableClient serviceClient = account.CreateCloudTableClient();
+            EntryTable entry = new EntryTable(parameters);
+            CloudTable table = serviceClient.GetTableReference("table1");
+            TableOperation op = TableOperation.InsertOrReplace(entry);
+            TableResult result = await table.ExecuteAsync(op);
 
-            // Create container. Name must be lower case.
-            var container = serviceClient.GetContainerReference("democontainer");
-            container.CreateIfNotExistsAsync().Wait();
-            // write a blob to the container
-            CloudBlockBlob blob = container.GetBlockBlobReference("codelessDemo.txt");
-            var toUpload = (new EntryTable(parameters)).ToString();
-            blob.UploadTextAsync(toUpload).Wait();
-            _logger.LogInformation("uploaded \"{0}\"", toUpload);
+            _logger.LogInformation("table called");
+            return (HttpStatusCode)result.HttpStatusCode;
         }
 
         public async Task<string> GetCreds(string secretName)
@@ -132,12 +142,7 @@ namespace codelessAttachNet.Controllers
 
             try
             {
-                /* The next four lines of code show you how to use AppAuthentication library to fetch secrets from your key vault */
-                AzureServiceTokenProvider azureServiceTokenProvider = new AzureServiceTokenProvider();
-                KeyVaultClient keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-                var secret = await keyVaultClient.GetSecretAsync(String.Format("https://codelessdemo.vault.azure.net/secrets/{0}", secretName))
-                            .ConfigureAwait(false);
-                result = secret.Value;
+                return Environment.GetEnvironmentVariable("AZURESTORAGE_CONNECTION");
             }
             catch (Exception e)
             {
