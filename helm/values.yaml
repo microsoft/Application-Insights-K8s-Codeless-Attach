@@ -12,9 +12,20 @@ app:
   name: "mutating-webhook"
   environment: "test"
   owner : "Microsoft"
-  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:v50"
+  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:v60"
   agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
 
 replicaCount: 1
+
+localForwarder: 
+  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/local-forwarder:v5"
+  name: "localforwarder"
+  port: 50001
+  iKey: "a35e0710-201e-44bb-a3a7-9b559277ca6d"
+
+connection: 
+  p1: "Authorization="
+  p2: ";InstrumentationKey="
+  p3: ";IngestionEndpoint=http://localforwarder.aks-webhook-ns:50001/"
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

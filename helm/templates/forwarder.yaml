@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.localForwarder.name }}
+  {{- template "common.metadata" . }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.localForwarder.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.localForwarder.name }}
+    spec:
+      containers:
+      - name: {{ .Values.localForwarder.name }}
+        image: {{ .Values.localForwarder.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http2-in-port
+          containerPort: {{ .Values.localForwarder.port }}
+        env:
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          value: {{ .Values.localForwarder.iKey }}

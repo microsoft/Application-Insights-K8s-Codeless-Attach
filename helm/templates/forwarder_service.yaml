@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.localForwarder.name }}
+  {{- template "common.metadata" . }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  selector:
+    app: {{ .Values.localForwarder.name }}
+  type: LoadBalancer
+  ports:
+  - name: http2-in-port
+    protocol: TCP
+    port: {{ .Values.localForwarder.port }}
+    targetPort: {{ .Values.localForwarder.port }}
