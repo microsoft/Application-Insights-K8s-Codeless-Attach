@@ -76,10 +76,10 @@ function handleRequest(req, res) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(req.body)
         };
-        promisses.push(fetch("http://codeless-attach-core/", options));
-        promisses.push(fetch("http://codeless-attach-java/", options));
+        promisses.push(fetch("http://fabrikam-backend-core/", options));
+        promisses.push(fetch("http://fabrikam-notifier-aks-java/", options));
         console.log('queued calls to net and java');
-        if (subsequentCalls) {
+        /*if (subsequentCalls) {
             for (let i = 0; i < subsequentCalls.length; i++) {
                 if (subsequentCalls[i].Uri.startsWith('database')) {
                     promisses.push(DBSubsequentCall(subsequentCalls[i].Params))
@@ -89,7 +89,7 @@ function handleRequest(req, res) {
                     console.log(`queued call to ${subsequentCalls[i].Uri}`)
                 }
             }
-        };
+        };*/
         
         return Promise.all(promisses);
     }).then(values => {

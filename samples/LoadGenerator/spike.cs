@@ -21,7 +21,7 @@ namespace LoadGenerator
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             HttpClient httpClient = new HttpClient();
-            var result = await httpClient.GetAsync("http://52.151.23.55/spike");
+            var result = await httpClient.GetAsync("http://52.189.71.116/spike");
             Console.WriteLine(result.ToString());
             return;
         }

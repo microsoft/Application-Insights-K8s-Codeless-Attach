@@ -5,9 +5,9 @@ app:
   owner : "Microsoft"
   name: "codeless-attach-polyglot"
   node:
-    name: "fronend-nodejs"
+    name: "fabrikam-aks-nodejs"
   java: 
-    name: "notifier-java"
+    name: "fabrikam-notifier-aks-java"
   netcore:
-    name: "backend-core"
+    name: "fabrikam-backend-core"
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

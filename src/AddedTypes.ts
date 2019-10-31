@@ -51,6 +51,11 @@ export class AddedTypes {
                 name: "APPLICATIONINSIGHTS_ROLE_NAME",
                 value: extraData.deploymentName,
             });
+            returnValue.push({
+                name: "WEBSITE_HOSTNAME",
+                value: extraData.deploymentName,
+            });
+
         }
 
         if (extraData && extraData.podName) {
