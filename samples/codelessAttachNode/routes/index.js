@@ -13,23 +13,45 @@ router.post('/', function (req, res) {
         retriesPromise.push(handleRequest(req,res));
     }
 
-    return Promise.all(retriesPromise).then(()=>{
-        res.end("OK");
-    }).catch(()=>{
-        res.end("Failed");
+    return Promise.all(retriesPromise).then(values => {
+        let status = 200;
+        for (let i = 0; i < values.length; i++) {
+            if (values[i].status > 299) {
+                status = values[i].status;
+            }
+        }
+        console.log('done')
+        res.sendStatus(status);
+        res.end();
+    }).catch(ex => {
+        res.sendStatus(500)
+        res.end();
+        console.log(`exception ${ex}`);
     });
 })
 
 /* GET home page. */
 router.get('/spike', function (req, res) {
-    return fetch("http://codeless-attach-java/spike").then(() => {
-        res.end("OK");
-    }).catch(() => {
-        res.end("Failed");
+    return fetch("http://codeless-attach-java/spike").then(values => {
+        let status = 200;
+        for (let i = 0; i < values.length; i++) {
+            if (values[i].status != 200) {
+                status = values[i].status;
+            }
+        }
+        console.log('done')
+        res.status(status);
+        res.end();
+    }).catch(ex => {
+        res.status(500);
+        res.end();
+        console.log(`exception ${ex}`);
     });
+    
 })
 
-function handleRequest(req,res){
+function handleRequest(req, res) {
+    
     return new Promise((resolve, reject) => {
         console.log("received call");
         let delay = req.body.delay;
@@ -40,10 +62,10 @@ function handleRequest(req,res){
         setTimeout(resolve, delay);
     }).then(() => {
         let failureChance = req.body.FailureChance;
-        res.statusCode = 200;
+        res.status(200);
         console.log(`failure chance ${failureChance}`)
         if (failureChance > Math.random()) {
-            res.statusCode = 400;
+            res.status(400);
             reject("Failure");
         }
     }).then(() => {
@@ -54,7 +76,6 @@ function handleRequest(req,res){
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(req.body)
         };
-        
         promisses.push(fetch("http://codeless-attach-core/", options));
         promisses.push(fetch("http://codeless-attach-java/", options));
         console.log('queued calls to net and java');
@@ -71,17 +92,29 @@ function handleRequest(req,res){
         };
         
         return Promise.all(promisses);
-    }).then(() => {
+    }).then(values => {
+        let status = 200;
+        for (let i = 0; i < values.length; i++) {
+            if (values[i].status > 299 ) {
+                status = values[i].status;
+            }
+        }
         console.log('done')
+        return { status: status };
     }).catch(ex => {
-        console.log (`exception ${ex}`);
+        console.log(`exception ${ex}`);
+        return { status: 500};
     });
 }
 
 function DBSubsequentCall(param) {
     return new Promise((resolve, reject) => {
-        return database.insertOrReplaceEntity('purchaserecords', param, () => {
-            resolve();
+        return database.insertOrReplaceEntity('table1', param, (error, result, response) => {
+            if (error) {
+                reject({ status: 500 })
+            } else {
+                resolve({ status: 200 });
+            }
         });
     });
 }
