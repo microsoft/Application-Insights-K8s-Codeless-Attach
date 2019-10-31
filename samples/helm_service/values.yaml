@@ -5,10 +5,9 @@ app:
   owner : "Microsoft"
   name: "codeless-attach-polyglot"
   node:
-    name: "codeless-attach-nodejs"
+    name: "fronend-nodejs"
   java: 
-    name: "codeless-attach-java"
+    name: "notifier-java"
   netcore:
-    name: "codeless-attach-core"
-cd he 
+    name: "backend-core"
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

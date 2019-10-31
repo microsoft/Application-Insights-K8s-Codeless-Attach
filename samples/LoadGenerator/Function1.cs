@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LoadGenerator
 {
+    // user load genetrator
     public static class Function1
     {
         [FunctionName("Function1")]
