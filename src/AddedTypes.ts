@@ -44,7 +44,7 @@ export class AddedTypes {
                     },
                 },
             },
-            {
+            /*{
                 name: "APPLICATIONINSIGHTS_CONNECTION_STRING",
                 valueFrom: {
                     configMapKeyRef: {
@@ -52,7 +52,7 @@ export class AddedTypes {
                         name: "attach-config",
                     },
                 },
-            },
+            },*/
         ];
 
         if (extraData && extraData.deploymentName) {

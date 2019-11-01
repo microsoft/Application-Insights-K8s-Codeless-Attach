@@ -32,7 +32,7 @@ router.post('/', function (req, res) {
 
 /* GET home page. */
 router.get('/spike', function (req, res) {
-    return fetch("http://codeless-attach-java/spike").then(values => {
+    return fetch("http://fabrikam-notifier-aks-java/spike").then(values => {
         let status = 200;
         for (let i = 0; i < values.length; i++) {
             if (values[i].status != 200) {
