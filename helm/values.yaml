@@ -6,30 +6,31 @@ namespace: "aks-webhook-ns"
 
 namespaces: 
   - target : "default"
-    iKey: "0ea304c8-8ce6-4626-8515-5407d2c7bdd1"
+    iKey: "a35e0710-201e-44bb-a3a7-9b559277ca6d"
 
 app:
   name: "mutating-webhook"
   environment: "test"
   owner : "Microsoft"
-  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:v61"
+  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:v75"
   agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
 
 replicaCount: 1
 
 localForwarder: 
-  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/local-forwarder:v5"
-  name-ai: "localforwarder"
-  port-ai: 50001
-  name-oc: "localforwarder-oc"
-  port-oc: 50002
-  iKey: "0ea304c8-8ce6-4626-8515-5407d2c7bdd1"
-  live-metrics-auth-key: ""
-  adaptive-sampling-limit: 5
+  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/local-forwarder:v10"
+  name: "localforwarder"
+  nameAI: "localforwarder"
+  portAI: 50001
+  nameOC: "localforwarder-oc"
+  portOC: 50002
+  iKey: "a35e0710-201e-44bb-a3a7-9b559277ca6d"
+  liveMetricsAuthKey: " "
+  adaptiveSamplingLimit: 5
+  replicas: 1
 
 connection: 
-  p1: "Authorization="
-  p2: ";InstrumentationKey="
-  p3: ";IngestionEndpoint=http://localforwarder.aks-webhook-ns:50001/"
+  p2: "InstrumentationKey="
+  p3: ";IngestionEndpoint=http://10.240.0.10"
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

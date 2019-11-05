@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.localForwarder.name }}
   {{- template "common.metadata" . }}
 spec:
-  replicas: 2
+  replicas: {{ .Values.localForwarder.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.localForwarder.name }}
@@ -18,16 +18,16 @@ spec:
         image: {{ .Values.localForwarder.image }}
         imagePullPolicy: IfNotPresent
         ports:
-        - name: http2-in-port-ai
-          containerPort: {{ .Values.localForwarder.port-ai }}
-        - name: http2-in-port-oc
-          containerPort: {{ .Values.localForwarder.port-oc }
+        - name: http-port-ai
+          containerPort: {{ .Values.localForwarder.portAI }}
+        - name: http-port-oc
+          containerPort: {{ .Values.localForwarder.portOC }}
         env:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.localForwarder.iKey }}
         - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
-          value: {{ .Values.localForwarder.live-metrics-auth-key }}
+          value: {{ .Values.localForwarder.liveMetricsAuthKey }}
         - name: APPINSIGHTS_ADAPTIVESAMPLINGEVENTSLIMIT
-          value: {{ .Values.localForwarder.adaptive-sampling-limit }}
+          value: {{ quote .Values.localForwarder.adaptiveSamplingLimit }}
         - name: APPINSIGHTS_ADAPTIVESAMPLINGNONEVENTSLIMIT
-          value: {{ .Values.localForwarder.adaptive-sampling-limit }}
+          value: {{ quote .Values.localForwarder.adaptiveSamplingLimit }}

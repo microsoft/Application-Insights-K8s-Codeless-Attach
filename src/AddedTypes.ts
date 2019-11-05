@@ -35,7 +35,7 @@ export class AddedTypes {
                 name: "NODE_OPTIONS",
                 value: "--require /agentfiles/node/ai-bootstrap.js",
             },
-            {
+            /*{
                 name: "APPINSIGHTS_INSTRUMENTATIONKEY",
                 valueFrom: {
                     configMapKeyRef: {
@@ -43,8 +43,8 @@ export class AddedTypes {
                         name: "attach-config",
                     },
                 },
-            },
-            /*{
+            },*/
+            {
                 name: "APPLICATIONINSIGHTS_CONNECTION_STRING",
                 valueFrom: {
                     configMapKeyRef: {
@@ -52,7 +52,7 @@ export class AddedTypes {
                         name: "attach-config",
                     },
                 },
-            },*/
+            },
         ];
 
         if (extraData && extraData.deploymentName) {
