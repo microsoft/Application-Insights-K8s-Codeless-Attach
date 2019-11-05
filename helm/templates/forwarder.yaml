@@ -18,8 +18,16 @@ spec:
         image: {{ .Values.localForwarder.image }}
         imagePullPolicy: IfNotPresent
         ports:
-        - name: http2-in-port
-          containerPort: {{ .Values.localForwarder.port }}
+        - name: http2-in-port-ai
+          containerPort: {{ .Values.localForwarder.port-ai }}
+        - name: http2-in-port-oc
+          containerPort: {{ .Values.localForwarder.port-oc }
         env:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.localForwarder.iKey }}
+        - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
+          value: {{ .Values.localForwarder.live-metrics-auth-key }}
+        - name: APPINSIGHTS_ADAPTIVESAMPLINGEVENTSLIMIT
+          value: {{ .Values.localForwarder.adaptive-sampling-limit }}
+        - name: APPINSIGHTS_ADAPTIVESAMPLINGNONEVENTSLIMIT
+          value: {{ .Values.localForwarder.adaptive-sampling-limit }}

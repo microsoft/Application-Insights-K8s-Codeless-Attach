@@ -1,16 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.localForwarder.name }}
+  name: {{ .Values.localForwarder.name-ai }}
   {{- template "common.metadata" . }}
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
   selector:
-    app: {{ .Values.localForwarder.name }}
+    app: {{ .Values.localForwarder.name-ai }}
   type: LoadBalancer
   ports:
-  - name: http2-in-port
+  - name: http2-in-port-ai
     protocol: TCP
-    port: {{ .Values.localForwarder.port }}
-    targetPort: {{ .Values.localForwarder.port }}
+    port: {{ .Values.localForwarder.port-ai }}
+    targetPort: {{ .Values.localForwarder.port-ai }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.localForwarder.name-oc }}
+  {{- template "common.metadata" . }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  selector:
+    app: {{ .Values.localForwarder.name-oc }}
+  type: LoadBalancer
+  ports:
+  - name: http2-in-port-oc
+    protocol: TCP
+    port: {{ .Values.localForwarder.port-oc }}
+    targetPort: {{ .Values.localForwarder.port-oc }}

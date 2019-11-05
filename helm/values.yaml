@@ -19,9 +19,13 @@ replicaCount: 1
 
 localForwarder: 
   image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/local-forwarder:v5"
-  name: "localforwarder"
-  port: 50001
+  name-ai: "localforwarder"
+  port-ai: 50001
+  name-oc: "localforwarder-oc"
+  port-oc: 50002
   iKey: "0ea304c8-8ce6-4626-8515-5407d2c7bdd1"
+  live-metrics-auth-key: ""
+  adaptive-sampling-limit: 5
 
 connection: 
   p1: "Authorization="
