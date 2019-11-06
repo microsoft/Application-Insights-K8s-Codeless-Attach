@@ -1,5 +1,7 @@
 replicaCount: 1
 
+namespace: "default"
+
 app:
   environment: "test"
   owner : "Microsoft"
