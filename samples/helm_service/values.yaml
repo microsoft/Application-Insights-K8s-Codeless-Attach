@@ -1,5 +1,7 @@
 replicaCount: 1
 
+namespace: "default"
+
 app:
   environment: "test"
   owner : "Microsoft"
@@ -10,4 +12,5 @@ app:
     name: "fabrikam-notifier-aks-java"
   netcore:
     name: "fabrikam-backend-core"
+
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
