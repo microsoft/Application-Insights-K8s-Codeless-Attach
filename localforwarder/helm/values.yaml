@@ -17,4 +17,20 @@ app:
 
 replicaCount: 1
 
+localForwarder: 
+  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/local-forwarder:v10"
+  name: "localforwarder"
+  nameAI: "localforwarder"
+  portAI: 50001
+  nameOC: "localforwarder-oc"
+  portOC: 50002
+  iKey: "a35e0710-201e-44bb-a3a7-9b559277ca6d"
+  liveMetricsAuthKey: " "
+  adaptiveSamplingLimit: 5
+  replicas: 1
+
+connection: 
+  p2: "Authorization=ikey;InstrumentationKey="
+  p3: ";IngestionEndpoint=http://localforwarder.aks-webhook-ns:80:80"
+
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

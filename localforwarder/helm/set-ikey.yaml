@@ -1,4 +1,7 @@
+{{ $p2 := .Values.connection.p2 }}
+{{ $p3 := .Values.connection.p3 }}
 {{- range .Values.namespaces }}
+{{ $concatenated := printf "%s%s%s" $p2 .iKey $p3 }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,6 +10,7 @@ metadata:
   {{- template "common.labels" $ }}
 data:
   ikey: {{ .iKey }}
+  connectionString: {{ $concatenated }}
 ---
 apiVersion: batch/v1
 kind: Job
