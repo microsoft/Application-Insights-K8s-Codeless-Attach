@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: attach-config
   namespace: {{ .target }}
-  {{- template "common.metadata" $ }}
+  {{- template "common.labels" $ }}
 data:
   ikey: {{ .iKey }}
 ---
@@ -13,7 +13,7 @@ kind: Job
 metadata:
   name: label-ns-{{ .target }}
   namespace: {{ .target }}
-  {{- template "common.metadata" $ }}
+  {{- template "common.labels" $ }}
   annotations:
     helm.sh/hook: pre-install
     helm.sh/hook-delete-policy: hook-succeeded
