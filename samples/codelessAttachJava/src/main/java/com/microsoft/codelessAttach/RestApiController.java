@@ -2,8 +2,12 @@ package com.microsoft.codelessAttach;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,9 +27,10 @@ public class RestApiController {
     public static final Logger logger = LoggerFactory.getLogger(RestApiController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<String> getMethod(@RequestBody String json) {
+    public ResponseEntity<HttpStatus> postMethod(@RequestBody String json) {
+        HttpStatus status = HttpStatus.OK;
         try {
-            
+
             JSONObject parsedJson = new JSONObject(json);
 
             if (parsedJson.has("DelayMs")) {
@@ -33,42 +38,77 @@ public class RestApiController {
                 Thread.sleep(parsedJson.getLong("DelayMs"));
             }
 
-            if(parsedJson.has("FailureChance")){
-                if(parsedJson.getDouble("FailureChance") > Math.random()){
+            if (parsedJson.has("FailureChance")) {
+                if (parsedJson.getDouble("FailureChance") > Math.random()) {
                     throw new Exception("Failure");
                 }
             }
 
-            if(parsedJson.has("SubsequentCalls")){
+            if (parsedJson.has("SubsequentCalls")) {
                 JSONArray calls = parsedJson.getJSONArray("SubsequentCalls");
-                for(int i =0; i< calls.length(); i++){
+                for (int i = 0; i < calls.length(); i++) {
                     String uri = calls.getJSONObject(i).getString("Uri");
-                    if(uri.startsWith("http")){
+                    if (uri.startsWith("http")) {
                         System.out.printf("\n calling uri %s", uri);
-                        this.HttpRequest(uri);
-                        System.out.printf("\n done calling uri %s", uri);
+                        HttpStatus result = this.HttpRequest(uri);
+
+                        if(result!= HttpStatus.OK){
+                            status = result;
+                        }
+                        
+                        System.out.printf("\n done calling uri %s ", uri, result.toString());
                     }
                 }
             }
 
-            return new ResponseEntity<String>(HttpStatus.OK);
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+
+        return new ResponseEntity<HttpStatus>(status);
     }
 
-    private  void HttpRequest(String uri) throws Exception {
-        URL url = new URL(uri);
-        URLConnection uc = url.openConnection();
-        BufferedReader in = new BufferedReader(
-                                new InputStreamReader(
-                                uc.getInputStream()));
-        String inputLine;
+    private boolean shouldrun = false;
 
-        while ((inputLine = in.readLine()) != null) ;
-            
-        in.close();
+    @RequestMapping(value = "/spike", method = RequestMethod.GET)
+    public ResponseEntity<HttpStatus> getMethod() {
+        shouldrun = true;
+        Timer timer = new Timer();
+        Lock lock = new ReentrantLock();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                lock.lock();
+                 shouldrun= false;
+                lock.unlock();
+            }
+        }, 10 * 1000);
+        int i = 0;
+        Thread thread = new Thread() {
+            public void run() {
+                boolean running = true;
+                while (running) {
+                    lock.lock();
+                    running= shouldrun;
+                    lock.unlock();
+                }
+            }
+        };
+
+        thread.run();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(HttpStatus.REQUEST_TIMEOUT);
+    }
+
+    private HttpStatus HttpRequest(String uri) throws Exception {
+        URL url = new URL(uri);
+        HttpURLConnection uc = (HttpURLConnection)url.openConnection();
+        return HttpStatus.resolve(uc.getResponseCode());
     }
 }

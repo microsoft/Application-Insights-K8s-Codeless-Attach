@@ -1,0 +1,13 @@
+replicaCount: 1
+
+app:
+  environment: "test"
+  owner : "Microsoft"
+  name: "codeless-attach-polyglot"
+  node:
+    name: "fabrikam-aks-nodejs"
+  java: 
+    name: "fabrikam-notifier-aks-java"
+  netcore:
+    name: "fabrikam-backend-core"
+nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

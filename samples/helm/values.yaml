@@ -5,16 +5,15 @@ app:
   owner : "Microsoft"
   name: "codeless-attach-polyglot"
   node:
-    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/nodejs-sample:v7"
-    name: "codeless-attach-nodejs"
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/nodejs-sample:v57"
+    name: "fabrikam-aks-nodejs"
   java: 
-    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/java-sample:v7"
-    name: "codeless-attach-java"
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/java-sample:v57"
+    name: "fabrikam-notifier-aks-java"
   netcore:
-    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/netcore-sample:v7"
-    name: "codeless-attach-core"
-    
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/netcore-sample:v57"
+    name: "fabrikam-backend-core"
 env:
-  connStr: "DefaultEndpointsProtocol=https;AccountName=codelessdemo;AccountKey=BushQSzEVIWosX2eK6CGsnn+0PMgLxcgIgYUtt4elmTOs3klY8egokDlGHJ5vyGWjo91UuBBteoNJoZgiRIIKw==;EndpointSuffix=core.windows.net"
+  connStr: "" #"DefaultEndpointsProtocol=https;AccountName=gearamacodeless1;AccountKey=dnrXQq43kNQ2pzDImxhVfQS9GuMJx9a/nbtF+BXA2/GSIvT8157CS6crH7ldQYNKXW9SmiIUkbT7eVr7QADlCQ==;EndpointSuffix=core.windows.net"
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

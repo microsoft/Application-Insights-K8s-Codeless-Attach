@@ -44,6 +44,15 @@ export class AddedTypes {
                     },
                 },
             },
+            /*{
+                name: "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                valueFrom: {
+                    configMapKeyRef: {
+                        key: "connectionString",
+                        name: "attach-config",
+                    },
+                },
+            },*/
         ];
 
         if (extraData && extraData.deploymentName) {
@@ -51,6 +60,11 @@ export class AddedTypes {
                 name: "APPLICATIONINSIGHTS_ROLE_NAME",
                 value: extraData.deploymentName,
             });
+            returnValue.push({
+                name: "WEBSITE_HOSTNAME",
+                value: extraData.deploymentName,
+            });
+
         }
 
         if (extraData && extraData.podName) {

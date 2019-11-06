@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: localforwarder
+  #namespace: lf
+  labels:
+    app: localforwarder
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: localforwarder
+  template:
+    metadata:
+      labels:
+        app: localforwarder
+    spec:
+      containers:
+      - name: localforwarder
+        image: docker.io/alkaplan/localforwarder-demo:dev
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http2-in-port
+          containerPort: 6789
+        env:
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          value: "78612c4a-f3dd-411b-b7d1-998730b2e32a" # instrumentation key for the Application Insights resource to send telemetry to
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: localforwarder
+  #namespace: lf
+spec:
+  selector:
+    app: localforwarder
+  ports:
+  - name: http2-in-port
+    protocol: TCP
+    port: 6789
+    targetPort: 6789
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: localforwarder-service-external
+spec:
+  selector:
+    app: localforwarder
+  type: LoadBalancer
+  ports:
+  - name: http2-in-port
+    protocol: TCP
+    port: 6789
+    targetPort: 6789

@@ -1,0 +1,1 @@
+docker build -f ".\Dockerfile" -t localforwarder:dev --no-cache "./LF-ConsoleHost-linux-x64"
