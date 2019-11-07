@@ -4,7 +4,9 @@
 3. get **aks credentials** ( https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-credentials )
 4. install **helm** ( https://github.com/helm/helm )
 5. run **helm init** ( https://helm.sh/docs/using_helm/#quickstart-guide)
+   **NOTE** : if the cluster has **RBAC** enabled you will need to ensure **TILLER** is properly configured to perform its actions. 
 6. make sure you have **dos2unix** installed 
-6. go to **./scripts** and execute **gen-cert.sh** from a linux terminal
-7. in the **./helm** folder update the "**values.yaml**" file with your values for configMap or create a new file to override the value
+6. go to **./scripts** and execute **gen-cert.sh** from a linux terminal, 
+   **NOTE** : ensure az is installed and you have obtained credentials
+7. in the **./helm** folder update the "**values.yaml**" file with your values for namespaces or create a new file to override the value
 8. in the **./helm** folder run "**helm install . --name *some name***"
