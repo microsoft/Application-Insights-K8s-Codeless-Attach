@@ -5,8 +5,8 @@
 namespace: "aks-webhook-ns"
 
 namespaces: 
-  - target : "default"
-    iKey: "a35e0710-201e-44bb-a3a7-9b559277ca6d"
+  - target : "rbactest"
+    iKey: "36a78566-57a2-4e65-a7ab-b771b1e443aa"
 
 app:
   name: "mutating-webhook"
@@ -15,6 +15,9 @@ app:
   image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:v77"
   agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
 
+labeler: 
+  account: labeler
+  
 replicaCount: 1
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
