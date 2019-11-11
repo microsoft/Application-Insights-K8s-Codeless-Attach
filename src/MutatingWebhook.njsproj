@@ -5,6 +5,7 @@
     <Name>MutatingWebhook</Name>
     <RootNamespace>MutatingWebhook</RootNamespace>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <JavaScriptTestFramework>ExportRunner</JavaScriptTestFramework>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>

@@ -1,0 +1,26 @@
+{{- range .Values.namespaces }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: label-ns-{{ .target }}
+  namespace: {{ .target }}
+  {{- template "common.labels" $ }}
+  annotations:
+    helm.sh/hook: post-install
+    helm.sh/hook-delete-policy: hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: labeler-{{ .target }}
+        image: gcr.io/google_containers/hyperkube:v1.9.7
+        command:
+        - kubectl
+        - label
+        - ns
+        - {{ .target }}
+        - mutating-webhook=enabled
+        - --overwrite
+      restartPolicy: Never
+      serviceAccount: {{ $.Values.labeler.account }}
+{{- end }}

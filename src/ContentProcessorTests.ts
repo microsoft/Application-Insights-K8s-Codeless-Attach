@@ -1,34 +1,34 @@
 ﻿import assert = require("assert");
 import { ContentProcessor } from "./ContentProcessor";
 
-export function TestNullObject() {
+export async function TestNullObject() {
     assert.deepEqual('{"apiVersion":"admission.k8s.io/v1beta1","kind":"AdmissionReview","response":{"allowed":false,"patchtype":"JSONPATCH","uid":""}}',
-        ContentProcessor.TryUpdateConfig(null),
+        await ContentProcessor.TryUpdateConfig(null),
         "expect null");
 }
 
-export function TestConstructor() {
+export async function TestConstructor() {
     assert.deepEqual('{"kind":"AdmissionReview","response":{"allowed":false,"patchtype":"JSONPATCH","uid":""}}',
-        ContentProcessor.TryUpdateConfig("{}"),
+        await ContentProcessor.TryUpdateConfig("{}"),
         "should return json");
 }
 
-export function TestInvalidJSON() {
+export async function TestInvalidJSON() {
     const something = "dsasda";
     assert.deepEqual('{"apiVersion":"admission.k8s.io/v1beta1","kind":"AdmissionReview","response":{"allowed":false,"patchtype":"JSONPATCH","uid":""}}',
-        ContentProcessor.TryUpdateConfig(something),
+        await ContentProcessor.TryUpdateConfig(something),
         "expect something");
 }
 
-export function TestValidObject() {
+export async function TestValidObject() {
     assert.deepEqual(JSON.stringify(validResult),
-        ContentProcessor.TryUpdateConfig(testObject),
+        await ContentProcessor.TryUpdateConfig(testObject),
         "some valid other json");
 }
 
-export function TestValidObject2() {
+export async function TestValidObject2() {
     assert.deepEqual(JSON.stringify(response2),
-        ContentProcessor.TryUpdateConfig(testObject2),
+        await ContentProcessor.TryUpdateConfig(testObject2),
         "some valid other json");
 }
 

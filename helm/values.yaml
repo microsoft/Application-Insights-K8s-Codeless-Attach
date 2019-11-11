@@ -5,16 +5,19 @@
 namespace: "aks-webhook-ns"
 
 namespaces: 
-  - target : "default"
-    iKey: "a35e0710-201e-44bb-a3a7-9b559277ca6d"
+  - target : "preview"
+    iKey: "b1ae0c2f-5f58-45e9-934e-852a3ecdd28c"
 
 app:
   name: "mutating-webhook"
   environment: "test"
   owner : "Microsoft"
-  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook:v77"
-  agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
+  image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview1"
+  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview1"
 
+labeler: 
+  account: labeler
+  
 replicaCount: 1
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
