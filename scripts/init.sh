@@ -125,10 +125,12 @@ kubectl create secret generic ${title} \
 export CA_BUNDLE=$(kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n')
 #cat ./values._aml | envsubst > ./values.yaml
 
-cat <<EOF >> ./values2.yaml
+cat <<EOF >> ./values.yaml
 namespaces: 
-  - target : "<target namespace>"
-    iKey: "<target ikey>"
+  - target : "<target namespace>" # kubernetes namespace for which to enable codeless attach
+    iKey: "<target ikey>" # instrumentation key of Application Insights resource to send telemetry to
+  - target : "<target namespace>" # kubernetes namespace for which to enable codeless attach
+    iKey: "<target ikey>" # instrumentation key of Application Insights resource to send telemetry to
 
 app:
   caBundle: "${CA_BUNDLE}"

@@ -1,11 +1,14 @@
 # Instructions
 The following steps are performed in a Linux environment
 
-1. Follow the steps **here** (https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough#connect-to-the-cluster)
-2. install **helm** ( https://github.com/helm/helm )
+1. To establish connection to your cluster follow the steps here 
+**here** (https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough#connect-to-the-cluster)
+2. Make sure **helm** is installed ( https://helm.sh/docs/using_helm/#from-script )
 3. If RBAC follow the steps **here** (https://helm.sh/docs/rbac/)
 4. make sure you have **dos2unix** installed . E.G. on Ubuntu based distributions run "*sudo apt-get install dos2unix*"
-5. Execute **init.sh** from a linux terminal, 
-   **NOTE** : ensure az and the above mentioned cli are installed and you have obtained credentials
-6. Update the "**values.yaml**" file with your values for namespaces or create a new file to override the value
-7. in the **./helm** folder run "**helm install .\helm-*version*.tgz -f values.yaml --name *some name***"
+5. Download a release from https://github.com/microsoft/Application-Insights-K8s-Codeless-Attach/releases 
+6. Test the connection to the cluster using *kubectl get nodes*
+5. Execute **init.sh** from the release ( https://github.com/microsoft/Application-Insights-K8s-Codeless-Attach/releases ) in a linux terminal, 
+   
+6. Update the newly created "**values.yaml**" file with your values for namespaces
+7. Run "**helm install ./helm-*version*.tgz -f values.yaml --name *some name***"
