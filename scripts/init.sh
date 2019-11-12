@@ -5,7 +5,19 @@ title="mutating-webhook"
 namespace="aks-webhook-ns"
 
 echo "create namespace ${namespace}"
-kubectl apply -f ./namespace.yaml
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aks-webhook-ns
+  labels:
+    purpose: aks_codeless_attach
+    owner: Microsoft
+  annotations: 
+    environment: testing
+EOF
+
 retval=$? 
 if [ $retval -ne 0 ]; then
     echo "Error creating namespace"
@@ -111,4 +123,13 @@ kubectl create secret generic ${title} \
     kubectl -n ${namespace} apply -f -
 
 export CA_BUNDLE=$(kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n')
-cat ./values._aml | envsubst > ../helm_package/values.yaml
+#cat ./values._aml | envsubst > ./values.yaml
+
+cat <<EOF >> ./values2.yaml
+namespaces: 
+  - target : "<target namespace>"
+    iKey: "<target ikey>"
+
+app:
+  caBundle: "${CA_BUNDLE}"
+EOF
