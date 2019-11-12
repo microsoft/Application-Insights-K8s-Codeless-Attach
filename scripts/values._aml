@@ -1,6 +1,0 @@
-namespaces: 
-  - target : "<target namespace>"
-    iKey: "target ikey"
-
-app:
-  caBundle: "${CA_BUNDLE}"
