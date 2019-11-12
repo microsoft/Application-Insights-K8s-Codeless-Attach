@@ -111,4 +111,4 @@ kubectl create secret generic ${title} \
     kubectl -n ${namespace} apply -f -
 
 export CA_BUNDLE=$(kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n')
-cat ./webhook-config._aml | envsubst > ../helm/templates/webhook-config-ca.yaml
+cat ./values._aml | envsubst > ../helm_package/values.yaml

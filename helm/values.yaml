@@ -5,15 +5,17 @@
 namespace: "aks-webhook-ns"
 
 namespaces: 
-  - target : "preview"
-    iKey: "b1ae0c2f-5f58-45e9-934e-852a3ecdd28c"
+  - target : "<taget namespace>"
+    iKey: "target ikey"
 
 app:
   name: "mutating-webhook"
   environment: "test"
   owner : "Microsoft"
   image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview1"
-  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview1"
+  #agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
+  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview14"
+  caBundle: "baseBundle"
 
 labeler: 
   account: labeler

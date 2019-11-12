@@ -1,6 +1,6 @@
 replicaCount: 1
 
-namespace: "rbactest"
+namespace: "preview"
 
 app:
   environment: "test"
