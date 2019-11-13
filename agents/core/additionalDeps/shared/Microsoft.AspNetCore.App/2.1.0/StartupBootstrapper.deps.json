@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "StartupBootstrapper/2.8.23.1379": {
+      "StartupBootstrapper/2.8.31.125": {
         "runtime": {
-          "../../../netcoreapp2.1/StartupBootstrapper/2.8.23.1379/lib/netcoreapp2.1/StartupBootstrapper.dll": {}
+          "../../../netcoreapp2.1/startupbootstrapper/2.8.31.125/lib/netcoreapp2.1/StartupBootstrapper.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "StartupBootstrapper/2.8.23.1379": {
+    "StartupBootstrapper/2.8.31.125": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

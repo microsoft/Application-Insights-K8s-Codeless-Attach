@@ -12,9 +12,9 @@ app:
   name: "mutating-webhook"
   environment: "test"
   owner : "Microsoft"
-  image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview1"
+  image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview30"
   #agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
-  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview21"
+  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview31"
   caBundle: "baseBundle"
 
 labeler: 

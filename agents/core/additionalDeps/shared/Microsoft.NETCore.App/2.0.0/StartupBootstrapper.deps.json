@@ -6,12 +6,12 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.0": {
-      "StartupBootstrapper/2.8.23.1379": {
+      "StartupBootstrapper/2.8.31.125": {
         "dependencies": {
           "Microsoft.AspNetCore.Hosting": "2.0.0"
         },
         "runtime": {
-          "../../../netcoreapp2.0/StartupBootstrapper/2.8.23.1379/lib/netcoreapp2.0/StartupBootstrapper.dll": {}
+          "../../../netcoreapp2.0/startupbootstrapper/2.8.31.125/lib/netcoreapp2.0/StartupBootstrapper.dll": {}
         }
       },
       "Microsoft.AspNetCore.Hosting/2.0.0": {
@@ -319,7 +319,7 @@
     }
   },
   "libraries": {
-    "StartupBootstrapper/2.8.23.1379": {
+    "StartupBootstrapper/2.8.31.125": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
