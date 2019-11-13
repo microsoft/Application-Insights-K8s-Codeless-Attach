@@ -1,7 +1,7 @@
 ﻿'use strict';
 var express = require('express');
 var router = express.Router();
-var database = require('./../database');
+//var database = require('./../database');
 var fetch = require('node-fetch');
 
 /* GET home page. */
@@ -107,7 +107,7 @@ function handleRequest(req, res) {
     });
 }
 
-function DBSubsequentCall(param) {
+/*function DBSubsequentCall(param) {
     return new Promise((resolve, reject) => {
         return database.insertOrReplaceEntity('table1', param, (error, result, response) => {
             if (error) {
@@ -117,6 +117,6 @@ function DBSubsequentCall(param) {
             }
         });
     });
-}
+}*/
 
 module.exports = router;
