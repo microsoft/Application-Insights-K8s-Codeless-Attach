@@ -29,7 +29,7 @@ export class AddedTypes {
             },
             {
                 name: "DOTNET_SHARED_STORE",
-                value: "/agentfiles/core/store",
+                value: "/agentfiles/core/store/lin",
             },
             {
                 name: "NODE_OPTIONS",
