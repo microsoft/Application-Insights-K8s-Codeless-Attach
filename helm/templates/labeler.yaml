@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: label-ns-{{ .target }}
-  namespace: {{ .target }}
+  namespace: {{ quote .target }}
   {{- template "common.labels" $ }}
   annotations:
     helm.sh/hook: post-install
@@ -23,4 +23,5 @@ spec:
         - --overwrite
       restartPolicy: Never
       serviceAccount: {{ $.Values.labeler.account }}
+---
 {{- end }}
