@@ -20,3 +20,4 @@ webhooks:
     namespaceSelector:
       matchLabels:
         mutating-webhook: enabled
+---

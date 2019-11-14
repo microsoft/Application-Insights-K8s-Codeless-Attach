@@ -5,9 +5,9 @@
 namespace: "aks-webhook-ns"
 
 namespaces: 
-  - target : "<taget namespace>"
+  - target : "NAMEPACE1"
     iKey: "target ikey"
-
+  
 app:
   name: "mutating-webhook"
   environment: "test"

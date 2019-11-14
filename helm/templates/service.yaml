@@ -11,3 +11,4 @@ spec:
       targetPort: 1337
   selector:
     app: {{ .Values.app.name }}
+---
