@@ -6,6 +6,7 @@ Allow Kubernetes deployed application written in Java, Node.JS, .Net Core to exp
 
 By deploying *agents* ( a.k.a libraries ) that are loaded at runtime by the framework underlining the application, data can be uploaded to the customer specified application insights resource. 
 The agents are transparently injected at deploy time by leveraging Kubernetes mutating web hooks, to update the deployment definition of the container. 
+For existing deployments the webhook will update the pods on restart, or redeploy. Since we do not have visibility into the purpose of deployements, in order to avoid creating problems, we do not interfere with running pods.
 
 ## High level workflow description
 
