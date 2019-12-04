@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.app.node.name }}
+  name: {{ .Values.app.go.name }}
   {{- template "common.metadata" . }}
 spec:
   type: LoadBalancer
@@ -10,4 +10,4 @@ spec:
       protocol: TCP
       targetPort: 50030
   selector:
-    app: {{ .Values.app.node.name }}
+    app: {{ .Values.app.go.name }}
