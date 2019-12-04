@@ -15,7 +15,10 @@ app:
   netcore:
     image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/netcore-sample:v57"
     name: "fabrikam-backend-core"
+  go:
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/go-sample:V1000"
+    name: "fabrikam-worker-go-oc"  
 env:
-  connStr: "" #"DefaultEndpointsProtocol=https;AccountName=gearamacodeless1;AccountKey=dnrXQq43kNQ2pzDImxhVfQS9GuMJx9a/nbtF+BXA2/GSIvT8157CS6crH7ldQYNKXW9SmiIUkbT7eVr7QADlCQ==;EndpointSuffix=core.windows.net"
+  connStr: "" 
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

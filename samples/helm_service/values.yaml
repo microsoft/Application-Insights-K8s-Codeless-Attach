@@ -12,5 +12,7 @@ app:
     name: "fabrikam-notifier-aks-java"
   netcore:
     name: "fabrikam-backend-core"
+  go:
+    name: "fabrikam-worker-go-oc"  
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
