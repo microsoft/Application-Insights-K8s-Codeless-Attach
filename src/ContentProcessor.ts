@@ -1,5 +1,4 @@
 ﻿import * as k8s from "@kubernetes/client-node";
-import { diff } from "jiff";
 import { isNullOrUndefined } from "util";
 import { AddedTypes } from "./AddedTypes";
 import { logger } from "./LoggerWrapper";
@@ -100,7 +99,7 @@ export class ContentProcessor {
         return returnValue;
     }
 
-    private calculate_diff(extraData: DeployReplica): string {
+    private calculate_diff(extraData: DeployReplica): object {
 /* tslint:disable */
         logger.info(`calculating diff`);
         const updatedContent: IRootObject = JSON.parse(JSON.stringify(this.content));
@@ -144,7 +143,12 @@ export class ContentProcessor {
             }
         }
 
-        const jsonDiff = diff(this.content.request.object, updatedContent.request.object);
+        const jsonDiff = [
+            {
+                op: "replace",
+                path: "/spec",
+                value: updatedContent.request.object.spec
+            }];
 /* tslint:enable */
         logger.info(`determined diff ${JSON.stringify(jsonDiff)}`);
         return jsonDiff;
