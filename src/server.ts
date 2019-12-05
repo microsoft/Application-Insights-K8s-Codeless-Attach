@@ -1,5 +1,5 @@
 ﻿import fs = require("fs");
-import https = require("https");
+import https = require("http");
 import { ContentProcessor } from "./ContentProcessor";
 import { logger } from "./LoggerWrapper";
 
@@ -7,7 +7,7 @@ let options;
 const port = process.env.port || 1337;
 
 logger.info(`listening on port ${port}`);
-try {
+/*try {
     options = {
         cert: fs.readFileSync("/mnt/webhook/cert.pem"),
         key: fs.readFileSync("/mnt/webhook/key.pem"),
@@ -20,8 +20,8 @@ try {
     };
     logger.info("loaded certs from local");
 }
-
-https.createServer(options, (req, res) => {
+*/
+https.createServer((req, res) => {
     logger.info(`received request with url: ${req.url}, method: ${req.method}, content-type: ${req.headers["content-type"]}`);
     if (req.method === "POST" && req.headers["content-type"] === "application/json") {
         let body = "";

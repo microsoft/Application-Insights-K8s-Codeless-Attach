@@ -29,6 +29,7 @@ spec:
             - name: webhook-certs
               mountPath: /mnt/webhook
               readOnly: true
+      serviceAccount: {{ $.Values.app.name }}
       volumes:
         - name: webhook-certs
           secret:
