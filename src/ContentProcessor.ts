@@ -179,7 +179,7 @@ export class ContentProcessor {
             return extraData;
         }).catch((error) => {
             logger.info(`failed to get extra data error ${JSON.stringify(error)}`);
-            return extraData;
+            throw (error);
         });
     }
 }
