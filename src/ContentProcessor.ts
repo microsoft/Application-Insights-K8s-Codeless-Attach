@@ -18,10 +18,11 @@ export class ContentProcessor {
                 uid: "",
             },
         };
-        const instance: ContentProcessor = new ContentProcessor(message);
-/* tslint:disable */
+        let instance: ContentProcessor;
+        /* tslint:disable */
         return new Promise<object>((resolve, reject) => {
-/* tslint:enable */
+            /* tslint:enable */
+            instance = new ContentProcessor(message);
             response.request = instance.content.request;
             response.apiVersion = instance.content.apiVersion;
             response.response.uid = instance.content.request.uid;
@@ -82,7 +83,7 @@ export class ContentProcessor {
         }
 
         if (isNullOrUndefined(this.content.kind)
-            || this.content.kind !== "AdmissionReview") {
+            || (this.content.kind !== "AdmissionReview" && this.content.kind !== "Testing")) {
 
             logger.error("invalid incoming kind");
             returnValue = false;
@@ -100,7 +101,7 @@ export class ContentProcessor {
     }
 
     private calculate_diff(extraData: DeployReplica): object {
-/* tslint:disable */
+        /* tslint:disable */
         logger.info(`calculating diff`);
         const updatedContent: IRootObject = JSON.parse(JSON.stringify(this.content));
 
@@ -149,7 +150,7 @@ export class ContentProcessor {
                 path: "/spec",
                 value: updatedContent.request.object.spec
             }];
-/* tslint:enable */
+        /* tslint:enable */
         logger.info(`determined diff ${JSON.stringify(jsonDiff)}`);
         return jsonDiff;
     }
@@ -164,11 +165,21 @@ export class ContentProcessor {
         kc.loadFromDefault();
         const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
         const namespaceName = this.content.request.namespace;
- /* tslint:disable */
-        const replicaName = this.content.request.object.metadata["ownerReferences"][0].name;
- /* tslint:enable */
+        let replicaName: string;
+        /* tslint:disable */
+        if (!this.content.request.object.metadata["ownerReferences"] ||
+            !this.content.request.object.metadata["ownerReferences"].name) {
+            extraData.deploymentName = extraData.podName;
+            extraData.replicaName = extraData.podName;
+            return Promise.resolve(extraData);
+        }
+        /* tslint:enable */
 
         logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
+
+        if (this.content.kind == "Testing") {
+            return Promise.resolve(extraData);
+        }
 
         return k8sApi.readNamespacedReplicaSet(replicaName, namespaceName).then((result) => {
             extraData.deploymentName = result.body.metadata.ownerReferences[0].name;
@@ -183,3 +194,4 @@ export class ContentProcessor {
         });
     }
 }
+
