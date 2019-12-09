@@ -18,7 +18,8 @@ func main() {
 	if len(serviceName) == 0 {
 		serviceName = "go-app"
 	}
-	agentEndpoint := os.Getenv("OCAGENT_TRACE_EXPORTER_ENDPOINT")
+
+	agentEndpoint := "http://40.91.87.20:50002/" //os.Getenv("OCAGENT_TRACE_EXPORTER_ENDPOINT")
 	if len(agentEndpoint) == 0 {
 		agentEndpoint = fmt.Sprintf("%s:%d", ocagent.DefaultAgentHost, ocagent.DefaultAgentPort)
 	}

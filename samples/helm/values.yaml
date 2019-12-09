@@ -1,6 +1,6 @@
 replicaCount: 1
 
-namespace: "preview"
+namespace: "testing"
 
 app:
   environment: "test"

@@ -18,6 +18,10 @@ spec:
           env: 
             - name: AZURESTORAGE_CONNECTION
               value: {{ .Values.env.connStr }}
+            - name: OCAGENT_TRACE_EXPORTER_ENDPOINT
+              value: "http://localforwarder-oc.aks-webhook-ns:50002"
+            - name: SERVICE_NAME 
+              value: "go_lf_service"
           ports:
             - containerPort: 50030
           resources:
