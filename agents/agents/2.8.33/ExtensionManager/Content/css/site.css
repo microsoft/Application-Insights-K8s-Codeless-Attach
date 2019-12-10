@@ -1,0 +1,199 @@
+﻿/* Copyright (c) Microsoft. All rights reserved. */
+body {
+    font-family: "Segoe UI", "HelveticaNeue-Thin", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Trebuchet, Arial, sans-serif;
+    font-size: 14px;
+    color: rgba(51, 51, 51, 1.0);
+    background-color: rgba(26, 26, 26, 1);
+    margin: 0;
+}
+
+/* Headings */
+/* In general, the site only uses 2 font sizes. If a different size is required, create a seperate style for the particular element. */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    margin: 0;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+h3 {
+    font-size: 14px;
+}
+
+h4 {
+    font-size: 14px;
+}
+
+h5 {
+    font-size: 14px;
+}
+
+h6 {
+    font-size: 14px;
+}
+
+.ai-body {
+    background-color: #FFFFFF;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 80px;
+    position: absolute;
+    overflow: auto;
+}
+
+.ai-idbar {
+    height: 50px;
+    padding: 0px;
+    margin: 0px;
+    background: #d4dce1;
+    color: #333333;
+}
+
+    .ai-idbar .ms-Grid-col {
+        padding: 0px;
+    }
+
+    .ai-idbar a.ai-Homelink, .ai-idbar a.ai-Homelink:active, a.ai-login, a:active {
+        color: #333333;
+    }
+
+    .ai-idbar .ms-NavBar-item {
+        padding-left: 14px;
+        padding-right: 14px;
+        margin-left: 0px;
+        margin-right: 0px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+        .ai-idbar .ms-NavBar-item:hover,
+        .ai-idbar .ms-NavBar-item.ai-navBarItem-selected {
+            background-color: #f2f2f2;
+            border: none;
+        }
+
+    .ai-idbar .ms-NavBar-link {
+        color: #333333;
+    }
+
+.ai-brand {
+    font-size: 18px;
+    margin: 0 63px 0 -10px;
+}
+
+    .ai-brand span {
+        display: inline-block;
+        height: 30px;
+        padding: 10px 20px 10px 20px;
+    }
+
+        /* Microsoft Azure */
+        .ai-brand span:nth-child(1) {
+            color: #d2e7f7;
+            background: #0078d7;
+        }
+
+.ai-idbar-Kudu img {
+    margin-top: 12px;
+    height: 22px;
+}
+
+.ai-main {
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    padding-left: 10px;
+}
+
+.ai-title {
+    font-size: 18px;
+    border-bottom: 1px solid #b3b3b3;
+    padding: 0 0 10px 0;
+}
+
+.ai-section {
+    padding-bottom: 40px;
+}
+
+.ai-status .ms-ListItem {
+    line-height: 22px;
+}
+
+    .ai-status .ms-Icon {
+        font-size: 18px;
+        margin-right: 10px;
+    }
+
+.ai-status .ms-Icon--alert {
+    color: darkorange;
+}
+
+.ai-status .ms-Icon--check {
+    color: green;
+}
+
+.ai-status .ms-Icon--circleInfo {
+    color: dimgray;
+}
+
+a, a:active, a:focus {
+    color: rgba(0, 114, 198, 1.0);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+    a:link, a:visited {
+        color: rgba(0, 114, 198, 1.0);
+    }
+
+    a:hover {
+        color: rgba(109,194,233,1.0);
+        text-decoration: none;
+    }
+
+    a.white {
+        color: rgba(255, 255, 255, 1);
+    }
+
+.ai-footer {
+    height: 80px;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: right;
+    color: rgba(255, 255, 255, 1);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.ai-footer a {
+    color: rgba(147,190,202,1.0);
+    padding: 20px 20px;
+    display: inline-block;
+}
+
+
+.ms-Spinner {
+    margin-bottom: 2px;
+    line-height: 22px;
+}
+
+.ms-Spinner-label {
+    color: black;
+    font-size: 14px;
+    margin-left: 4px;
+    /* This margin accounts for the fact that, when the the label is positioned relative to the spinner, it has 28px less horizontal space. */
+    margin-right: 28px;
+    top: auto;
+}
+
