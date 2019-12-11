@@ -14,7 +14,7 @@ app:
   owner : "Microsoft"
   image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview55"
   #agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
-  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:v2.1"
+  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview2833"
   caBundle: "baseBundle"
 
 labeler: 
