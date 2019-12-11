@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.0": {
-      "StartupBootstrapper/2.8.33.4177": {
+      "StartupBootstrapper/2.8.33.5892": {
         "dependencies": {
           "Microsoft.AspNetCore.Hosting": "2.0.0"
         },
@@ -319,9 +319,9 @@
     }
   },
   "libraries": {
-    "StartupBootstrapper/2.8.33.4177": {
+    "StartupBootstrapper/2.8.33.5892": {
       "type": "project",
-      "path": "../netcoreapp2.0/startupbootstrapper/2.8.33.4177",
+      "path": "../netcoreapp2.0/startupbootstrapper/2.8.33.5892",
       "serviceable": false,
       "sha512": ""
     },

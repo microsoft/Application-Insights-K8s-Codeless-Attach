@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.0": {
-      "AiHostingStartup/2.8.33.4177": {
+      "AiHostingStartup/2.8.33.5892": {
         "dependencies": {
           "Microsoft.ApplicationInsights.AspNetCore": "2.1.1",
           "Microsoft.AspNetCore.Hosting": "2.0.0",
@@ -972,9 +972,9 @@
     }
   },
   "libraries": {
-    "AiHostingStartup/2.8.33.4177": {
+    "AiHostingStartup/2.8.33.5892": {
       "type": "project",
-      "path": "../netcoreapp2.0/aihostingstartup/2.8.33.4177",
+      "path": "../netcoreapp2.0/aihostingstartup/2.8.33.5892",
       "serviceable": false,
       "sha512": ""
     },

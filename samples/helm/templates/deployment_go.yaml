@@ -9,6 +9,11 @@ spec:
     metadata:
       labels:
         app: {{ .Values.app.go.name }}
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/id: "calculator-front-end"
+        dapr.io/port: "50030"
+        dapr.io/config: "tracing"
     spec:
       nodeSelector: {{ .Values.nodeSelector }}
       containers:
