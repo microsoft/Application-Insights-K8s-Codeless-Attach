@@ -1,7 +1,7 @@
 FROM alpine:3.10
+ARG AGENT_VERSION
 
-ADD ./java/applicationinsights-agent-codeless-2.5.1-BETA.2-SNAPSHOT.jar /agents/java/applicationinsights-agent-codeless.jar
-ADD ./java/ApplicationInsights.json /agents/java/ApplicationInsights.json
-ADD ./java/appsvc.codeless /agents/java/appsvc.codeless
-ADD ./node /agents/node
-ADD ./core /agents/core
+ADD ./agents/$AGENT_VERSION/java/applicationinsights-agent-codeless*.jar /agents/java/applicationinsights-agent-codeless.jar
+ADD ./agents/$AGENT_VERSION/java/appsvc.codeless /agents/java/appsvc.codeless
+ADD ./agents/$AGENT_VERSION/nodejs /agents/node
+ADD ./agents/$AGENT_VERSION/core /agents/core

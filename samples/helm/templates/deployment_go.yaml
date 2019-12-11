@@ -9,6 +9,11 @@ spec:
     metadata:
       labels:
         app: {{ .Values.app.go.name }}
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/id: "calculator-front-end"
+        dapr.io/port: "50030"
+        dapr.io/config: "tracing"
     spec:
       nodeSelector: {{ .Values.nodeSelector }}
       containers:
@@ -18,6 +23,10 @@ spec:
           env: 
             - name: AZURESTORAGE_CONNECTION
               value: {{ .Values.env.connStr }}
+            - name: OCAGENT_TRACE_EXPORTER_ENDPOINT
+              value: "http://localforwarder-oc.aks-webhook-ns:50002"
+            - name: SERVICE_NAME 
+              value: "go_lf_service"
           ports:
             - containerPort: 50030
           resources:

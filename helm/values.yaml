@@ -14,7 +14,7 @@ app:
   owner : "Microsoft"
   image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview55"
   #agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
-  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview31"
+  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview2833"
   caBundle: "baseBundle"
 
 labeler: 
@@ -23,3 +23,15 @@ labeler:
 replicaCount: 1
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
+
+localForwarder: 
+  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/local-forwarder:v10"
+  name: "localforwarder"
+  nameAI: "localforwarder"
+  portAI: 50001
+  nameOC: "localforwarder-oc"
+  portOC: 50002
+  iKey: "a35e0710-201e-44bb-a3a7-9b559277ca6d"
+  liveMetricsAuthKey: "310e0305-4ffd-49f4-ad82-bd61cb8c9843"
+  adaptiveSamplingLimit: 5
+  replicas: 1

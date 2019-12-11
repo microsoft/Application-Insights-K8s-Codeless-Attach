@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <!-- https://github.com/aspnet/AzureIntegration/tree/dev/src/Microsoft.Web.Xdt.Extensions -->
+  <xdt:Import path="%XDT_EXTENSIONPATH%\Microsoft.ApplicationInsights.XdtExtensions.dll" namespace="Microsoft.ApplicationInsights.XdtExtensions" />
+
+  <!-- BUGBUG in XdtTransform: in case of InsertIfMissing all the internal nodes will be added, including
+       ones with transform "RemoveAll" and "InsertIfMissingAndXPathAny", hence: create target nodes beforehead: -->
+  <system.webServer xdt:Transform="InsertIfMissing">
+    <runtime xdt:Transform="InsertIfMissing">
+      <environmentVariables xdt:Transform="InsertIfMissing">
+      </environmentVariables>
+    </runtime>
+  </system.webServer>
+
+  <system.webServer xdt:Transform="InsertIfMissing">
+    <runtime xdt:Transform="InsertIfMissing" >
+      <environmentVariables xdt:Transform="InsertIfMissing">
+        <!-- .Net Framework bootstrap variables: -->
+        <add name="MicrosoftAppInsights_ManagedHttpModulePath" value="%XDT_EXTENSIONPATH%\fmk\Microsoft.ApplicationInsights.RedfieldIISModule.dll" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+        <add name="MicrosoftAppInsights_ManagedHttpModuleType" value="Microsoft.ApplicationInsights.RedfieldIISModule.RedfieldIISModule" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+
+        <!-- .Net Core bootstrap variables: -->
+        <add name="DOTNET_ADDITIONAL_DEPS" value="%ProgramFiles(x86)%\dotnet\additionalDeps\Microsoft.AspNetCore.ApplicationInsights.HostingStartup\;%XDT_EXTENSIONPATH%\core\additionalDeps" xdt:Locator="Match(name)" xdt:Transform="InsertOrAppendAttributeIfXPathAny(Attribute='value',XPath='//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default']')" />
+        <add name="DOTNET_SHARED_STORE" value="%XDT_EXTENSIONPATH%\core\store\" xdt:Locator="Match(name)" xdt:Transform="InsertOrAppendAttributeIfXPathAny(Attribute='value',XPath='//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default']')" />
+        <add name="ASPNETCORE_HOSTINGSTARTUPASSEMBLIES" value="StartupBootstrapper" xdt:Locator="Match(name)" xdt:Transform="InsertOrAppendAttributeIfXPathAny(Attribute='value',XPath='//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default']')" />
+
+        <!-- NodeJS bootstrap variables -->
+        <!-- TODO: XDT_EXTENSIONPATH will contain spaces, which will break the preinstalled extension. NodeJS 1.12.6 should have a fix, which should allow double quotes: https://github.com/nodejs/node/commit/3ef1512f9e416cc7656b9cd16934dffdee1b11d3 -->
+        <add name="NODE_OPTIONS" value="--require %XDT_EXTENSIONPATH%\nodejs\ai-bootstrap.js" xdt:Locator="Match(name)" xdt:Transform="InsertOrAppendAttributeIfXPathAny(Attribute='value',XPath='//*['%XDT_MicrosoftApplicationInsights_NodeJS%'='1']',NodeJSShortPathWorkaround='1')" />
+
+        <!-- JAVA bootstrap variables -->
+        <add name="_JAVA_OPTIONS" value="-javaagent:'%XDT_EXTENSIONPATH%\java\applicationinsights-agent-codeless-2.5.1.jar'" xdt:Locator="Match(name)" xdt:Transform="InsertOrAppendAttributeIfXPathAny(Attribute='value',XPath='//*['%XDT_MicrosoftApplicationInsights_Java%'='1']')" />
+
+        <!-- MicrosoftInstrumentationEngine_ConfigPath32_Private and MicrosoftInstrumentationEngine_ConfigPath64_Private are set
+             only if '%XDT_MicrosoftApplicationInsights_BaseExtensions%'!='disable':
+             note: XDT_ prefix is required, so that Kudu expands the Environment Variable during pre-installed extension xdt tranformation -->
+        <add name="MicrosoftInstrumentationEngine_ConfigPath32_Private" value="%COR_PROFILER_PATH_32%\..\base\Microsoft.InstrumentationEngine.Extensions.config"
+             xdt:Locator="Match(name)" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_BaseExtensions%'!='disabled' and '%XDT_MicrosoftApplicationInsights_Mode%'!='default'])" />
+        <add name="MicrosoftInstrumentationEngine_ConfigPath64_Private" value="%COR_PROFILER_PATH_64%\..\base\Microsoft.InstrumentationEngine.Extensions.config"
+             xdt:Locator="Match(name)" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_BaseExtensions%'!='disabled' and '%XDT_MicrosoftApplicationInsights_Mode%'!='default'])" />
+
+        <!-- set XDT_MicrosoftApplicationInsights_Log = enabled in order to get logs saved to file -->
+        <add name="MicrosoftAppInsights_FileLogPath" value="%HOME%\LogFiles\ApplicationInsights\MicrosoftAppInsights.log"  xdt:Locator="Match(name)" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Log%'='enabled'])" />
+        <add name="MicrosoftAppInsights_FileLogEventLevel" value="LogAlways"  xdt:Locator="Match(name)" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Log%'='enabled'])" />
+      </environmentVariables>
+    </runtime>
+  </system.webServer>
+
+  <!-- ASP .NET specific configuration -->
+  <location path="%XDT_SITENAME%" xdt:Locator="Match(path)">
+    <system.webServer xdt:Transform="InsertIfMissing">
+      <modules xdt:Transform="InsertIfMissing">
+        <!-- Registed global managed http module handler, which will load target dll from 'MicrosoftAppInsights_ManagedHttpModulePath' type 'MicrosoftAppInsights_ManagedHttpModuleType'.
+            The 'Microsoft.AppInsights.IIS.ManagedHttpModuleHelper.ManagedHttpModuleHelper' must be gac'ed before this config is applied. See AzureWebSites.PreinstalledExtension.csproj for details -->
+        <add name="ManagedHttpModuleHelper" type="Microsoft.AppInsights.IIS.ManagedHttpModuleHelper.ManagedHttpModuleHelper, Microsoft.AppInsights.IIS.ManagedHttpModuleHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" preCondition="managedHandler,runtimeVersionv4.0" />
+      </modules>
+    </system.webServer>
+  </location>
+
+  <!-- Enable Javascript instrumentation for ASP. NET websites by adding XDT_MicrosoftApplicationInsights_Mode!=default and APPINSIGHTS_JAVASCRIPT_ENABLED=true in the Application Settings -->
+  <!-- This is required only for ASP.NET. For ASP.NET Core, the javascript SDK is injected via code (see JavaScriptSnippet https://github.com/Microsoft/ApplicationInsights-aspnetcore/blob/master/src/Microsoft.ApplicationInsights.AspNetCore/ApplicationInsightsJavaScript.cs) -->  
+  <!-- TODO: the snippet below does not work for sovereign clouds: it needs to be updated to latest version and connectionString should be used. https://msazure.visualstudio.com/One/_workitems/edit/5782369 -->
+  <location path="%XDT_SITENAME%" xdt:Locator="Match(path)" xdt:Transform="InsertIfMissing">
+    <system.webServer xdt:Transform="InsertIfMissing">
+      <rewrite xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+        <allowedServerVariables xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+          <add name="HTTP_X_ORIGINAL_ACCEPT_ENCODING" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])" />
+          <add name="HTTP_ACCEPT_ENCODING" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])" />
+        </allowedServerVariables>
+
+        <rules xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+          <rule name="ClearAcceptEncodingHeader" patternSyntax="Wildcard" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+            <match url="*" />
+            <conditions>
+              <add input="{EnvVarProvider:APPINSIGHTS_JAVASCRIPT_ENABLED}" pattern="^true" ignoreCase="true" />
+              <add input="{APPINSIGHTS_JAVASCRIPT_ENABLED}" pattern="^false" ignoreCase="true" negate="true" />
+            </conditions>
+            <serverVariables>
+              <set name="HTTP_X_ORIGINAL_ACCEPT_ENCODING" value="{HTTP_ACCEPT_ENCODING}" />
+              <set name="HTTP_ACCEPT_ENCODING" value="" />
+            </serverVariables>
+            <action type="None" />
+          </rule>
+        </rules>
+
+        <outboundRules rewriteBeforeCache="true" xdt:Transform="InsertOrAppendAttribute(Attribute='rewriteBeforeCache')">
+          <rule name="AddApplicationInsightsScript" preCondition="IsApplicationInsightsEnabled" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+            <match pattern="&lt;/head>" />
+            <action type="Rewrite" value="&lt;script type=&quot;text/javascript&quot;>var appInsights=window.appInsights||function(config){UrlDecode:%7B}function t(config){UrlDecode:%7B}i[config]=function(){UrlDecode:%7B}var t=arguments;i.queue.push(function(){UrlDecode:%7B}i[config].apply(i,t)})}}var i={UrlDecode:%7B}config:config},u=document,e=window,o=&quot;script&quot;,s=&quot;AuthenticatedUserContext&quot;,h=&quot;start&quot;,c=&quot;stop&quot;,l=&quot;Track&quot;,a=l+&quot;Event&quot;,v=l+&quot;Page&quot;,r,f;setTimeout(function(){UrlDecode:%7B}var t=u.createElement(o);t.src=config.url||&quot;https://az416426.vo.msecnd.net/scripts/a/ai.0.js&quot;;u.getElementsByTagName(o)[0].parentNode.appendChild(t)});try{UrlDecode:%7B}i.cookie=u.cookie}catch(y){UrlDecode:%7B}}for(i.queue=[],r=[&quot;Event&quot;,&quot;Exception&quot;,&quot;Metric&quot;,&quot;PageView&quot;,&quot;Trace&quot;,&quot;Dependency&quot;];r.length;)t(&quot;track&quot;+r.pop());return t(&quot;set&quot;+s),t(&quot;clear&quot;+s),t(h+a),t(c+a),t(h+v),t(c+v),t(&quot;flush&quot;),config.disableExceptionTracking||(r=&quot;onerror&quot;,t(&quot;_&quot;+r),f=e[r],e[r]=function(config,t,u,e,o){UrlDecode:%7B}var s=f&amp;&amp;f(config,t,u,e,o);return s!==!0&amp;&amp;i[&quot;_&quot;+r](config,t,u,e,o),s}),i}({UrlDecode:%7B}instrumentationKey:&quot;{EnvVarProvider:APPINSIGHTS_INSTRUMENTATIONKEY}&quot;,sdkExtension:&quot;a&quot;});window.appInsights=appInsights;appInsights.queue&amp;&amp;appInsights.queue.length===0&amp;&amp;appInsights.trackPageView();&lt;/script>&lt;/head>" />
+          </rule>
+
+          <rule name="RestoreAcceptEncodingHeader" preCondition="NeedsRestoringAcceptEncoding" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+            <match serverVariable="HTTP_ACCEPT_ENCODING" pattern="^(.*)" />
+            <action type="Rewrite" value="{HTTP_X_ORIGINAL_ACCEPT_ENCODING}" />
+          </rule>
+
+          <preConditions xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+            <preCondition name="IsApplicationInsightsEnabled" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+              <add input="{EnvVarProvider:APPINSIGHTS_JAVASCRIPT_ENABLED}" pattern="^true" ignoreCase="true" />
+              <add input="{APPINSIGHTS_JAVASCRIPT_ENABLED}" pattern="^false" ignoreCase="true" negate="true" />
+              <!-- There was an issue caused by this rewrite module when asp.net core app is deployed to app service. For mitigating it an additional condition is added to execute the rewrite rule. -->
+              <!-- This additional condition checks if the response header SERVER is the value Kestrel and backs off if matching. This header is set for OutOfProcess hosting of asp.net core 2.0 and 2.1 apps by default. -->
+              <!-- Asp.Net Core 2.2 has InProcess hosting mechanism where this approach wouldn't work.  -->
+              <!-- This is not a foolproof way as user can override this behaviour, but default case is this Server variable is set. https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.kestrelserveroptions.addserverheader?view=aspnetcore-2.0  -->
+              <!-- This is intended as short term fix for those customers who set APPINSIGHTS_JAVASCRIPT_ENABLED for asp.net core apps following old docs and blogs.  -->
+              <!-- For Asp.Net Core 2.2 apps with InProc hosting, we fix this issue differently. See src\Extensions\Extension\AspNetCore.HostingStartup\AiHostingStartup\ApplicationInsightsStartupLoader.cs for details-->
+              <add input="{RESPONSE_SERVER}" pattern="^Kestrel" negate="true" />
+              <add input="{RESPONSE_CONTENT_TYPE}" pattern="^text/html" />
+              <add input="{HTTP_HOST}" pattern=".*\.scm\.azurewebsites\.net" negate="true" />
+            </preCondition>
+
+            <preCondition name="NeedsRestoringAcceptEncoding" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+              <add input="{HTTP_X_ORIGINAL_ACCEPT_ENCODING}" pattern=".+" />
+            </preCondition>
+          </preConditions>
+        </outboundRules>
+
+        <providers xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])">
+          <provider name="EnvVarProvider" xdt:Locator="Match(name)" xdt:Transform="RemoveAll"/>
+          <provider xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])" name="EnvVarProvider" type="Microsoft.Web.Hosting.EnvVarProvider.EnvVarProvider, Microsoft.Web.Hosting.EnvVarProvider, Version=7.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+        </providers>
+      </rewrite>
+
+      <urlCompression dynamicCompressionBeforeCache="false" xdt:Transform="InsertIfMissingAndXPathAny(//*['%XDT_MicrosoftApplicationInsights_Mode%'!='default'])"/>
+    </system.webServer>
+  </location>
+</configuration>
