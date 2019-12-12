@@ -165,7 +165,7 @@ export class ContentProcessor {
         kc.loadFromDefault();
         const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
         const namespaceName = this.content.request.namespace;
-        let replicaName: string;
+        const replicaName: string = "";
         /* tslint:disable */
         if (!this.content.request.object.metadata["ownerReferences"] ||
             !this.content.request.object.metadata["ownerReferences"].name) {
@@ -177,7 +177,7 @@ export class ContentProcessor {
 
         logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
 
-        if (this.content.kind == "Testing") {
+        if (this.content.kind === "Testing") {
             return Promise.resolve(extraData);
         }
 
@@ -194,4 +194,3 @@ export class ContentProcessor {
         });
     }
 }
-

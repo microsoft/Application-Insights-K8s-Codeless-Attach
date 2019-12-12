@@ -6,8 +6,10 @@ namespace: "aks-webhook-ns"
 
 namespaces: 
   - target : "NAMEPACE1"
-    iKey: "target ikey"
-  
+    iKey: "target ikey1"
+  - target : "NAMEPACE2"
+    iKey: "target ikey2"
+    
 app:
   name: "mutating-webhook"
   environment: "test"
@@ -27,11 +29,6 @@ nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
 localForwarder: 
   image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/local-forwarder:v10"
   name: "localforwarder"
-  nameAI: "localforwarder"
-  portAI: 50001
-  nameOC: "localforwarder-oc"
-  portOC: 50002
-  iKey: "a35e0710-201e-44bb-a3a7-9b559277ca6d"
-  liveMetricsAuthKey: "310e0305-4ffd-49f4-ad82-bd61cb8c9843"
+  port: 50002
   adaptiveSamplingLimit: 5
   replicas: 1

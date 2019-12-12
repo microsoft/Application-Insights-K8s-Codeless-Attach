@@ -1,14 +1,18 @@
+{{- range .Values.namespaces }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.localForwarder.nameOC }}
-  {{- template "common.metadata" . }}
+  name: {{ $.Values.localForwarder.name }}-{{ .target }}
+  namespace: {{ quote .target }}
+  {{- template "common.labels" $ }}
 spec:
   selector:
-    app: {{ .Values.localForwarder.name }}
-  type: LoadBalancer
+    app: {{ $.Values.localForwarder.name }}-{{ .target }}
+  #type: LoadBalancer
   ports:
-  - name: http-port-oc
+  - name: http-port
     protocol: TCP
-    port: {{ .Values.localForwarder.portOC }}
-    targetPort: {{ .Values.localForwarder.portOC }}
+    port: {{ $.Values.localForwarder.port }}
+    targetPort: {{ $.Values.localForwarder.port }}
+---
+{{- end }}

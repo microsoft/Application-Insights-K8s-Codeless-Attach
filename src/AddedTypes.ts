@@ -44,6 +44,10 @@ export class AddedTypes {
                     },
                 },
             },
+            {
+                name: "OCAGENT_TRACE_EXPORTER_ENDPOINT",
+                value: `localforwarder-${extraData.namespace}`,
+            },
             /*{
                 name: "APPLICATIONINSIGHTS_CONNECTION_STRING",
                 valueFrom: {
