@@ -11,4 +11,4 @@ The following steps are performed in a Linux environment:
 7. Execute **init.sh** from the [release](https://github.com/microsoft/Application-Insights-K8s-Codeless-Attach/releases) in a linux terminal, 
    
 8. Update the newly created "**values.yaml**" file with your values for namespaces
-9. Run "**helm install ./helm-*version*.tgz -f values.yaml --name *some name***"
+9. Run "**helm install ./helm-*version*.tgz -f values.yaml**" (optionally you can name the release as described here https://v2.helm.sh/docs/using_helm/#helm-install-installing-a-package )
