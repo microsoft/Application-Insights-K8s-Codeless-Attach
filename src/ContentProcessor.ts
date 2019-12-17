@@ -160,31 +160,30 @@ export class ContentProcessor {
         logger.info("attempting to get owner info");
         const extraData: DeployReplica = new DeployReplica();
         extraData.podName = this.content.request.object.metadata.generateName;
+        const namespaceName = this.content.request.namespace;
 
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
         const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
-        const namespaceName = this.content.request.namespace;
-        const replicaName: string = "";
-        /* tslint:disable */
-        if (!this.content.request.object.metadata["ownerReferences"] ||
-            !this.content.request.object.metadata["ownerReferences"].name) {
-            extraData.deploymentName = extraData.podName;
-            extraData.replicaName = extraData.podName;
-            return Promise.resolve(extraData);
-        }
-        /* tslint:enable */
-
-        logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
 
         if (this.content.kind === "Testing") {
+            extraData.deploymentName = extraData.podName;
+            extraData.replicaName = extraData.podName;
+            extraData.namespace = namespaceName;
             return Promise.resolve(extraData);
         }
+        if (!this.content.request.object.metadata.ownerReferences
+            || !this.content.request.object.metadata.ownerReferences[0]
+            || !this.content.request.object.metadata.ownerReferences[0].name) {
+            return Promise.reject("missing owner refference");
+        }
+        const replicaName = this.content.request.object.metadata.ownerReferences[0].name;
+        logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
 
         return k8sApi.readNamespacedReplicaSet(replicaName, namespaceName).then((result) => {
             extraData.deploymentName = result.body.metadata.ownerReferences[0].name;
             extraData.replicaName = result.body.metadata.name;
-            extraData.namespace = namespaceName;
+            extraData.namespace = result.body.metadata.namespace;
 
             logger.info(`got the following extra data ${JSON.stringify(extraData)}`);
             return extraData;

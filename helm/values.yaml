@@ -14,7 +14,7 @@ app:
   name: "mutating-webhook"
   environment: "test"
   owner : "Microsoft"
-  image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview55"
+  image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview60"
   #agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
   agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview2833"
   caBundle: "baseBundle"
@@ -27,7 +27,7 @@ replicaCount: 1
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
 
 localForwarder: 
-  image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/local-forwarder:v10"
+  image: "mcr.microsoft.com/applicationinsights/codeless-attach/local-forwarder:v14"
   name: "localforwarder"
   port: 50002
   adaptiveSamplingLimit: 5
