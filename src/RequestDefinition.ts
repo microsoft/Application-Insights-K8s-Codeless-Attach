@@ -27,6 +27,7 @@
         labels: ILabels;
         annotations: object;
         generateName?: string;
+        ownerReferences?: object;
     }
 
     export interface IMatchLabels {

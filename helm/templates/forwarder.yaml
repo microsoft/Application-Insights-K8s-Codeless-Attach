@@ -1,33 +1,35 @@
+{{- range .Values.namespaces }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.localForwarder.name }}
-  {{- template "common.metadata" . }}
+  name: {{ $.Values.localForwarder.name }}-{{ .target }}
+  namespace: {{ quote .target }}
+  {{- template "common.labels" $ }}
 spec:
-  replicas: {{ .Values.localForwarder.replicas }}
+  replicas: {{ $.Values.localForwarder.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.localForwarder.name }}
+      app: {{ $.Values.localForwarder.name }}-{{ .target }}
   template:
     metadata:
       labels:
-        app: {{ .Values.localForwarder.name }}
+        app: {{ $.Values.localForwarder.name }}-{{ .target }}
     spec:
       containers:
-      - name: {{ .Values.localForwarder.name }}
-        image: {{ .Values.localForwarder.image }}
+      - name: {{ $.Values.localForwarder.name }}-{{ .target }}
+        image: {{ $.Values.localForwarder.image }}
         imagePullPolicy: IfNotPresent
         ports:
-        - name: http-port-ai
-          containerPort: {{ .Values.localForwarder.portAI }}
-        - name: http-port-oc
-          containerPort: {{ .Values.localForwarder.portOC }}
+        - name: http-port
+          containerPort: {{ $.Values.localForwarder.port }}
         env:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
-          value: {{ .Values.localForwarder.iKey }}
+          value: {{ .iKey }}
         - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
-          value: {{ .Values.localForwarder.liveMetricsAuthKey }}
+          value: {{ .iKey }}
         - name: APPINSIGHTS_ADAPTIVESAMPLINGEVENTSLIMIT
-          value: {{ quote .Values.localForwarder.adaptiveSamplingLimit }}
+          value: {{ quote $.Values.localForwarder.adaptiveSamplingLimit }}
         - name: APPINSIGHTS_ADAPTIVESAMPLINGNONEVENTSLIMIT
-          value: {{ quote .Values.localForwarder.adaptiveSamplingLimit }}
+          value: {{ quote $.Values.localForwarder.adaptiveSamplingLimit }}
+---
+{{- end }}
