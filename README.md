@@ -1,3 +1,5 @@
+[![Build Status](https://github-private.visualstudio.com/microsoft/_apis/build/status/CDPX/Application-Insights-K8s-Codeless-Attach/Application-Insights-K8s-Codeless-Attach-Windows-Buddy-gearama_samples?branchName=gearama%2Fsamples)](https://github-private.visualstudio.com/microsoft/_build/latest?definitionId=106&branchName=gearama%2Fsamples)
+
 ## Purpose 
 
 Allow Kubernetes deployed application written in Java, Node.JS, .Net Core to export telemetry to Azure Application Insights without the need for the application to be instrumented using the Azure SDK.
