@@ -1,9 +1,7 @@
-pool:
-  vmImage: 'vs2017-win2016'
-  
+name: $(Date:yyyyMMdd)$(Rev:.r)
+variables:
+  var1: value1
+jobs:
+- job: One
   steps:
-  - task: NodeTool@0 
-    inputs:
-      versionSpec: 8.x
-  
-  - script: cd src && npm install
+  - script: echo First step!
