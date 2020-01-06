@@ -16,12 +16,12 @@ version:
   system: 'custom'         # Must be one of patch, buildrevision, revisioncounter or custom. Other schemes can be added based on feedback.
   exclude_commit: true 
     
-steps:
-- script: echo This runs in the default shell on any machine
-
 build:
   commands:
     - !!buildcommand
-      name: 'Build Agent'
+      name: 'Change folder'
       command: 'cd src'
+    - !!buildcommand
+      name: 'build source'
+      command: "build.cmd"
       
