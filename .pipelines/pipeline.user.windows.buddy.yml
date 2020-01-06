@@ -7,11 +7,18 @@ environment:
     provider: 'appcontainer'
     image: 'cdpxwin.azurecr.io/legacy/global/vse2017u5-ext-win14393.1884:1.0'
     source_mode: 'link'
+
+version:
+  name: 'AKSCodelessAttach'
+  major: 0
+  minor: 9
+  tag: 'beta'
+  system: 'custom'         # Must be one of patch, buildrevision, revisioncounter or custom. Other schemes can be added based on feedback.
+  exclude_commit: true 
     
 build:
   commands:
     - !!buildcommand
       name: 'Build Agent'
       command: 'cd src'
-      command: "build.cmd"
       
