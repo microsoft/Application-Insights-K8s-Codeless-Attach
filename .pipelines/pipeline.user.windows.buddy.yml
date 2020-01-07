@@ -19,9 +19,6 @@ version:
 build:
   commands:
     - !!buildcommand
-      name: 'Change folder'
-      command: 'cd src'
-    - !!buildcommand
       name: 'build source'
-      command: "build.cmd"
+      command: 'src\build.cmd'
       
