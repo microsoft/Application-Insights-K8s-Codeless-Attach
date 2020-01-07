@@ -1,11 +1,9 @@
 environment:
   host:
     os: 'windows'
-    flavor: 'datacenter'
-    version: 2016
   runtime:
     provider: 'appcontainer'
-    image: 'cdpxwin.azurecr.io/legacy/global/vse2017u5-ext-win14393.1884:1.0'
+    image: 'cdpxwin.azurecr.io/legacy/global/vse2017u5-external-azsdk-ext-win14393.1884:1.1-node10'
     source_mode: 'link'
 
 version:
