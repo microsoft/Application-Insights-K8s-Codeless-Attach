@@ -18,5 +18,8 @@ build:
   commands:
     - !!buildcommand
       name: 'build source'
-      command: 'src\build.cmd'
-      
+      command: '.build\src\build.cmd'
+    - !!dockerbuild
+      name: 'build image'
+      command: '.build\src\dockerbuild.cmd buildtests'
+  
