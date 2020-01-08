@@ -13,7 +13,13 @@ version:
   tag: 'beta'
   system: 'custom'         # Must be one of patch, buildrevision, revisioncounter or custom. Other schemes can be added based on feedback.
   exclude_commit: true 
-    
+  
+restore:
+  commands:
+    - !!defaultcommand
+      name: 'Restore NPM packages for hook'
+      command: '.build\src\build.cmd'
+  
 build:
   commands:
     - !!buildcommand

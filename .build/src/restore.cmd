@@ -1,3 +1,3 @@
 cd /D "%~dp0"
 cd .\..\..\src
-call build.cmd || exit /b 1
+call npm install || exit /b 1
