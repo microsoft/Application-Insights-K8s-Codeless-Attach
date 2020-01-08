@@ -1,5 +1,5 @@
-call npm install
-call npm run clean
-call npm run build
-call npm run test
-call npm run lint
+call npm install || exit /b 1
+call npm run clean || exit /b 1
+call npm run build || exit /b 1
+call npm run test || exit /b 1
+call npm run lint || exit /b 1
