@@ -17,9 +17,9 @@ version:
 build:
   commands:
     - !!buildcommand
-      name: 'build source'
+      name: 'build hook source'
       command: '.build\src\build.cmd'
-    - !!dockerbuild
-      name: 'build image'
-      command: '.build\src\dockerbuild.cmd buildtests'
+ #   - !!dockerbuild
+ #     name: 'build image'
+ #     command: '.build\src\dockerbuild.cmd buildtests'
   
