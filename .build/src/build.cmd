@@ -1,6 +1,6 @@
 setlocal
 pushd
-cd ..\..\src
+cd .\src
 call build.cmd
 popd
 endlocal
