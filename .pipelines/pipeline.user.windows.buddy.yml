@@ -18,7 +18,7 @@ restore:
   commands:
     - !!defaultcommand
       name: 'Restore NPM packages for hook'
-      command: '.build\src\build.cmd'
+      command: '.build\src\restore.cmd'
   
 build:
   commands:
