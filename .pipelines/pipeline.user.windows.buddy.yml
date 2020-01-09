@@ -4,7 +4,7 @@ environment:
   runtime:
     provider: 'appcontainer'
     image: 'cdpxwin.azurecr.io/legacy/global/vse2017u5-external-azsdk-ext-win14393.1884:1.1-node10'
-    source_mode: 'link'
+    source_mode: 'map'
 
 version:
   name: 'AKSCodelessAttach'
