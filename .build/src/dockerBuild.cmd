@@ -1,5 +1,5 @@
 setlocal
 cd /D "%~dp0"
 cd .\..\..\src
-call dockerBuild.cmd %1
+call dockerBuild.cmd testPipe
 endlocal

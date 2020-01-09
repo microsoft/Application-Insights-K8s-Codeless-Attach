@@ -25,6 +25,9 @@ build:
     - !!buildcommand
       name: 'build hook source'
       command: '.build\src\build.cmd'
+    - !!buildcommand
+      name: 'build hook source'
+      command: '.build\src\dockerBuild.cmd'
     - !!dockerbuildcommand
       name: 'build hook docker image'
       context_folder: 'src/'
