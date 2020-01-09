@@ -25,7 +25,9 @@ build:
     - !!buildcommand
       name: 'build hook source'
       command: '.build\src\build.cmd'
- #   - !!dockerbuild
- #     name: 'build image'
- #     command: '.build\src\dockerbuild.cmd buildtests'
+    - !!dockerbuildcommand
+      name: 'build hook docker image'
+      context_folder: 'src/'
+      command: '.build\src\dockerbuild.cmd buildtests'
+      publish_unique_tag: true
   
