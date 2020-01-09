@@ -29,5 +29,6 @@ build:
       name: 'build hook docker image'
       context_folder: 'src/'
       command: '.build\src\dockerbuild.cmd buildtests'
+      repository_name: 'codeless-attach/mutating-webhook'
       publish_unique_tag: true
   
