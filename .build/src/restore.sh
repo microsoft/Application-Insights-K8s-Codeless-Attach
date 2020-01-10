@@ -3,10 +3,10 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get -y -q update
 
 # install docker 
-apt-get -y -q remove docker docker-engine docker.io
+# apt-get -y -q remove docker docker-engine docker.io
 apt-get -y -q install docker.io
-sudo systemctl start docker
-sudo systemctl enable docker
+sudo usermod -aG docker ${USER}
+service docker restart
 
 # install node 10.0
 apt-get install curl 
