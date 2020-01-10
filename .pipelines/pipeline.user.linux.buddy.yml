@@ -42,7 +42,7 @@ package:
       repository_name: 'codeless-attach/local-forwarder'
       publish_unique_tag: true
     - !!dockerbuildcommand
-      name: 'build localforwarder docker image'
+      name: 'build agents docker image'
       context_folder: 'agents'
       repository_name: 'codeless-attach/mutating-webhook-agents'
       publish_unique_tag: true
