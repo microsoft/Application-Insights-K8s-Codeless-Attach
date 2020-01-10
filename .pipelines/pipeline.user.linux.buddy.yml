@@ -25,7 +25,10 @@ build:
     - !!defaultcommand
       name: 'build hook source'
       command: './.build/src/build.sh'
-    - !!defaultcommand
-      name: 'build image'
-      command: './.build/src/dockerbuild.sh'
+    - !!dockerbuildcommand
+      name: 'build hook docker image'
+      context_folder: 'src'
+      repository_name: 'mutating-webhook'
+      publish_unique_tag: true
+
   
