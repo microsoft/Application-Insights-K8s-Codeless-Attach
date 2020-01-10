@@ -24,8 +24,8 @@ build:
   commands:
     - !!buildcommand
       name: 'build hook source'
-      command: '.build\src\build.cmd'
- #   - !!dockerbuild
- #     name: 'build image'
- #     command: '.build\src\dockerbuild.cmd buildtests'
+      command: './.build/src/build.sh'
+    - !!buildcommand
+      name: 'build image'
+      command: './.build/src/dockerbuild.sh'
   
