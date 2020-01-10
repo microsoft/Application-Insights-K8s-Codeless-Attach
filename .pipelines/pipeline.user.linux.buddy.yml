@@ -22,10 +22,10 @@ restore:
   
 build:
   commands:
-    - !!buildcommand
+    - !!defaultcommand
       name: 'build hook source'
       command: './.build/src/build.sh'
-    - !!buildcommand
+    - !!defaultcommand
       name: 'build image'
       command: './.build/src/dockerbuild.sh'
   
