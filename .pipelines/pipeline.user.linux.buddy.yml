@@ -25,10 +25,25 @@ build:
     - !!defaultcommand
       name: 'build hook source'
       command: './.build/src/build.sh'
+    - !!defaultcommand
+      name: build helm package
+      command: './.build/helm/build.sh'
+
+package:
     - !!dockerbuildcommand
       name: 'build hook docker image'
       context_folder: 'src'
-      repository_name: 'mutating-webhook'
+      repository_name: 'codeless-attach/mutating-webhook'
+      publish_unique_tag: true
+    - !!dockerbuildcommand
+      name: 'build localforwarder docker image'
+      context_folder: 'localforwarder'
+      repository_name: 'codeless-attach/local-forwarder'
+      publish_unique_tag: true
+    - !!dockerbuildcommand
+      name: 'build localforwarder docker image'
+      context_folder: 'agents'
+      repository_name: 'codeless-attach/mutating-webhook-agents'
       publish_unique_tag: true
 
   
