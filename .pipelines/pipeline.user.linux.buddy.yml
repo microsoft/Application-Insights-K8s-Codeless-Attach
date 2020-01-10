@@ -11,15 +11,15 @@ version:
   major: 0
   minor: 9
   tag: 'beta'
-  system: 'custom'         # Must be one of patch, buildrevision, revisioncounter or custom. Other schemes can be added based on feedback.
-  exclude_commit: true 
-  
+  system: 'custom'
+  exclude_commit: true
+
 restore:
   commands:
     - !!defaultcommand
       name: 'Restore NPM packages for hook'
       command: './.build/src/restore.sh'
-  
+
 build:
   commands:
     - !!defaultcommand
@@ -45,5 +45,3 @@ package:
       context_folder: 'agents'
       repository_name: 'codeless-attach/mutating-webhook-agents'
       publish_unique_tag: true
-
-  
