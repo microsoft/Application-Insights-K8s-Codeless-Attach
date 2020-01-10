@@ -1,4 +1,4 @@
-FROM node:8-slim
+FROM node:8-alpine3.10
 
 WORKDIR  /mutating-webhook
 
