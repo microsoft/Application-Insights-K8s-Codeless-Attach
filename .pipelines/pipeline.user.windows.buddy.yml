@@ -27,12 +27,8 @@ build:
       command: '.build\src\build.cmd'
     - !!dockerbuildcommand
       name: 'build hook docker image'
-      context_folder: 'src/'
-      command: '.build\src\dockerbuild.cmd buildtests'
+      context_folder: 'src'
       repository_name: 'codeless-attach/mutating-webhook'
       publish_unique_tag: true
-      publish: false
-      cache_locally: true
-      export_to_artifact_path: 'images\pockers.tar.zip'
 
   
