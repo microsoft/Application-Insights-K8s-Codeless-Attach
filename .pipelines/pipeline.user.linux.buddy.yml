@@ -30,6 +30,7 @@ build:
       command: './.build/helm/build.sh'
 
 package:
+  commands:
     - !!dockerbuildcommand
       name: 'build hook docker image'
       context_folder: 'src'
