@@ -6,7 +6,7 @@ apt-get -y -q update
 # apt-get -y -q remove docker docker-engine docker.io
 apt-get -y -q install docker.io
 sudo usermod -aG docker ${USER}
-service docker restart
+sudo service docker restart
 
 # install node 10.0
 apt-get install curl 
