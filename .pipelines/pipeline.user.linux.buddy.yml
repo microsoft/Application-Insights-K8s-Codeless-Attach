@@ -26,7 +26,7 @@ build:
       name: 'build hook source'
       command: './.build/src/build.sh'
     - !!defaultcommand
-      name: build helm package
+      name: 'build helm package'
       command: './.build/helm/build.sh'
 
 package:
