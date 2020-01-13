@@ -51,15 +51,6 @@ static_analysis_options:
   fxcop_options: 
     disable_tool_scan: false
     fail_on_error: true
-    files_to_scan:
-      - from: 'src'
-        include:
-          - '*.ts'
-          - '*.js'
-      - from: 'helm'
-        include:
-          - '**/*.yaml'
-          - '**/*.tpl'
   moderncop_options:
     disable_tool_scan: false
     fail_on_error: true
