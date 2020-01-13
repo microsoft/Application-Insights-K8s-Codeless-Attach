@@ -46,3 +46,53 @@ package:
       context_folder: 'agents'
       repository_name: 'codeless-attach/mutating-webhook-agents'
       publish_unique_tag: true
+
+static_analysis_options:
+  fxcop_options: 
+    disable_tool_scan: false
+    fail_on_error: true
+    files_to_scan:
+      - from: 'src'
+        include:
+          - '*.ts'
+          - '*.js'
+      - from: 'helm'
+        include:
+          - '**/*.yaml'
+          - '**/*.tpl'
+  moderncop_options:
+    disable_tool_scan: false
+    fail_on_error: true
+    files_to_scan:
+      - from: 'src'
+        include:
+          - '*.ts'
+          - '*.js'
+      - from: 'helm'
+        include:
+          - '**/*.yaml'
+          - '**/*.tpl'
+  policheck_options:
+    disable_tool_scan: false
+    fail_on_error: true
+    files_to_scan:
+      - from: 'src'
+        include:
+          - '*.ts'
+          - '*.js'
+      - from: 'helm'
+        include:
+          - '**/*.yaml'
+          - '**/*.tpl'
+  binskim_options:
+    disable_tool_scan: false
+    fail_on_error: true
+    files_to_scan:
+      - from: 'src'
+        include:
+          - '*.ts'
+          - '*.js'
+      - from: 'helm'
+        include:
+          - '**/*.yaml'
+          - '**/*.tpl'
