@@ -63,36 +63,10 @@ static_analysis_options:
   moderncop_options:
     disable_tool_scan: false
     fail_on_error: true
-    files_to_scan:
-      - from: 'src'
-        include:
-          - '*.ts'
-          - '*.js'
-      - from: 'helm'
-        include:
-          - '**/*.yaml'
-          - '**/*.tpl'
   policheck_options:
     disable_tool_scan: false
     fail_on_error: true
-    files_to_scan:
-      - from: 'src'
-        include:
-          - '*.ts'
-          - '*.js'
-      - from: 'helm'
-        include:
-          - '**/*.yaml'
-          - '**/*.tpl'
   binskim_options:
     disable_tool_scan: false
     fail_on_error: true
-    files_to_scan:
-      - from: 'src'
-        include:
-          - '*.ts'
-          - '*.js'
-      - from: 'helm'
-        include:
-          - '**/*.yaml'
-          - '**/*.tpl'
+    
