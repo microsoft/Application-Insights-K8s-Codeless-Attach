@@ -46,3 +46,18 @@ package:
       context_folder: 'agents'
       repository_name: 'codeless-attach/mutating-webhook-agents'
       publish_unique_tag: true
+
+static_analysis_options:
+  fxcop_options: 
+    disable_tool_scan: false
+    fail_on_error: true
+  moderncop_options:
+    disable_tool_scan: false
+    fail_on_error: true
+  policheck_options:
+    disable_tool_scan: false
+    fail_on_error: true
+  binskim_options:
+    disable_tool_scan: false
+    fail_on_error: true
+    
