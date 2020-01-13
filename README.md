@@ -1,3 +1,4 @@
+[![Build Status](https://github-private.visualstudio.com/microsoft/_apis/build/status/CDPX/Application-Insights-K8s-Codeless-Attach/application-insights-k8s-codeless-attach-Linux-Official-master?branchName=master)](https://github-private.visualstudio.com/microsoft/_build/latest?definitionId=111&branchName=master)
 ## Purpose 
 
 Allow Kubernetes deployed application written in Java, Node.JS, .Net Core to export telemetry to Azure Application Insights without the need for the application to be instrumented using the Azure SDK.
