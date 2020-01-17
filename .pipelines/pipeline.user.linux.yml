@@ -65,6 +65,7 @@ static_analysis_options:
     fail_on_error: true
     files_to_scan:
       - from: 'localforwarder'
-        exclude: '**/*.*'
+        exclude: 
+          - '**/*.*'
 
     
