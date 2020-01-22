@@ -1,0 +1,71 @@
+environment:
+  host:
+    os: 'linux'
+  runtime:
+    provider: 'appcontainer'
+    image: 'cdpxlinux.azurecr.io/legacy/global/ubuntu-1604-all:1.0'
+    source_mode: 'link'
+
+version:
+  name: 'AKSCodelessAttach'
+  major: 0
+  minor: 9
+  tag: 'beta'
+  system: 'custom'
+  exclude_commit: true
+
+restore:
+  commands:
+    - !!defaultcommand
+      name: 'Restore NPM packages for hook'
+      command: './.build/src/restore.sh'
+
+build:
+  commands:
+    - !!defaultcommand
+      name: 'build hook source'
+      command: './.build/src/build.sh'
+    - !!defaultcommand
+      name: 'build helm package'
+      command: './.build/helm/build.sh'
+
+package:
+  commands:
+    - !!dockerbuildcommand
+      name: 'build hook docker image'
+      context_folder: 'src'
+      repository_name: 'codeless-attach/mutating-webhook'
+      publish_unique_tag: true
+    - !!dockerbuildcommand
+      name: 'build localforwarder docker image'
+      context_folder: 'localforwarder'
+      repository_name: 'codeless-attach/local-forwarder'
+      publish_unique_tag: true
+    - !!dockerbuildcommand
+      name: 'build agents docker image'
+      context_folder: 'agents'
+      repository_name: 'codeless-attach/mutating-webhook-agents'
+      publish_unique_tag: true
+
+static_analysis_options:
+  fxcop_options: 
+    disable_tool_scan: false
+    fail_on_error: true
+  moderncop_options:
+    disable_tool_scan: false
+    fail_on_error: true
+  policheck_options:
+    disable_tool_scan: false
+    fail_on_error: true
+  binskim_options:
+    disable_tool_scan: false
+    fail_on_error: true
+  elfskim_options:
+    disable_tool_scan: false
+    fail_on_error: true
+    files_to_scan:
+      - from: 'localforwarder'
+        exclude: 
+          - '**/*.*'
+
+    
