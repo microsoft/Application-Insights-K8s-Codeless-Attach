@@ -13,6 +13,9 @@ tar xvf helm-v3.0.2-linux-amd64.tar.gz
 mv linux-amd64/helm /usr/local/bin/
 helm version
 
+#install az
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
 # run npm install
 cd `dirname $0`
 SCRIPTDIR=`pwd`
