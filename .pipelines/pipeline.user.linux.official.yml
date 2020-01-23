@@ -35,17 +35,20 @@ package:
       name: 'build hook docker image'
       context_folder: 'src'
       repository_name: 'codeless-attach/mutating-webhook'
-      publish_unique_tag: true
+      publish_build_tag: true
+    - !!defaultcommand
+      name: 'push source'
+      command: './.build/src/acrpush.sh'
     - !!dockerbuildcommand
       name: 'build localforwarder docker image'
       context_folder: 'localforwarder'
       repository_name: 'codeless-attach/local-forwarder'
-      publish_unique_tag: true
+      publish_build_tag: true
     - !!dockerbuildcommand
       name: 'build agents docker image'
       context_folder: 'agents'
       repository_name: 'codeless-attach/mutating-webhook-agents'
-      publish_unique_tag: true
+      publish_build_tag: true
 
 static_analysis_options:
   fxcop_options: 
