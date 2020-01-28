@@ -13,16 +13,6 @@ tar xvf helm-v3.0.2-linux-amd64.tar.gz
 mv linux-amd64/helm /usr/local/bin/
 helm version
 
-#install docker 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get update
-apt-cache policy docker-ce
-sudo apt-get install -y -q docker-ce
-
-#install az
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
 # run npm install
 cd `dirname $0`
 SCRIPTDIR=`pwd`
