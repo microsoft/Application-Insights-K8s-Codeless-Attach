@@ -29,7 +29,7 @@ echo "namespace created"
 [ -z ${title} ] && title=mutating-webhook
 [ -z ${namespace} ] && namespace=aks-webhook-ns
 
-if [ ! -x "$(command -v dos2unix)" ]; then
+if [ ! -x "$(command -v dos2unix)" ] && [[ "$(uname -s)" != "Linux" ]]; then
     echo "dos2unix not found"
     exit 1
 fi
@@ -111,8 +111,10 @@ if [[ ${serverCert} == '' ]]; then
 fi
 echo ${serverCert} | openssl base64 -d -A -out ${tmpdir}/server-cert.pem
 
-dos2unix ${tmpdir}/server-key.pem
-dos2unix ${tmpdir}/server-cert.pem
+if [[ "$(uname -s)" != "Linux" ]]; then
+    dos2unix ${tmpdir}/server-key.pem
+    dos2unix ${tmpdir}/server-cert.pem
+fi
 
 # create the secret with CA cert and server cert/key
 echo "create the secret with CA cert and server cert/key"
