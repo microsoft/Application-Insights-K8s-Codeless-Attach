@@ -60,7 +60,7 @@ function handleRequest(req, res) {
         }
         console.log(`delay ${delay}`);
         setTimeout(resolve, delay);
-    }).then(() => {
+    })/*.then(() => {
         let failureChance = req.body.FailureChance;
         res.status(200);
         console.log(`failure chance ${failureChance}`)
@@ -68,7 +68,7 @@ function handleRequest(req, res) {
             res.status(400);
             reject("Failure");
         }
-    }).then(() => {
+    })*/.then(() => {
         let promisses = [];
         let subsequentCalls = req.body.SubsequentCalls;
         let options = {

@@ -1,9 +1,18 @@
 setlocal
 REM we need download here
-REM call tar -xf .\agents.zip -C .\agents
-call docker build -t mutating-webhook-agents . --no-cache --build-arg AGENT_VERSION=%2
-call az acr login --name applicationinsights
-call docker tag mutating-webhook-agents applicationinsights.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:%1
-call docker push applicationinsights.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:%1
-REM call rd /s /q .\agents
+set ZIP_NAME=ApplicationInsightsAgent.%2.zip
+set AGENT_VERSION=%2
+
+md agents
+call tar -xf .\zips\%ZIP_NAME% -C .\agents
+
+cd agents
+ren %AGENT_VERSION% current
+cd ..
+
+call docker build -t mutating-webhook-agents . --no-cache
+call az acr login --name aicommon
+call docker tag mutating-webhook-agents aicommon.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:%1
+call docker push aicommon.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:%1
+call rd /s /q .\agents
 endlocal
