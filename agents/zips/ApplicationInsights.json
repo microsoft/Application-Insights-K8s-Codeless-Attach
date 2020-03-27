@@ -1,0 +1,19 @@
+{
+  "jmxMetrics": [
+    {
+      "objectName": "java.lang:type=Threading",
+      "attribute": "ThreadCount",
+      "display": "Thread Count"
+    },
+    {
+      "objectName": "java.lang:type=Memory",
+      "attribute": "HeapMemoryUsage.init",
+      "display": "Initial Heap Memory"
+    },
+    {
+      "objectName": "java.lang:type=ClassLoading",
+      "attribute": "LoadedClassCount",
+      "display": "Current Class Loaded Count"
+    }
+  ]
+}

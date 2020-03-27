@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.locks.Lock;
@@ -23,13 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 public class RestApiController {
-
+    private static Random rand;
     public static final Logger logger = LoggerFactory.getLogger(RestApiController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<HttpStatus> postMethod(@RequestBody String json) {
+    public ResponseEntity<HttpStatus> postMethod(@RequestBody String json) throws Exception {
         HttpStatus status = HttpStatus.OK;
-        try {
+            if(rand == null){
+                rand = new Random();
+            }
 
             JSONObject parsedJson = new JSONObject(json);
 
@@ -39,8 +42,15 @@ public class RestApiController {
             }
 
             if (parsedJson.has("FailureChance")) {
-                if (parsedJson.getDouble("FailureChance") > Math.random()) {
+                if (parsedJson.getDouble("FailureChance") > rand.nextDouble()) {
+                    if(rand.nextDouble() < 0.3){
                     throw new Exception("Failure");
+                    }
+                    else if(rand.nextDouble() < 0.6){
+                        throw new NumberFormatException("number exception");
+                    }else {
+                        throw new NullPointerException("log Exception");
+                    }
                 }
             }
 
@@ -61,36 +71,32 @@ public class RestApiController {
                 }
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
         return new ResponseEntity<HttpStatus>(status);
     }
 
-    private boolean shouldrun = false;
+    private boolean shouldRun = false;
 
     @RequestMapping(value = "/spike", method = RequestMethod.GET)
     public ResponseEntity<HttpStatus> getMethod() {
-        shouldrun = true;
+        
+        shouldRun = true;
         Timer timer = new Timer();
         Lock lock = new ReentrantLock();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 lock.lock();
-                 shouldrun= false;
+                 shouldRun= false;
                 lock.unlock();
             }
         }, 10 * 1000);
-        int i = 0;
+        
         Thread thread = new Thread() {
             public void run() {
                 boolean running = true;
                 while (running) {
                     lock.lock();
-                    running= shouldrun;
+                    running= shouldRun;
                     lock.unlock();
                 }
             }

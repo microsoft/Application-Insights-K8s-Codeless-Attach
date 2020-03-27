@@ -1,16 +1,16 @@
 replicaCount: 1
 
-namespace: "aks-testing"
+namespace: "default"
 
 app:
   environment: "test"
   owner : "Microsoft"
   name: "codeless-attach-polyglot"
   node:
-    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/nodejs-sample:v57"
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/nodejs-sample:v60"
     name: "fabrikam-aks-nodejs"
   java: 
-    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/java-sample:v57"
+    image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/java-sample:v61"
     name: "fabrikam-notifier-aks-java"
   netcore:
     image: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/netcore-sample:v57"
