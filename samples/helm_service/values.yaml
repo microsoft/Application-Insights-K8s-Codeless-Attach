@@ -1,6 +1,6 @@
 replicaCount: 1
 
-namespace: "aks-testing"
+namespace: "default"
 
 app:
   environment: "test"

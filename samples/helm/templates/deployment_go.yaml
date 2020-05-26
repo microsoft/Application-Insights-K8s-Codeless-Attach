@@ -9,11 +9,6 @@ spec:
     metadata:
       labels:
         app: {{ .Values.app.go.name }}
-      annotations:
-        dapr.io/enabled: "true"
-        dapr.io/id: "calculator-front-end"
-        dapr.io/port: "50030"
-        dapr.io/config: "tracing"
     spec:
       nodeSelector: {{ .Values.nodeSelector }}
       containers:
@@ -31,6 +26,8 @@ spec:
             - containerPort: 50030
           resources:
             requests:
-              cpu: 200m
+              memory: 100Mi
+              cpu: 50m
             limits:
-              cpu: 900m
+              memory: 150Mi
+              cpu: 100m
