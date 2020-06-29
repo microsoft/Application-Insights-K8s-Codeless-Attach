@@ -1,9 +1,9 @@
-FROM node:8-alpine3.10
+FROM mhart/alpine-node:slim-8
 
 WORKDIR  /mutating-webhook
 
 COPY . /mutating-webhook
-RUN npm install
+#RUN npm installdo
 
 EXPOSE 1337
-CMD [ "npm", "start" ]
+CMD [ "node", "server" ]

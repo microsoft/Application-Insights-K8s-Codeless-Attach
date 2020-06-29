@@ -1,0 +1,35 @@
+{{- range .Values.namespaces }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $.Values.localForwarder.name }}-{{ .target }}
+  namespace: {{ quote .target }}
+  {{- template "common.labels" $ }}
+spec:
+  replicas: {{ $.Values.localForwarder.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $.Values.localForwarder.name }}-{{ .target }}
+  template:
+    metadata:
+      labels:
+        app: {{ $.Values.localForwarder.name }}-{{ .target }}
+    spec:
+      containers:
+      - name: {{ $.Values.localForwarder.name }}-{{ .target }}
+        image: {{ $.Values.localForwarder.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http-port
+          containerPort: {{ $.Values.localForwarder.port }}
+        env:
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          value: {{ .iKey }}
+        - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
+          value: {{ .iKey }}
+        - name: APPINSIGHTS_ADAPTIVESAMPLINGEVENTSLIMIT
+          value: {{ quote $.Values.localForwarder.adaptiveSamplingLimit }}
+        - name: APPINSIGHTS_ADAPTIVESAMPLINGNONEVENTSLIMIT
+          value: {{ quote $.Values.localForwarder.adaptiveSamplingLimit }}
+---
+{{- end }}
