@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-namespace: "aks-webhook-ns"
+namespace: "kube-system"
 
 namespaces: 
   - target : "NAMEPACE1"
@@ -11,7 +11,7 @@ namespaces:
     iKey: "target ikey2"
     
 app:
-  name: "mutating-webhook"
+  name: "app-monitoring-webhook"
   environment: "test"
   owner : "Microsoft"
   image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview60"
@@ -25,10 +25,3 @@ labeler:
 replicaCount: 1
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"
-
-localForwarder: 
-  image: "mcr.microsoft.com/applicationinsights/codeless-attach/local-forwarder:v14"
-  name: "localforwarder"
-  port: 50002
-  adaptiveSamplingLimit: 5
-  replicas: 1

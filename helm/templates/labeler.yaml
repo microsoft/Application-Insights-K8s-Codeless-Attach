@@ -19,7 +19,7 @@ spec:
         - label
         - ns
         - {{ .target }}
-        - mutating-webhook=enabled
+        - app-monitoring=enabled
         - --overwrite
       restartPolicy: Never
       serviceAccount: {{ $.Values.labeler.account }}
