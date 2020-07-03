@@ -19,6 +19,7 @@ export class ContentProcessor {
             },
         };
         let instance: ContentProcessor;
+        
         /* tslint:disable */
         return new Promise<object>((resolve, reject) => {
             /* tslint:enable */
@@ -27,7 +28,7 @@ export class ContentProcessor {
             response.apiVersion = instance.content.apiVersion;
             response.response.uid = instance.content.request.uid;
             response.kind = instance.content.kind;
-            response.response.allowed = instance.validate_content();
+            response.response.allowed = TemplateValidator.ValidateContent(instance.content);
 
             resolve(instance.getPodExtraData());
         }).then((extraData) => {
@@ -35,7 +36,7 @@ export class ContentProcessor {
             if (response.response.allowed) {
                 response.response.patch = Buffer.from(
                     JSON.stringify(
-                        instance.calculate_diff(extraData as DeployReplica)))
+                        DiffCalculator.CalculateDiff(instance.content, extraData as DeployReplica)))
                     .toString("base64");
             }
 
@@ -65,45 +66,91 @@ export class ContentProcessor {
         }
     }
 
-    private validate_content() {
-        let returnValue = true;
-        logger.info(`validating content ${JSON.stringify(this.content)}`);
+    private getPodExtraData(): Promise<DeployReplica> {
 
-        if (isNullOrUndefined(this.content)) {
-            logger.error("null content");
+        logger.info("attempting to get owner info");
+        const extraData: DeployReplica = new DeployReplica();
+        extraData.podName = this.content.request.object.metadata.generateName;
+        const namespaceName = this.content.request.namespace;
+
+        const kc = new k8s.KubeConfig();
+        kc.loadFromDefault();
+        const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
+
+        if (this.content.kind === "Testing") {
+            extraData.deploymentName = extraData.podName;
+            extraData.replicaName = extraData.podName;
+            extraData.namespace = namespaceName;
+            return Promise.resolve(extraData);
         }
+        if (!this.content.request.object.metadata.ownerReferences
+            || !this.content.request.object.metadata.ownerReferences[0]
+            || !this.content.request.object.metadata.ownerReferences[0].name) {
+            return Promise.reject("missing owner refference");
+        }
+        const replicaName = this.content.request.object.metadata.ownerReferences[0].name;
+        logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
 
-        if (isNullOrUndefined(this.content.request)
-            || isNullOrUndefined(this.content.request.operation)
-            || (this.content.request.operation !== "CREATE"
-                && this.content.request.operation !== "UPDATE")) {
+        return k8sApi.readNamespacedReplicaSet(replicaName, namespaceName).then((result) => {
+            extraData.deploymentName = result.body.metadata.ownerReferences[0].name;
+            extraData.replicaName = result.body.metadata.name;
+            extraData.namespace = result.body.metadata.namespace;
+
+            logger.info(`got the following extra data ${JSON.stringify(extraData)}`);
+            return extraData;
+        }).catch((error) => {
+            logger.info(`failed to get extra data error ${JSON.stringify(error)}`);
+            throw (error);
+        });
+    }
+}
+
+export class TemplateValidator {
+    public static ValidateContent(content: IRootObject) {
+        let returnValue = true;
+        logger.info(`validating content ${JSON.stringify(content)}`);
+
+        if (isNullOrUndefined(content)) {
+            logger.error("null content");
+            returnValue = false;
+        }
+        else if (isNullOrUndefined(content.request)
+            || isNullOrUndefined(content.request.operation)
+            || (content.request.operation !== "CREATE"
+                && content.request.operation !== "UPDATE")) {
 
             logger.error("invalid incoming operation");
             returnValue = false;
         }
-
-        if (isNullOrUndefined(this.content.kind)
-            || (this.content.kind !== "AdmissionReview" && this.content.kind !== "Testing")) {
+        else if (isNullOrUndefined(content.kind)
+            || (content.kind !== "AdmissionReview" && content.kind !== "Testing")) {
 
             logger.error("invalid incoming kind");
             returnValue = false;
         }
-
-        if (isNullOrUndefined(this.content.request.object)
-            || isNullOrUndefined(this.content.request.object.spec)) {
+        else if (isNullOrUndefined(content.request.object)
+            || isNullOrUndefined(content.request.object.spec)) {
 
             logger.error("missing spec in template");
             returnValue = false;
         }
 
-        logger.info(`succesfully validated content ${JSON.stringify(this.content)}`);
+        logger.info(`succesfully validated content ${JSON.stringify(content)}`);
         return returnValue;
     }
+}
 
-    private calculate_diff(extraData: DeployReplica): object {
+export class DiffCalculator {
+    public static CalculateDiff(content: IRootObject, extraData: DeployReplica): object {
+
+        if (isNullOrUndefined(content)) {
+            logger.error("null content");
+            return null;
+        }
+
         /* tslint:disable */
         logger.info(`calculating diff`);
-        const updatedContent: IRootObject = JSON.parse(JSON.stringify(this.content));
+        const updatedContent: IRootObject = JSON.parse(JSON.stringify(content));
 
         let updateTarget: object;
 
@@ -153,43 +200,5 @@ export class ContentProcessor {
         /* tslint:enable */
         logger.info(`determined diff ${JSON.stringify(jsonDiff)}`);
         return jsonDiff;
-    }
-
-    private getPodExtraData(): Promise<DeployReplica> {
-
-        logger.info("attempting to get owner info");
-        const extraData: DeployReplica = new DeployReplica();
-        extraData.podName = this.content.request.object.metadata.generateName;
-        const namespaceName = this.content.request.namespace;
-
-        const kc = new k8s.KubeConfig();
-        kc.loadFromDefault();
-        const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
-
-        if (this.content.kind === "Testing") {
-            extraData.deploymentName = extraData.podName;
-            extraData.replicaName = extraData.podName;
-            extraData.namespace = namespaceName;
-            return Promise.resolve(extraData);
-        }
-        if (!this.content.request.object.metadata.ownerReferences
-            || !this.content.request.object.metadata.ownerReferences[0]
-            || !this.content.request.object.metadata.ownerReferences[0].name) {
-            return Promise.reject("missing owner refference");
-        }
-        const replicaName = this.content.request.object.metadata.ownerReferences[0].name;
-        logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
-
-        return k8sApi.readNamespacedReplicaSet(replicaName, namespaceName).then((result) => {
-            extraData.deploymentName = result.body.metadata.ownerReferences[0].name;
-            extraData.replicaName = result.body.metadata.name;
-            extraData.namespace = result.body.metadata.namespace;
-
-            logger.info(`got the following extra data ${JSON.stringify(extraData)}`);
-            return extraData;
-        }).catch((error) => {
-            logger.info(`failed to get extra data error ${JSON.stringify(error)}`);
-            throw (error);
-        });
     }
 }
