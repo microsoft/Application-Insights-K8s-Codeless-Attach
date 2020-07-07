@@ -1,32 +1,10 @@
 #!/bin/bash
 
 set -e
-title="mutating-webhook"
-namespace="aks-webhook-ns"
+title="app-monitoring-webhook"
+namespace="kube-system"
 
-echo "create namespace ${namespace}"
-
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: aks-webhook-ns
-  labels:
-    purpose: aks_codeless_attach
-    owner: Microsoft
-  annotations: 
-    environment: testing
-EOF
-
-retval=$? 
-if [ $retval -ne 0 ]; then
-    echo "Error creating namespace"
-    exit 1
-fi
-
-echo "namespace created"
-
-[ -z ${title} ] && title=mutating-webhook
+[ -z ${title} ] && title=app-monitoring-webhook
 [ -z ${namespace} ] && namespace=aks-webhook-ns
 
 if [ ! -x "$(command -v dos2unix)" ]; then

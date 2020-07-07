@@ -19,5 +19,5 @@ webhooks:
     failurePolicy: Ignore
     namespaceSelector:
       matchLabels:
-        mutating-webhook: enabled
+        app-monitoring: enabled
 ---

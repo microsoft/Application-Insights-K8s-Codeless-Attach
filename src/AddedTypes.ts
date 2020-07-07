@@ -44,10 +44,6 @@ export class AddedTypes {
                     },
                 },
             },
-            {
-                name: "OC_AGENT_ENDPOINT",
-                value: `http://localforwarder-${extraData.namespace}.${extraData.namespace}:50002`,
-            },
             /*{
                 name: "APPLICATIONINSIGHTS_CONNECTION_STRING",
                 valueFrom: {
