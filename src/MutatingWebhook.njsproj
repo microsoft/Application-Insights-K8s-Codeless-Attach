@@ -20,25 +20,39 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
-    <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
     <Content Include="tslint.json" />
     <Content Include="README.md" />
     <TypeScriptCompile Include="AddedTypes.ts" />
+    <TypeScriptCompile Include="ConfigReaderTest.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ConfigReader.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ConfigTypes.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ContentProcessor.ts" />
-    <TypeScriptCompile Include="ContentProcessorTests.ts" />
     <TypeScriptCompile Include="LoggerWrapper.ts" />
+    <TypeScriptCompile Include="NamespaceLabeler.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="RequestDefinition.ts" />
     <TypeScriptCompile Include="server.ts" />
-    <TypeScriptCompile Include="UnitTest1.ts">
+    <None Include="testConsts.ts">
       <SubType>Code</SubType>
       <TestFramework>ExportRunner</TestFramework>
+    </None>
+    <TypeScriptCompile Include="ContentProcessorTest.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MutatingWebhook" />
-    <Folder Include="MutatingWebhook\MutatingWebhook" />
+    <Folder Include="extras\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->

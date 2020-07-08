@@ -1,0 +1,4 @@
+#Application monitoring settings 
+[application-monitoring-settings.namespaces]
+    #Excluded namespaces will not be monitored by application monitoring
+    excluded = []
