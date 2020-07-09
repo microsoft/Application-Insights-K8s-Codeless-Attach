@@ -34,9 +34,12 @@ export class NamespaceLabeler {
                         if (patchPayload.metadata.labels == null) {
                             patchPayload.metadata.labels = {};
                         }
-                        patchPayload.metadata.labels["app-monitoring"] =
-                            config.excludedNamespaces.indexOf(item.metadata.name) < 0 ?
-                            "enable" : "disabled";
+                        
+                        if (config.excludedNamespaces.indexOf(item.metadata.name) < 0) {
+                            patchPayload.metadata.labels["app-monitoring"] = "enable";
+                        } else {
+                            patchPayload.metadata.labels["app-monitoring"]=undefined;
+                        }
                         logger.info(`attempt patch ${JSON.stringify(patchPayload)}`)
                         patchPayload.kind
                         return k8sApi.patchNamespace(item.metadata.name, patchPayload, undefined, undefined, undefined, undefined,
