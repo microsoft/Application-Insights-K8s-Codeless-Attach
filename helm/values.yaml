@@ -4,12 +4,6 @@
 
 namespace: "kube-system"
 
-namespaces: 
-  - target : "NAMEPACE1"
-    iKey: "target ikey1"
-  - target : "NAMEPACE2"
-    iKey: "target ikey2"
-    
 app:
   name: "app-monitoring-webhook"
   environment: "test"
@@ -18,9 +12,7 @@ app:
   #agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
   agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview2833"
   caBundle: "baseBundle"
-
-labeler: 
-  account: labeler
+  iKey: "target ikey2"
   
 replicaCount: 1
 

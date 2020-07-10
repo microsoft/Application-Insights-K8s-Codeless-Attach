@@ -1,11 +1,8 @@
-{{- range .Values.namespaces }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: attach-config
-  namespace: {{ quote .target }}
-  {{- template "common.labels" $ }}
+  name: {{ .Values.app.name }}-attach-config
+  {{- template "common.metadata" . }}
 data:
-  ikey: {{ .iKey }}
+  ikey: {{ .Values.app.iKey }}
 ---
-{{- end }}
