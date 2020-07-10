@@ -2,3 +2,9 @@
 [application-monitoring-settings.namespaces]
     #Excluded namespaces will not be monitored by application monitoring
     excluded = ["kube-system"]
+	[[IKEYS]]
+    namespace = "a"
+    ikey = "1"
+	[[IKEYS]]
+    namespace = "b"
+    ikey = "2"
