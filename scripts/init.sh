@@ -104,12 +104,7 @@ export CA_BUNDLE=$(kubectl get configmap -n kube-system extension-apiserver-auth
 #cat ./values._aml | envsubst > ./values.yaml
 
 cat <<EOF >> ./values.yaml
-namespaces: 
-  - target : "<target namespace>" # kubernetes namespace for which to enable codeless attach
-    iKey: "<target ikey>" # instrumentation key of Application Insights resource to send telemetry to
-  - target : "<target namespace>" # kubernetes namespace for which to enable codeless attach
-    iKey: "<target ikey>" # instrumentation key of Application Insights resource to send telemetry to
-
 app:
+  iKey: "<target ikey>" # instrumentation key of Application Insights resource to send telemetry to
   caBundle: "${CA_BUNDLE}"
 EOF
