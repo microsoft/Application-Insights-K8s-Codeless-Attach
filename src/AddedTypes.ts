@@ -1,6 +1,5 @@
-﻿/// <reference path="ConfigReaderTest.ts" />
-import { DeployReplica } from "./RequestDefinition";
-import { ConfigReader, AddonConfig } from './ConfigReader';
+﻿import { DeployReplica } from "./RequestDefinition";
+import { ConfigReader } from './ConfigReader';
 
 export class AddedTypes {
     public static init_containers() {
