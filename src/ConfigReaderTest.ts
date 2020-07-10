@@ -1,5 +1,6 @@
 ﻿import assert = require('assert');
-import { ConfigReader, AddonConfig } from './ConfigReader'
+import { ConfigReader } from './ConfigReader'
+import { AddonConfig } from './AddonConfig';
 
 describe("ConfigReader", () => {
     beforeEach((done) => {
