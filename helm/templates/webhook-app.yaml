@@ -29,9 +29,16 @@ spec:
             - name: webhook-certs
               mountPath: /mnt/webhook
               readOnly: true
+            - name: settings-vol-config
+              mountPath: /mnt/settings
+              readOnly: true
       serviceAccount: {{ $.Values.app.name }}
       volumes:
         - name: webhook-certs
           secret:
             secretName: {{ .Values.app.name }}
+        - name: settings-vol-config
+          configMap:
+            name: container-azm-ms-agentconfig
+            optional: true
 ---

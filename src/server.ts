@@ -2,6 +2,7 @@
 import https = require("https");
 import { ContentProcessor } from "./ContentProcessor";
 import { logger } from "./LoggerWrapper";
+import { NamespaceLabeler } from "./NamespaceLabeler";
 
 let options;
 const port = process.env.port || 1337;
@@ -44,3 +45,5 @@ https.createServer(options, (req, res) => {
     }
 
 }).listen(port);
+
+NamespaceLabeler.Start(0);

@@ -1,4 +1,4 @@
-﻿import * as k8s from "@kubernetes/client-node";
+﻿import k8s = require('@kubernetes/client-node');;
 import { isNullOrUndefined } from "util";
 import { AddedTypes } from "./AddedTypes";
 import { logger } from "./LoggerWrapper";
@@ -19,7 +19,7 @@ export class ContentProcessor {
             },
         };
         let instance: ContentProcessor;
-        
+
         /* tslint:disable */
         return new Promise<object>((resolve, reject) => {
             /* tslint:enable */
@@ -75,7 +75,7 @@ export class ContentProcessor {
 
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
-        const k8sApi = kc.makeApiClient(k8s.AppsV1beta2Api);
+        const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
 
         if (this.content.kind === "Testing") {
             extraData.deploymentName = extraData.podName;
