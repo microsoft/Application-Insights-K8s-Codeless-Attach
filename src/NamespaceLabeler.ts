@@ -1,4 +1,5 @@
-﻿import { ConfigReader, AddonConfig } from "./ConfigReader"
+﻿import { ConfigReader } from "./ConfigReader"
+import { AddonConfig } from './AddonConfig';
 import { setTimeout } from "timers";
 import k8s = require("@kubernetes/client-node");
 import { logger } from "./LoggerWrapper";
@@ -8,7 +9,7 @@ export class NamespaceLabeler {
     private delay: number = 15 * 60 * 1000
 
     private loop(delay?: number) {
-        if (delay != null || delay == 0) {
+        if (delay != null || delay === 0) {
             this.delay = delay*60*1000;
         }
 
@@ -25,7 +26,7 @@ export class NamespaceLabeler {
                 const kc = new k8s.KubeConfig();
                 kc.loadFromDefault();
                 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-                k8s.V1Namespace
+
                 return k8sApi.listNamespace().then((result) => {
                     logger.info(`got namespace list ${JSON.stringify(result)}`);
                     const namespaceList = result.body.items;
@@ -34,14 +35,14 @@ export class NamespaceLabeler {
                         if (patchPayload.metadata.labels == null) {
                             patchPayload.metadata.labels = {};
                         }
-                        
+
                         if (config.excludedNamespaces.indexOf(item.metadata.name) < 0) {
                             patchPayload.metadata.labels["app-monitoring"] = "enable";
                         } else {
                             patchPayload.metadata.labels["app-monitoring"]=undefined;
                         }
                         logger.info(`attempt patch ${JSON.stringify(patchPayload)}`)
-                        patchPayload.kind
+
                         return k8sApi.patchNamespace(item.metadata.name, patchPayload, undefined, undefined, undefined, undefined,
                             {
                                 headers: {

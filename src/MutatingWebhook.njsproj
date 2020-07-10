@@ -25,6 +25,9 @@
     <Content Include="tslint.json" />
     <Content Include="README.md" />
     <TypeScriptCompile Include="AddedTypes.ts" />
+    <TypeScriptCompile Include="AddonConfig.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ConfigReaderTest.ts">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
@@ -36,6 +39,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="ContentProcessor.ts" />
+    <TypeScriptCompile Include="DiffCalculator.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="LoggerWrapper.ts" />
     <TypeScriptCompile Include="NamespaceLabeler.ts">
       <SubType>Code</SubType>
@@ -49,6 +55,9 @@
     <TypeScriptCompile Include="ContentProcessorTest.ts">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="TemplateValidator.ts">
+      <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>

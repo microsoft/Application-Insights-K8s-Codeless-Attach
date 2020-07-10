@@ -8,7 +8,6 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "start": "node server",
-    "test": "node ContentProcessorTests",
     "lint": "tslint --fix -c tslint.json *.ts"
   },
   "author": {

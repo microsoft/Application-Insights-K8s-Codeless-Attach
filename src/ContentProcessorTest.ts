@@ -1,7 +1,9 @@
 ﻿import assert = require('assert');
-import { ContentProcessor, TemplateValidator, DiffCalculator } from "./ContentProcessor";
+import { ContentProcessor } from "./ContentProcessor";
 import { IRootObject } from './RequestDefinition';
 import { AddedTypes } from './AddedTypes';
+import { TemplateValidator } from './TemplateValidator';
+import { DiffCalculator } from './DiffCalculator';
 
 import Test = require('./testConsts');
 describe("ContentProcessor", () => {

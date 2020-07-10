@@ -1,4 +1,6 @@
 ﻿import { DeployReplica } from "./RequestDefinition";
+import { ConfigReader } from './ConfigReader';
+
 export class AddedTypes {
     public static init_containers() {
         return [{
@@ -13,7 +15,7 @@ export class AddedTypes {
         }];
     }
 
-    public static env(extraData: DeployReplica) {
+    public static async env(extraData: DeployReplica) {
         const returnValue = [
             {
                 name: "JAVA_TOOL_OPTIONS",
@@ -37,12 +39,7 @@ export class AddedTypes {
             },
             {
                 name: "APPINSIGHTS_INSTRUMENTATIONKEY",
-                valueFrom: {
-                    configMapKeyRef: {
-                        key: "ikey",
-                        name: "attach-config",
-                    },
-                },
+                value: (await ConfigReader.ReadConfig()).retrieveIkey(extraData.namespace)
             },
             /*{
                 name: "APPLICATIONINSIGHTS_CONNECTION_STRING",
