@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.app.name }}
   {{- template "common.metadata" . }}
 spec:
-  #type: LoadBalancer
+  type: LoadBalancer
   ports:
     - port: 443
       protocol: TCP

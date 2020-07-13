@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.app.name }}
   {{- template "common.metadata" . }}
 webhooks:
-  - name: {{ .Values.app.name }}.aks-webhook-ns.svc
+  - name: {{ .Values.app.name }}.{{ .Values.namespace }}.svc
     clientConfig:
       service:
         name: {{ .Values.app.name }}
@@ -19,5 +19,5 @@ webhooks:
     failurePolicy: Ignore
     namespaceSelector:
       matchLabels:
-        app-monitoring: enabled
+        app-monitoring: enable
 ---

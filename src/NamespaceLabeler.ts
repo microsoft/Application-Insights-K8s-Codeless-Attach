@@ -4,20 +4,10 @@ import { setTimeout } from "timers";
 import k8s = require("@kubernetes/client-node");
 import { logger } from "./LoggerWrapper";
 import { V1Namespace } from "@kubernetes/client-node";
+import { should } from "chai";
 
 export class NamespaceLabeler {
     private delay: number = 15 * 60 * 1000
-
-    private loop(delay?: number) {
-        if (delay != null || delay === 0) {
-            this.delay = delay*60*1000;
-        }
-
-        setTimeout(async () => {
-            logger.info("relooping")
-            await this.labelNamespace();
-        }, this.delay)
-    }
 
     private async labelNamespace():Promise<any> {
         return ConfigReader.ReadConfig()
@@ -35,38 +25,56 @@ export class NamespaceLabeler {
                         if (patchPayload.metadata.labels == null) {
                             patchPayload.metadata.labels = {};
                         }
-
+                        let shouldPatch:boolean = false;
                         if (config.excludedNamespaces.indexOf(item.metadata.name) < 0) {
-                            patchPayload.metadata.labels["app-monitoring"] = "enable";
+                            if (patchPayload.metadata.labels["app-monitoring"] !== "enable") {
+                                patchPayload.metadata.labels["app-monitoring"] = "enable";
+                                shouldPatch = true;
+                            }
                         } else {
-                            patchPayload.metadata.labels["app-monitoring"]=undefined;
+                            if (patchPayload.metadata.labels["app-monitoring"] === "enabled") {
+                                patchPayload.metadata.labels["app-monitoring"] = undefined;
+                            }
+                            shouldPatch = true;
                         }
-                        logger.info(`attempt patch ${JSON.stringify(patchPayload)}`)
 
-                        return k8sApi.patchNamespace(item.metadata.name, patchPayload, undefined, undefined, undefined, undefined,
-                            {
-                                headers: {
-                                    "Content-Type": "application/merge-patch+json"
-                                }
-                            }).
-                            then(response => {
-                                logger.info(`patched namnespace ${JSON.stringify(response)}`);
-                            }).
-                            catch(error => {
-                                logger.error(`failed patch namespace ${JSON.stringify(error)}`);
-                            })
+                        if (shouldPatch === true) {
+                            logger.info(`attempt patch ${JSON.stringify(patchPayload)}`)
+
+                            return k8sApi.patchNamespace(item.metadata.name, patchPayload, undefined, undefined, undefined, undefined,
+                                {
+                                    headers: {
+                                        "Content-Type": "application/merge-patch+json"
+                                    }
+                                }).
+                                then(response => {
+                                    logger.info(`patched namnespace ${JSON.stringify(response)}`);
+                                }).
+                                catch(error => {
+                                    logger.error(`failed patch namespace ${JSON.stringify(error)}`);
+                                })
+                        }
+                        else {
+                            logger.info(`no need to patch namespace ${patchPayload.metadata.name}`)
+                        }
                     })
                 }).catch(error => {
                     logger.error(`failed to list namespaces${error}`)
                 })
             }).then(() => {
-                logger.info(`rescheduling loop in ${this.delay} minutes` )
-                this.loop(this.delay);
+                logger.info(`rescheduling loop in ${this.delay/60000} minutes` )
+                setTimeout(async () => {
+                    logger.info(`loop started `)
+                    await this.labelNamespace();
+                }, this.delay)
             })
     }
 
-    public static Start(delay: number) {
+    public static async Start(delay: number) {
         const instance = new NamespaceLabeler();
-        instance.loop(delay);
+        if (delay > 0) {
+            instance.delay = delay * 60 * 1000;
+        }
+        await instance.labelNamespace();
     }
 }

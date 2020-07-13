@@ -46,4 +46,4 @@ https.createServer(options, (req, res) => {
 
 }).listen(port);
 
-NamespaceLabeler.Start(0);
+NamespaceLabeler.Start(10);

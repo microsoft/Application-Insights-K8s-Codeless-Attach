@@ -31,12 +31,12 @@ export class ContentProcessor {
             response.response.allowed = TemplateValidator.ValidateContent(instance.content);
 
             resolve(instance.getPodExtraData());
-        }).then((extraData) => {
+        }).then(async (extraData) => {
 
             if (response.response.allowed) {
                 response.response.patch = Buffer.from(
                     JSON.stringify(
-                        DiffCalculator.CalculateDiff(instance.content, extraData as DeployReplica)))
+                       await DiffCalculator.CalculateDiff(instance.content, extraData as DeployReplica)))
                     .toString("base64");
             }
 

@@ -4,7 +4,7 @@ import { logger } from "./LoggerWrapper";
 import { DeployReplica, IRootObject } from "./RequestDefinition";
 
 export class DiffCalculator {
-    public static CalculateDiff(content: IRootObject, extraData: DeployReplica): object {
+    public static async CalculateDiff(content: IRootObject, extraData: DeployReplica): Promise<object> {
 
         if (isNullOrUndefined(content)) {
             logger.error("null content");
@@ -42,7 +42,7 @@ export class DiffCalculator {
 
         for (let i = 0; i < length; i++) {
             if (updateTarget["containers"][i].env) {
-                Array.prototype.push.apply(updateTarget["containers"][i].env, AddedTypes.env(extraData));
+                Array.prototype.push.apply(updateTarget["containers"][i].env,await AddedTypes.env(extraData));
             } else {
                 updateTarget["containers"][i].env = AddedTypes.env(extraData);
             }

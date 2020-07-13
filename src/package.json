@@ -5,8 +5,7 @@
   "license": "MIT",
   "repository": "https://github.com/microsoft/Application-Insights-K8s-Codeless-Attach/",
   "scripts": {
-    "build": "tsc --build",
-    "clean": "tsc --build --clean",
+    "build": "tsc -b",
     "start": "node server",
     "lint": "tslint --fix -c tslint.json *.ts"
   },
