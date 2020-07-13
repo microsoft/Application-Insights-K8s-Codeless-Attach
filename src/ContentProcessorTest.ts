@@ -46,6 +46,13 @@ describe("ContentProcessor", () => {
         assert.equal(result.request.uid, result.response.uid)
     })
 
+    it("ValidObject4", async () => {
+        const result = JSON.parse(await ContentProcessor.TryUpdateConfig(Test.TestObject4));
+        assert.equal(true, result.response.allowed);
+        assert.equal("JSONPATCH", result.response.patchtype);
+        assert.equal(result.request.uid, result.response.uid)
+    })
+
     it("ValidateNull", () => {
         assert.equal(false, TemplateValidator.ValidateContent(null),
             "should be false here");
@@ -100,24 +107,17 @@ describe("ContentProcessor", () => {
             "should be false here");
     })
 
-    it("DiffCalculatorNull1", () => {
-        assert.equal(null, DiffCalculator.CalculateDiff(null, null),
+    it("DiffCalculatorNull1", async () => {
+        assert.equal(null, await DiffCalculator.CalculateDiff(null, null),
             "should be null here");
     })
 
-    it("DiffCalculatorNull2", () => {
-        const testSubject: IRootObject = JSON.parse(Test.TestObject2);
-        const result = DiffCalculator.CalculateDiff(testSubject, null);
-        assert.notEqual(null, result,
-            "should not be null here");
+    it("DiffCalculatorTestContent",async () => {
+        const testSubject: IRootObject = JSON.parse(Test.TestObject);
+        const result = await DiffCalculator.CalculateDiff(testSubject, null);
         assert.equal("replace", result[0].op);
         assert.equal("/spec", result[0].path);
         assert.notEqual(null, result[0].value);
-    })
-
-    it("DiffCalculatorTestContent", () => {
-        const testSubject: IRootObject = JSON.parse(Test.TestObject);
-        const result = DiffCalculator.CalculateDiff(testSubject, null);
         assert.deepEqual(AddedTypes.init_containers(), result[0].value.template.spec.initContainers,
             "should match containers");
         assert.deepEqual(AddedTypes.volumes(), result[0].value.template.spec.volumes,

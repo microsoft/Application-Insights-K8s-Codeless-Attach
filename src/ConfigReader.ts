@@ -13,16 +13,20 @@ export class ConfigReader {
         }
         let instance: ConfigReader;
         instance = new ConfigReader();
-        const filePath: string = file != null ? file : instance.configPath;
+        let filePath: string = instance.configPath;
+        if (file !== null && file !== undefined && file !== "")
+        {
+            filePath = file
+        }
 
         return new Promise<AddonConfig>((resolve, reject) => {
-            fs.stat(file, (error, stats) => {
+            fs.stat(filePath, (error, stats) => {
                 if (error) {
                     logger.info(`could not find file ${file}`)
                     resolve(this.CurrentConfig);
                 }else if (stats.ctime !== this.CurrentConfig.configTime) {
                     logger.info(`timestamp ${stats.ctime} with config timestamp ${this.CurrentConfig.configTime}doesn't match attempting to read ${filePath}`);
-                    fs.readFile(file, (err, data) => {
+                    fs.readFile(filePath, (err, data) => {
                         if (!err) {
                             const fileContent = data.toString();
                             logger.info(`read config content ${fileContent}`);

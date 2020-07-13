@@ -22,18 +22,6 @@ export class AddedTypes {
                 value: "-javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar",
             },
             {
-                name: "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES",
-                value: "StartupBootstrapper",
-            },
-            {
-                name: "DOTNET_ADDITIONAL_DEPS",
-                value: "/agentfiles/core/additionalDeps",
-            },
-            {
-                name: "DOTNET_SHARED_STORE",
-                value: "/agentfiles/core/store/lin",
-            },
-            {
                 name: "NODE_OPTIONS",
                 value: "--require /agentfiles/node/ai-bootstrap.js",
             },
