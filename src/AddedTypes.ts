@@ -40,10 +40,6 @@ export class AddedTypes {
                 value: (await ConfigReader.ReadConfig()).retrieveIkey(extraData.namespace)
             },
             {
-                name: "APPINSIGHTS_INSTRUMENTATIONKEY",
-                value: (await ConfigReader.ReadConfig()).retrieveIkey(extraData.namespace)
-            },
-            {
                 name: "TELEMETRY_IKEY",
                 value: process.env.TELEMETRY_IKEY,
             }
