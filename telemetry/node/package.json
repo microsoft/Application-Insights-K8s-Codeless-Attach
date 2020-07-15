@@ -1,0 +1,11 @@
+{
+  "name": "ai-telemetry",
+  "version": "0.0.0",
+  "description": "ai-telemetry",
+  "author": {
+    "name": "Microsoft"
+  },
+  "dependencies": {
+    "applicationinsights": "^1.6.0"
+  }
+}

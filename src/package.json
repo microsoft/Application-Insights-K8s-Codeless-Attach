@@ -13,14 +13,14 @@
     "name": ""
   },
   "dependencies": {
-    "@kubernetes/client-node": "0.12.0",
-    "@types/node": "^8.0.14",
-    "chai": "4.2.0",
-    "mocha": "7.0.0",
-    "log4js": "5.1.0",
-    "toml": "3.0.0",
-    "ts-node": "8.10.2",
-    "typings": "2.1.1"
+    "@kubernetes/client-node": "latest",
+    "@types/node": "latest",
+    "chai": "latest",
+    "mocha": "latest",
+    "log4js": "latest",
+    "toml": "latest",
+    "ts-node": "latest",
+    "typings": "latest"
   },
   "engines": {
     "node": "^8.0.0"

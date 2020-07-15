@@ -11,8 +11,11 @@ app:
   image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:preview60"
   #agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/mutating-webhook-agents:v31"
   agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview2833"
+  agentsTelemetry: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/aitelemetry:test1"
   caBundle: "baseBundle"
   iKey: "target ikey2"
+  telemetryIkey: "320dcf98-173f-429b-ab39-df8b4951fb94"
+  telemetryConnString: "InstrumentationKey=320dcf98-173f-429b-ab39-df8b4951fb94"
   
 replicaCount: 1
 

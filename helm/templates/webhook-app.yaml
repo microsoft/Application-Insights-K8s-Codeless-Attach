@@ -18,8 +18,14 @@ spec:
           env: 
             - name: AGENTS_IMAGE
               value: {{ .Values.app.agents }}
+            - name: TELEMETRY_IMAGE
+              value: {{ .Values.app.agentsTelemetry }}
             - name: ALL_APPINSIGHTS_INSTRUMENTATIONKEY
               value: {{ .Values.app.iKey }}
+            - name: TELEMETRY_IKEY
+              value: {{ .Values.app.telemetryIkey }}
+            - name: TELEMETRY_CONN_STRING
+              value: {{ .Values.app.telemetryConnString }} 
           ports:
             - containerPort: 1337
           resources:
