@@ -1,7 +1,5 @@
-FROM alpine:3.10
+FROM mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:preview2833
 
-ADD ./agents/current/java/applicationinsights-agent-codeless*.jar /agents/java/applicationinsights-agent-codeless.jar
-ADD ./agents/current/java/appsvc.codeless /agents/java/appsvc.codeless
-ADD ./zips/ApplicationInsights.json /agents/java/ApplicationInsights.json
-ADD ./agents/current/nodejs /agents/node
-ADD ./agents/current/core /agents/core
+ADD ./java/aiTelemetry/target/aiTelemetry-1.0-SNAPSHOT.jar /agents/telemetry/java/ai-telemetry.jar
+ADD ./node /agents/telemetry/node
+ADD ./logsuploader/logsuploader /agents/telemetry/logsuploader/logsuploader

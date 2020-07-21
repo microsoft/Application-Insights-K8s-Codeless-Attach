@@ -20,6 +20,10 @@ spec:
               value: {{ .Values.app.agents }}
             - name: ALL_APPINSIGHTS_INSTRUMENTATIONKEY
               value: {{ .Values.app.iKey }}
+            - name: TELEMETRY_IKEY
+              value: {{ .Values.app.telemetryIkey }}
+            - name: TELEMETRY_CONN_STRING
+              value: {{ .Values.app.telemetryConnString }} 
           ports:
             - containerPort: 1337
           resources:
