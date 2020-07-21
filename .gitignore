@@ -333,3 +333,7 @@ src/**.js
 
 !agents/
 !samples/
+agents/java/**/target/
+agents/**/.vscode/
+agents/logsuploader/logsuploader*
+agents/java/aitelemetry/test

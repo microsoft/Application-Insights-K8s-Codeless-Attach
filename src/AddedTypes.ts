@@ -13,27 +13,18 @@ export class AddedTypes {
                 name: "agent-volume",
             }],
         },
-        {
-            args: ["-a", "/agents/.", "/agenttelemetry"],
-            command: ["cp"],
-            image: process.env.TELEMETRY_IMAGE || "ERROR",
-            name: "agent-telemetry-init",
-            volumeMounts: [{
-                mountPath: "/agenttelemetry",
-                name: "agent-telemetry-volume",
-            }],
-        }];
+        ];
     }
 
     public static async env(extraData: DeployReplica) {
         const returnValue = [
             {
                 name: "JAVA_TOOL_OPTIONS",
-                value: "-javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar -javaagent:/agenttelemetry/java/ai-telemetry.jar",
+                value: "-javaagent:/agentfiles/telemetry/java/ai-telemetry.jar -javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar",
             },
             {
                 name: "NODE_OPTIONS",
-                value: "--require /agentfiles/node/ai-bootstrap.js --require /agenttelemetry/node/ai-telemetry.js",
+                value: "--require /agentfiles/telemetry/node/ai-telemetry.js --require /agentfiles/node/ai-bootstrap.js",
             },
             {
                 name: "APPINSIGHTS_INSTRUMENTATIONKEY",
@@ -42,7 +33,11 @@ export class AddedTypes {
             {
                 name: "TELEMETRY_IKEY",
                 value: process.env.TELEMETRY_IKEY,
-            }
+            },
+            {
+                name: "TELEMETRY_CONN_STRING",
+                value: process.env.TELEMETRY_CONN_STRING,
+            },
             /*{
                 name: "APPLICATIONINSIGHTS_CONNECTION_STRING",
                 valueFrom: {
@@ -80,21 +75,13 @@ export class AddedTypes {
         return [{
             mountPath: "/agentfiles",
             name: "agent-volume",
-        },
-        {
-            mountPath: "/agenttelemetry",
-            name: "agent-telemetry-volume",
-        }];
+        }]
     }
 
     public static volumes() {
         return [{
             emptyDir: {},
             name: "agent-volume",
-        },
-        {
-            emptyDir: {},
-            name: "agent-telemetry-volume",
         }];
     }
 }

@@ -18,8 +18,6 @@ spec:
           env: 
             - name: AGENTS_IMAGE
               value: {{ .Values.app.agents }}
-            - name: TELEMETRY_IMAGE
-              value: {{ .Values.app.agentsTelemetry }}
             - name: ALL_APPINSIGHTS_INSTRUMENTATIONKEY
               value: {{ .Values.app.iKey }}
             - name: TELEMETRY_IKEY
