@@ -1,0 +1,2 @@
+{"time":"2020-07-20T23:27:11.620Z","level":"INFO","logger":"applicationinsights.diagnostics","message":"Application Insights Codeless Agent Attach Successful","properties":{"operation":"Startup","siteName":"unknown","ikey":"0ea304c8-8ce6-4626-8515-5407d2c7bdd1","extensionVersion":"unknown","sdkVersion":"2.5.1","subscriptionId":"unkn
+own"}}

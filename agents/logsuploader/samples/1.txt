@@ -1,0 +1,21 @@
+{
+  "message": "Application Insights was started with setupString: InstrumentationKey=626d518b-923b-41ed-a830-e7417752ebfe",
+  "level": "INFO",
+  "time": "Fri, 10 Jul 2020 19:53:36 GMT",
+  "logger": "nodejs.applicationinsights",
+  "properties": {}
+}
+{
+  "message": "applicationinsights module is already installed in this application; not re-attaching. Installed SDK location: /usr/local/lib/node_modules/applicationinsights/out/applicationinsights.js",
+  "level": "INFO",
+  "time": "Fri, 10 Jul 2020 19:53:37 GMT",
+  "logger": "nodejs.applicationinsights",
+  "properties": {}
+}
+{
+  "message": "Application Insights was started with setupString: InstrumentationKey=626d518b-923b-41ed-a830-e7417752ebfe",
+  "level": "INFO",
+  "time": "Fri, 10 Jul 2020 19:53:37 GMT",
+  "logger": "nodejs.applicationinsights",
+  "properties": {}
+}
