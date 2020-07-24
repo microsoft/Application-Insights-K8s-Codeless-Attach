@@ -1,12 +1,8 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"io/ioutil"
-	"os"
 	"runtime"
-	"time"
 )
 
 const windowsFolder = "./samples"
@@ -25,14 +21,14 @@ func main() {
 	if err != nil {
 		fmt.Println("No files available to upload at startup")
 	} else {
-		tailFiles(availableFiles)
+		tailFiles(availableFiles, folder, false)
 	}
 
 	fmt.Println("Done starting")
 
 	availableFiles, _ = pickupFiles(folder, true)
 
-	tailFiles(availableFiles)
+	tailFiles(availableFiles, folder, true)
 
 	/*
 		client := appinsights.NewTelemetryClient("320dcf98-173f-429b-ab39-df8b4951fb94")
@@ -51,51 +47,4 @@ func main() {
 			fmt.Println(line.Text)
 		}
 	*/
-}
-
-func tailFiles(files []os.FileInfo) {
-	for _, file := range files {
-		// here we be tailing the file
-		fmt.Println("tailing file", file.Name())
-	}
-}
-
-func pickupFiles(folder string, retry bool) ([]os.FileInfo, error) {
-
-	var availableFiles []os.FileInfo
-	var err error
-
-	for {
-		availableFiles, err = getFiles(folder)
-		if err == nil {
-			for index, file := range availableFiles {
-				fmt.Println(index, "=>", file.Name())
-			}
-			return availableFiles, nil
-		} else if retry {
-			fmt.Println("waiting for files to become available")
-			time.Sleep(1 * time.Second)
-		} else {
-			fmt.Println("attempted to pickup files, nothing to report, not waiting")
-			return nil, errors.New("No files detected")
-		}
-	}
-}
-
-func getFiles(folder string) ([]os.FileInfo, error) {
-	if folder == "" {
-		fmt.Println("error finding data")
-		return nil, errors.New("folder cannot be null")
-	}
-
-	files, err := ioutil.ReadDir(folder)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	for _, f := range files {
-		fmt.Println(f.Name())
-	}
-	return files, nil
 }

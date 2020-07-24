@@ -1,0 +1,21 @@
+{
+  "message": "Application Insights was started with setupString: 0ea304c8-8ce6-4626-8515-5407d2c7bdd1",
+  "level": "INFO",
+  "time": "Fri, 24 Jul 2020 00:22:25 GMT",
+  "logger": "nodejs.applicationinsights",
+  "properties": {}
+}
+{
+  "message": "Application Insights was started with setupString: 0ea304c8-8ce6-4626-8515-5407d2c7bdd1",
+  "level": "INFO",
+  "time": "Fri, 24 Jul 2020 00:22:26 GMT",
+  "logger": "nodejs.applicationinsights",
+  "properties": {}
+}
+{
+  "message": "Application Insights was started with setupString: 0ea304c8-8ce6-4626-8515-5407d2c7bdd1",
+  "level": "INFO",
+  "time": "Fri, 24 Jul 2020 00:22:26 GMT",
+  "logger": "nodejs.applicationinsights",
+  "properties": {}
+}

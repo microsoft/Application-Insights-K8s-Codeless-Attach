@@ -20,11 +20,11 @@ export class AddedTypes {
         const returnValue = [
             {
                 name: "JAVA_TOOL_OPTIONS",
-                value: "-javaagent:/agentfiles/telemetry/java/ai-telemetry.jar -javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar",
+                value: "-javaagent:/agentfiles/telemetry/java/ai-telemetry.jar -javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar  -Dsite.logdir=/var/log",
             },
             {
                 name: "NODE_OPTIONS",
-                value: "--require /agentfiles/telemetry/node/ai-telemetry.js --require /agentfiles/node/ai-bootstrap.js",
+                value: "--require /agentfiles/telemetry/node/ai-telemetry.js --require /agentfiles/node/build/src/Loader.js",
             },
             {
                 name: "APPINSIGHTS_INSTRUMENTATIONKEY",
