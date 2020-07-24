@@ -9,9 +9,10 @@ import (
 	"time"
 
 	"github.com/hpcloud/tail"
+	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
-func tailFiles(files []os.FileInfo, folder string, follow bool) {
+func tailFiles(files []os.FileInfo, folder string, follow bool, client appinsights.TelemetryClient) {
 	for _, file := range files {
 		var currentIndex int = -1
 		var index int = 0
@@ -23,15 +24,18 @@ func tailFiles(files []os.FileInfo, folder string, follow bool) {
 			fmt.Println("error tailing file", err)
 		}
 		index = -1
+		var accumulator string = ""
 		for line := range t.Lines {
 			index++
 
 			if currentIndex >= index {
 				continue
 			}
-
-			currentIndex = index
-			fmt.Println(line.Text)
+			accumulator += line.Text
+			if tryUpload(accumulator, client) {
+				currentIndex = index
+				accumulator = ""
+			}
 		}
 	}
 }
