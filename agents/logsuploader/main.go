@@ -2,23 +2,18 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"runtime"
 
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
-const windowsFolder = "./samples"
-const linuxFolder = "/var/log/applicationinsights"
-
 func main() {
 	fmt.Println("Starting logs uploader.")
 
-	client := appinsights.NewTelemetryClient("320dcf98-173f-429b-ab39-df8b4951fb94")
+	client := appinsights.NewTelemetryClient(getTelemetryTarget())
 
-	folder := linuxFolder
-	if runtime.GOOS == "windows" {
-		folder = windowsFolder
-	}
+	folder := getTargetFolder()
 
 	availableFiles, err := pickupFiles(folder, false) // attempt to pick up files
 
@@ -33,4 +28,30 @@ func main() {
 	availableFiles, _ = pickupFiles(folder, true)
 
 	tailFiles(availableFiles, folder, true, client)
+}
+
+func getTargetFolder() string {
+	windowsFolder := "./samples"
+	linuxFolder := "/var/log/applicationinsights"
+
+	folder := linuxFolder
+	if runtime.GOOS == "windows" {
+		folder = windowsFolder
+	}
+
+	return folder
+}
+
+func getTelemetryTarget() string {
+	var target string
+
+	if os.Getenv("TELEMETRY_IKEY") != "" {
+		target = os.Getenv("TELEMETRY_IKEY")
+	} else if os.Getenv("TELEMETRY_CONN_STRING") != "" {
+		target = os.Getenv("TELEMETRY_CONN_STRING")
+	} else {
+		target = "00000000-0000-0000-0000-000000000000"
+	}
+
+	return target
 }
