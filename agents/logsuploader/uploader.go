@@ -1,4 +1,4 @@
-package logsuploader
+package main
 
 import (
 	"encoding/json"
