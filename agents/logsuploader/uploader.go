@@ -1,9 +1,8 @@
-package main
+package logsuploader
 
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -12,29 +11,35 @@ func tryUpload(maybeJSON string, client appinsights.TelemetryClient) bool {
 	fmt.Println("attempting to parse and load", maybeJSON)
 	result := false
 
-	var deserialized map[string]interface{}
+	var deserialized Event
 
 	err := json.Unmarshal([]byte(maybeJSON), &deserialized)
 
 	if err == nil {
-		event := appinsights.NewEventTelemetry("IPA event")
-		for field, val := range deserialized {
-			switch field {
-			case "time":
-				{
-					eventTime, _ := time.Parse(val.(string), val.(string))
-					event.SetTime(eventTime)
-				}
-			default:
-				{
-					event.Properties[field] = val.(string)
-				}
-			}
-		}
+		event := createEvent(deserialized)
 		client.Track(event)
+		result = true
 	} else {
 		fmt.Println("not valid json ", maybeJSON)
 	}
 
 	return result
+}
+
+func createEvent(deserialized Event) *appinsights.EventTelemetry {
+
+	event := appinsights.NewEventTelemetry("IPA event")
+	event.SetTime(deserialized.Time)
+	event.Properties["Level"] = deserialized.Level
+	event.Properties["Logger"] = deserialized.Logger
+	event.Properties["Message"] = deserialized.Message
+
+	event.Properties["Operation"] = deserialized.Properties.Operation
+	event.Properties["SiteName"] = deserialized.Properties.SiteName
+	event.Properties["Ikey"] = deserialized.Properties.Ikey
+	event.Properties["ExtensionVersion"] = deserialized.Properties.ExtensionVersion
+	event.Properties["SdkVersion"] = deserialized.Properties.SdkVersion
+	event.Properties["SubscriptionID"] = deserialized.Properties.SubscriptionID
+
+	return event
 }

@@ -337,3 +337,4 @@ agents/java/**/target/
 agents/**/.vscode/
 agents/logsuploader/logsuploader*
 agents/java/aitelemetry/test
+agents/logsuploader/debug.test

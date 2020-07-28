@@ -1,4 +1,4 @@
-package main
+package logsuploader
 
 import (
 	"fmt"
@@ -33,22 +33,4 @@ func main() {
 	availableFiles, _ = pickupFiles(folder, true)
 
 	tailFiles(availableFiles, folder, true, client)
-
-	/*
-
-		metric := appinsights.NewMetricTelemetry("Queue length", 1)
-		event := appinsights.NewEventTelemetry("event")
-		metric.Properties["Queue name"] = "queuename"
-		client.Track(metric)
-		client.Track(event)
-		fmt.Println("Done starting")
-
-		t, err := tail.TailFile("/var/log/nginx.log", tail.Config{Follow: true})
-		if err != nil {
-			panic(err)
-		}
-		for line := range t.Lines {
-			fmt.Println(line.Text)
-		}
-	*/
 }

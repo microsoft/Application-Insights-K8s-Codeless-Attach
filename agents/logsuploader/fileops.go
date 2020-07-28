@@ -1,4 +1,4 @@
-package main
+package logsuploader
 
 import (
 	"errors"
@@ -47,7 +47,7 @@ func pickupFiles(folder string, retry bool) ([]os.FileInfo, error) {
 
 	for {
 		availableFiles, err = getFiles(folder)
-		if err == nil {
+		if err == nil && len(availableFiles) > 0 {
 			for index, file := range availableFiles {
 				fmt.Println(index, "=>", file.Name())
 			}
