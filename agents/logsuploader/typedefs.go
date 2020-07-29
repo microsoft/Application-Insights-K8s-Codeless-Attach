@@ -1,9 +1,7 @@
 package main
 
-import "time"
-
 type Event struct {
-	Time       time.Time  `json:"time"`
+	Time       string     `json:"time"` // leave as tring the date time format is not recognized
 	Level      string     `json:"level"`
 	Logger     string     `json:"logger"`
 	Message    string     `json:"message"`

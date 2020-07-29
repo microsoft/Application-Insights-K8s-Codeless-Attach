@@ -22,9 +22,12 @@ async function starter() {
 
         child.stdout.on('data', function (data) {
             let entry = data.toString();
-            console.log(entry);
-            if (entry.indexOf("Done starting") > -1) {
+
+            if (entry.indexOf("Done") > -1) {
                 resolve();
+            }
+            else {
+                console.log(entry);
             }
         });
     })

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -29,7 +30,15 @@ func tryUpload(maybeJSON string, client appinsights.TelemetryClient) bool {
 func createEvent(deserialized Event) *appinsights.EventTelemetry {
 
 	event := appinsights.NewEventTelemetry("IPA event")
-	event.SetTime(deserialized.Time)
+
+	eventTime, err := time.Parse(deserialized.Time, deserialized.Time)
+
+	if err != nil {
+		event.SetTime(eventTime)
+	}
+
+	//event.SetTime(deserialized.Time)
+	event.Properties["Time"] = deserialized.Time
 	event.Properties["Level"] = deserialized.Level
 	event.Properties["Logger"] = deserialized.Logger
 	event.Properties["Message"] = deserialized.Message

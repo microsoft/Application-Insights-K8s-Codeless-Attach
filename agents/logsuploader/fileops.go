@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/hpcloud/tail"
@@ -31,7 +32,7 @@ func tailFiles(files []os.FileInfo, folder string, follow bool, client appinsigh
 			if currentIndex >= index {
 				continue
 			}
-			accumulator += line.Text
+			accumulator += strings.Trim(line.Text, "\r\n")
 			if tryUpload(accumulator, client) {
 				currentIndex = index
 				accumulator = ""

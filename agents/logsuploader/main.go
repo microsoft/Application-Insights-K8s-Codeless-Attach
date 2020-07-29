@@ -1,9 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
-	"runtime"
+	"time"
+
+	"github.com/mitchellh/go-ps"
 
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -11,11 +15,16 @@ import (
 func main() {
 	fmt.Println("Starting logs uploader.")
 
-	client := appinsights.NewTelemetryClient(getTelemetryTarget())
+	if checkFirstInstance() == false {
+		fmt.Println("Already Running")
+		fmt.Println("Done starting")
+		return
+	}
 
-	folder := getTargetFolder()
+	folder, err := getTargetFolder(false, nil)
 
 	availableFiles, err := pickupFiles(folder, false) // attempt to pick up files
+	client := appinsights.NewTelemetryClient(getTelemetryTarget())
 
 	if err != nil {
 		fmt.Println("No files available to upload at startup")
@@ -25,21 +34,60 @@ func main() {
 
 	fmt.Println("Done starting")
 
+	folder, err = getTargetFolder(true, nil)
+
 	availableFiles, _ = pickupFiles(folder, true)
 
 	tailFiles(availableFiles, folder, true, client)
 }
 
-func getTargetFolder() string {
-	windowsFolder := "./samples"
-	linuxFolder := "/var/log/applicationinsights"
+func checkFirstInstance() bool {
+	procs, err := ps.Processes()
 
-	folder := linuxFolder
-	if runtime.GOOS == "windows" {
-		folder = windowsFolder
+	if err != nil {
+		return true
+
+	}
+	var found = 0
+	for index := range procs {
+		if procs[index].Executable() == "logsuploader" || procs[index].Executable() == "logsuploader.exe" {
+			found++
+			if found > 1 {
+				return false
+			}
+		}
 	}
 
-	return folder
+	return true
+}
+
+func getTargetFolder(wait bool, alternates []string) (string, error) {
+	folders := []string{
+		"./samples",
+		"/var/log/applicationinsights",
+		"/var/log/ApplicationInsights",
+	}
+
+	if alternates != nil && len(alternates) > 0 {
+		folders = alternates
+	}
+
+	for {
+		for _, elem := range folders {
+			_, err := ioutil.ReadDir(elem)
+			if err == nil {
+				return elem, nil
+			}
+
+		}
+		if wait == true {
+			time.Sleep(1 * time.Second)
+		} else {
+			break
+		}
+	}
+
+	return "", errors.New("no folder")
 }
 
 func getTelemetryTarget() string {
@@ -50,7 +98,7 @@ func getTelemetryTarget() string {
 	} else if os.Getenv("TELEMETRY_CONN_STRING") != "" {
 		target = os.Getenv("TELEMETRY_CONN_STRING")
 	} else {
-		target = "00000000-0000-0000-0000-000000000000"
+		target = "320dcf98-173f-429b-ab39-df8b4951fb94"
 	}
 
 	return target

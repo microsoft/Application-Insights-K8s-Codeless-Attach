@@ -39,7 +39,7 @@ func TestCreateEvent2(t *testing.T) {
 	d.Level = "1"
 	d.Logger = "2"
 	d.Message = "3"
-	d.Time = time.Now()
+	d.Time = time.Now().String()
 	d.Properties.Operation = "5"
 	d.Properties.SiteName = "6"
 	d.Properties.Ikey = "7"
@@ -56,7 +56,7 @@ func TestCreateEvent2(t *testing.T) {
 	if result.Properties["Level"] != "1" &&
 		result.Properties["Logger"] != "2" &&
 		result.Properties["Message"] != "3" &&
-		result.Time() != d.Time {
+		result.Time().String() != d.Time {
 		t.Error("bases invalid")
 	}
 
@@ -77,7 +77,7 @@ func TestCreateEvent3(t *testing.T) {
 	d.Level = "1"
 	d.Logger = "2"
 	d.Message = "3"
-	d.Time = time.Now()
+	d.Time = time.Now().String()
 
 	result := createEvent(d)
 
@@ -88,7 +88,7 @@ func TestCreateEvent3(t *testing.T) {
 	if result.Properties["Level"] != "1" &&
 		result.Properties["Logger"] != "2" &&
 		result.Properties["Message"] != "3" &&
-		result.Time() != d.Time {
+		result.Time().String() != d.Time {
 		t.Error("bases invalid")
 	}
 
