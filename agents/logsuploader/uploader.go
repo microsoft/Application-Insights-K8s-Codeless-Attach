@@ -19,6 +19,7 @@ func tryUpload(maybeJSON string, client appinsights.TelemetryClient) bool {
 	if err == nil {
 		event := createEvent(deserialized)
 		client.Track(event)
+		client.Channel().Flush()
 		result = true
 	} else {
 		fmt.Println("not valid json ", maybeJSON)
