@@ -41,10 +41,10 @@ export class ContentProcessor {
             }
 
             const finalResult = JSON.stringify(response);
-            logger.info(`determined final response ${finalResult}`);
+            logger.info(`determined final response`,finalResult);
             return finalResult;
         }).catch((ex) => {
-            logger.error(`exception encountered ${ex}`);
+            logger.error(`exception encountered `,ex);
             return JSON.stringify(response);
         });
     }
@@ -59,9 +59,9 @@ export class ContentProcessor {
 
         try {
             this.content = JSON.parse(message);
-            logger.info(`parsed incoming message content: ${message}, Initialized ContentProcessor.`);
+            logger.info(`parsed incoming message content, Initialized ContentProcessor.`, message);
         } catch (ex) {
-            logger.error(`exception ${ex} encountered parsing input ${message}`);
+            logger.error(`exception encountered parsing input`,ex,message);
             throw ex;
         }
     }
@@ -89,17 +89,17 @@ export class ContentProcessor {
             return Promise.reject("missing owner refference");
         }
         const replicaName = this.content.request.object.metadata.ownerReferences[0].name;
-        logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`);
+        logger.info(`calling API with namespace ${namespaceName} and replicaset ${replicaName}`, namespaceName, replicaName);
 
         return k8sApi.readNamespacedReplicaSet(replicaName, namespaceName).then((result) => {
             extraData.deploymentName = result.body.metadata.ownerReferences[0].name;
             extraData.replicaName = result.body.metadata.name;
             extraData.namespace = result.body.metadata.namespace;
 
-            logger.info(`got the following extra data ${JSON.stringify(extraData)}`);
+            logger.info(`got the extra data `, extraData);
             return extraData;
         }).catch((error) => {
-            logger.info(`failed to get extra data error ${JSON.stringify(error)}`);
+            logger.info(`failed to get extra data`, error);
             throw (error);
         });
     }
