@@ -8,8 +8,7 @@ import (
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
-func tryUpload(maybeJSON string, client appinsights.TelemetryClient) bool {
-	fmt.Println("attempting to parse and load", maybeJSON)
+func tryUpload(maybeJSON string) bool {
 	result := false
 
 	var deserialized Event
@@ -21,8 +20,6 @@ func tryUpload(maybeJSON string, client appinsights.TelemetryClient) bool {
 		client.Track(event)
 		client.Channel().Flush()
 		result = true
-	} else {
-		fmt.Println("not valid json ", maybeJSON)
 	}
 
 	return result
@@ -30,7 +27,7 @@ func tryUpload(maybeJSON string, client appinsights.TelemetryClient) bool {
 
 func createEvent(deserialized Event) *appinsights.EventTelemetry {
 
-	event := appinsights.NewEventTelemetry("IPA event")
+	event := appinsights.NewEventTelemetry("IPA")
 
 	eventTime, err := time.Parse(deserialized.Time, deserialized.Time)
 
@@ -52,4 +49,21 @@ func createEvent(deserialized Event) *appinsights.EventTelemetry {
 	event.Properties["SubscriptionID"] = deserialized.Properties.SubscriptionID
 
 	return event
+}
+
+func logEntry(line string, level LogLevel) {
+	event := appinsights.NewEventTelemetry("LOGGER")
+
+	event.SetTime(time.Now())
+	event.Properties["Level"] = string(level)
+	event.Properties["Message"] = line
+
+	client.Track(event)
+	client.Channel().Flush()
+
+	if level == ERROR ||
+		level == CONSOLE {
+		fmt.Println(line)
+	}
+
 }

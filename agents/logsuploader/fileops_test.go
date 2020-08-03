@@ -4,7 +4,15 @@ import (
 	"os"
 	"testing"
 	"time"
+
+	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
+
+func TestMain(m *testing.M) {
+	client = appinsights.NewTelemetryClient("00000000-0000-0000-0000-000000000000")
+	// call flag.Parse() here if TestMain uses flags
+	os.Exit(m.Run())
+}
 
 func TestGetFiles1(t *testing.T) {
 	files, err := getFiles("")

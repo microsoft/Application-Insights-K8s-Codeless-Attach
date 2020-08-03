@@ -27,7 +27,7 @@ async function starter() {
                 resolve();
             }
             else {
-                console.log(entry);
+                //console.log(entry);
             }
         });
     })

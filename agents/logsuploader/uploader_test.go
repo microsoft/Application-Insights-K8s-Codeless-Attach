@@ -3,8 +3,6 @@ package main
 import (
 	"testing"
 	"time"
-
-	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
 //CreateEventTest1 ...
@@ -104,9 +102,9 @@ func TestCreateEvent3(t *testing.T) {
 }
 
 func TestTryUpload1(t *testing.T) {
-	var client appinsights.TelemetryClient
+	//var client appinsights.TelemetryClient
 
-	result := tryUpload("dfsd", client)
+	result := tryUpload("dfsd")
 
 	if result != false {
 		t.Error("false")
@@ -114,9 +112,9 @@ func TestTryUpload1(t *testing.T) {
 }
 
 func TestTryUpload2(t *testing.T) {
-	var client appinsights.TelemetryClient
+	//var client appinsights.TelemetryClient
 
-	result := tryUpload("", client)
+	result := tryUpload("")
 
 	if result != false {
 		t.Error("false")
@@ -124,9 +122,8 @@ func TestTryUpload2(t *testing.T) {
 }
 
 func TestTryUpload3(t *testing.T) {
-	var client appinsights.TelemetryClient = appinsights.NewTelemetryClient("00000000-0000-0000-0000-000000000000")
 
-	result := tryUpload("{}", client)
+	result := tryUpload("{}")
 
 	if result != true {
 		t.Error("true")

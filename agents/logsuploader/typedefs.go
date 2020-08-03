@@ -7,6 +7,7 @@ type Event struct {
 	Message    string     `json:"message"`
 	Properties Properties `json:"properties"`
 }
+
 type Properties struct {
 	Operation        string `json:"operation"`
 	SiteName         string `json:"siteName"`
@@ -15,3 +16,12 @@ type Properties struct {
 	SdkVersion       string `json:"sdkVersion"`
 	SubscriptionID   string `json:"subscriptionId"`
 }
+
+type LogLevel string
+
+const (
+	DEBUG   LogLevel = "DEBUG"
+	INFO             = "INFO"
+	ERROR            = "ERROR"
+	CONSOLE          = "CONSOLE"
+)

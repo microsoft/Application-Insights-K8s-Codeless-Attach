@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"time"
@@ -12,33 +11,35 @@ import (
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
+var client appinsights.TelemetryClient
+
 func main() {
-	fmt.Println("Starting logs uploader.")
+	logEntry("Starting logs uploader.", CONSOLE)
 
 	if checkFirstInstance() == false {
-		fmt.Println("Already Running")
-		fmt.Println("Done starting")
+		logEntry("Already Running", CONSOLE)
+		logEntry("Done starting", CONSOLE)
 		return
 	}
 
 	folder, err := getTargetFolder(false, nil)
 
 	availableFiles, err := pickupFiles(folder, false) // attempt to pick up files
-	client := appinsights.NewTelemetryClient(getTelemetryTarget())
+	client = appinsights.NewTelemetryClient(getTelemetryTarget())
 
 	if err != nil {
-		fmt.Println("No files available to upload at startup")
+		logEntry("No files available to upload at startup", INFO)
 	} else {
-		tailFiles(availableFiles, folder, false, client)
+		tailFiles(availableFiles, folder, false)
 	}
 
-	fmt.Println("Done starting")
+	logEntry("Done starting", CONSOLE)
 
 	folder, err = getTargetFolder(true, nil)
 
 	availableFiles, _ = pickupFiles(folder, true)
 
-	tailFiles(availableFiles, folder, true, client)
+	tailFiles(availableFiles, folder, true)
 }
 
 func checkFirstInstance() bool {

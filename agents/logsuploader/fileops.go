@@ -10,19 +10,18 @@ import (
 	"time"
 
 	"github.com/hpcloud/tail"
-	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
-func tailFiles(files []os.FileInfo, folder string, follow bool, client appinsights.TelemetryClient) {
+func tailFiles(files []os.FileInfo, folder string, follow bool) {
 	for _, file := range files {
 		var currentIndex int = -1
 		var index int = 0
 		// here we be tailing the file
-		fmt.Println("tailing file", file.Name())
+		logEntry(fmt.Sprintf("tailing file %s", file.Name()), INFO)
 
 		t, err := tail.TailFile(filepath.Join(folder, file.Name()), tail.Config{Follow: follow})
 		if err != nil {
-			fmt.Println("error tailing file", err)
+			logEntry(fmt.Sprintf("error tailing file %s", err), ERROR)
 		}
 		index = -1
 		var accumulator string = ""
@@ -33,7 +32,7 @@ func tailFiles(files []os.FileInfo, folder string, follow bool, client appinsigh
 				continue
 			}
 			accumulator += strings.Trim(line.Text, "\r\n")
-			if tryUpload(accumulator, client) {
+			if tryUpload(accumulator) {
 				currentIndex = index
 				accumulator = ""
 			}
@@ -49,15 +48,15 @@ func pickupFiles(folder string, retry bool) ([]os.FileInfo, error) {
 	for {
 		availableFiles, err = getFiles(folder)
 		if err == nil && len(availableFiles) > 0 {
-			for index, file := range availableFiles {
-				fmt.Println(index, "=>", file.Name())
+			for _, file := range availableFiles {
+				logEntry(fmt.Sprintf("file :%s", file.Name()), INFO)
 			}
 			return availableFiles, nil
 		} else if retry {
-			fmt.Println("waiting for files to become available")
+			logEntry("waiting for files to become available", INFO)
 			time.Sleep(1 * time.Second)
 		} else {
-			fmt.Println("attempted to pickup files, nothing to report, not waiting")
+			logEntry("attempted to pickup files, nothing to report, not waiting", INFO)
 			return nil, errors.New("No files detected")
 		}
 	}
@@ -65,18 +64,18 @@ func pickupFiles(folder string, retry bool) ([]os.FileInfo, error) {
 
 func getFiles(folder string) ([]os.FileInfo, error) {
 	if folder == "" {
-		fmt.Println("error finding data")
+		logEntry("error finding data", ERROR)
 		return nil, errors.New("folder cannot be null")
 	}
 
 	files, err := ioutil.ReadDir(folder)
 	if err != nil {
-		fmt.Println(err)
+		logEntry(err.Error(), ERROR)
 		return nil, err
 	}
 
 	for _, f := range files {
-		fmt.Println(f.Name())
+		logEntry(f.Name(), INFO)
 	}
 	return files, nil
 }
