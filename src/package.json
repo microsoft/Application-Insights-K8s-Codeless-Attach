@@ -13,14 +13,18 @@
     "name": ""
   },
   "dependencies": {
-    "@kubernetes/client-node": "latest",
-    "@types/node": "latest",
-    "chai": "latest",
-    "mocha": "latest",
-    "log4js": "latest",
-    "toml": "latest",
-    "ts-node": "latest",
-    "typings": "latest"
+    "@kubernetes/client-node": "0.12.0",
+    "@types/node": "14.0.27",
+    "applicationinsights": "^1.8.3",
+    "chai": "4.2.0",
+    "log4js": "6.3.0",
+    "mocha": "8.1.0",
+    "toml": "3.0.0",
+    "ts-node": "8.10.2",
+    "typings": "2.1.1",
+    "dot-prop": "5.1.1",
+    "http-proxy-agent": "2.1.0",
+    "https-proxy-agent": "2.2.3"
   },
   "engines": {
     "node": "^8.0.0"

@@ -3,6 +3,7 @@ import https = require("https");
 import { ContentProcessor } from "./ContentProcessor";
 import { logger } from "./LoggerWrapper";
 import { NamespaceLabeler } from "./NamespaceLabeler";
+import request = require("request");
 
 let options;
 const port = process.env.port || 1337;
@@ -22,7 +23,7 @@ try {
     logger.info("loaded certs from local");
 }
 
-https.createServer(options, (req, res) => {
+https.createServer( (req, res) => {
     logger.info(`received request with url: ${req.url}, method: ${req.method}, content-type: ${req.headers["content-type"]}`);
     if (req.method === "POST" && req.headers["content-type"] === "application/json") {
         let body = "";
@@ -35,11 +36,11 @@ https.createServer(options, (req, res) => {
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(updatedConfig);
             }).catch((error) => {
-                logger.error(`error while processing request ${JSON.stringify(error)}`);
+                logger.error(`error while processing request`,error);
             });
         });
     } else {
-        logger.error("unaccepable method, returning 404");
+        logger.error("unaccepable method, returning 404", req.method);
         res.writeHead(404);
         res.end();
     }

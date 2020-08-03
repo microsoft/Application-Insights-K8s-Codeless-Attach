@@ -61,7 +61,7 @@ export class DiffCalculator {
                 value: updatedContent.request.object.spec
             }];
         /* tslint:enable */
-        logger.info(`determined diff ${JSON.stringify(jsonDiff)}`);
+        logger.info(`determined diff`, jsonDiff);
         return jsonDiff;
     }
 }

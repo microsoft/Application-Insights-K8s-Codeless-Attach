@@ -22,30 +22,30 @@ export class ConfigReader {
         return new Promise<AddonConfig>((resolve, reject) => {
             fs.stat(filePath, (error, stats) => {
                 if (error) {
-                    logger.info(`could not find file ${file}`)
+                    logger.info(`could not find config file`, file)
                     resolve(this.CurrentConfig);
                 }else if (stats.ctime !== this.CurrentConfig.configTime) {
-                    logger.info(`timestamp ${stats.ctime} with config timestamp ${this.CurrentConfig.configTime}doesn't match attempting to read ${filePath}`);
+                    logger.info(`timestamp ${stats.ctime} with config timestamp ${this.CurrentConfig.configTime}doesn't match. Attempting to read ${filePath}`, filePath, this.CurrentConfig.configTime, stats.ctime );
                     fs.readFile(filePath, (err, data) => {
                         if (!err) {
                             const fileContent = data.toString();
-                            logger.info(`read config content ${fileContent}`);
+                            logger.info(`read config content`, fileContent);
                             const parsedContent = toml.parse(fileContent)
                             this.CurrentConfig = new AddonConfig(stats.ctime, parsedContent);
                         } else {
                             logger.info(`config does not exist, using defaults`);
                         }
 
-                        logger.info(`excluded namespaces ${this.CurrentConfig.excludedNamespaces}`);
+                        logger.info(`excluded namespaces `, this.CurrentConfig.excludedNamespaces);
                         resolve(this.CurrentConfig);
                     })
                 } else {
-                    logger.info(`no config change detected. timestamp ${stats.ctime}`);
+                    logger.info(`no config change detected. `, stats.ctime);
                     resolve(this.CurrentConfig);
                 }
             })
         }).catch(err => {
-            logger.error(`${err}`);
+            logger.error(`general read file error`, err);
             return this.CurrentConfig;
         })
 

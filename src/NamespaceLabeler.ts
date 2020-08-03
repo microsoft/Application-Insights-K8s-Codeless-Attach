@@ -12,13 +12,13 @@ export class NamespaceLabeler {
     private async labelNamespace():Promise<any> {
         return ConfigReader.ReadConfig()
             .then((config:AddonConfig) => {
-                logger.info(`got config ${JSON.stringify(config)}`);
+                logger.info(`got config`, config);
                 const kc = new k8s.KubeConfig();
                 kc.loadFromDefault();
                 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
                 return k8sApi.listNamespace().then((result) => {
-                    logger.info(`got namespace list ${JSON.stringify(result)}`);
+                    logger.info(`got namespace list`,result);
                     const namespaceList = result.body.items;
                     namespaceList.forEach((item: V1Namespace) => {
                         const patchPayload = item;
@@ -39,7 +39,7 @@ export class NamespaceLabeler {
                         }
 
                         if (shouldPatch === true) {
-                            logger.info(`attempt patch ${JSON.stringify(patchPayload)}`)
+                            logger.info(`attempt patch `, patchPayload)
 
                             return k8sApi.patchNamespace(item.metadata.name, patchPayload, undefined, undefined, undefined, undefined,
                                 {
@@ -48,18 +48,18 @@ export class NamespaceLabeler {
                                     }
                                 }).
                                 then(response => {
-                                    logger.info(`patched namnespace ${JSON.stringify(response)}`);
+                                    logger.info(`patched namnespace `, response);
                                 }).
                                 catch(error => {
-                                    logger.error(`failed patch namespace ${JSON.stringify(error)}`);
+                                    logger.error(`failed patch namespace `, error);
                                 })
                         }
                         else {
-                            logger.info(`no need to patch namespace ${patchPayload.metadata.name}`)
+                            logger.info(`no need to patch namespace`,patchPayload.metadata.name)
                         }
                     })
                 }).catch(error => {
-                    logger.error(`failed to list namespaces${error}`)
+                    logger.error(`failed to list namespaces`, error )
                 })
             }).then(() => {
                 logger.info(`rescheduling loop in ${this.delay/60000} minutes` )
