@@ -1,12 +1,13 @@
 ﻿import k8s = require('@kubernetes/client-node');;
 import { isNullOrUndefined } from "util";
-import { logger } from "./LoggerWrapper";
+import { logger, Metrics } from "./LoggerWrapper";
 import { DeployReplica, IRootObject } from "./RequestDefinition";
 import { TemplateValidator } from './TemplateValidator';
 import { DiffCalculator } from './DiffCalculator'
 export class ContentProcessor {
 
     public static async TryUpdateConfig(message: string): Promise<string> {
+        logger.telemetry(Metrics.CPStart, 1);
         const response = {
             apiVersion: "admission.k8s.io/v1beta1",
             kind: "AdmissionReview",
@@ -36,15 +37,19 @@ export class ContentProcessor {
             if (response.response.allowed) {
                 response.response.patch = Buffer.from(
                     JSON.stringify(
-                       await DiffCalculator.CalculateDiff(instance.content, extraData as DeployReplica)))
+                        await DiffCalculator.CalculateDiff(instance.content, extraData as DeployReplica)))
                     .toString("base64");
+                logger.telemetry(Metrics.CPSuccess, 1);
+            } else {
+                logger.telemetry(Metrics.CPFail, 1);
             }
 
             const finalResult = JSON.stringify(response);
             logger.info(`determined final response`,finalResult);
             return finalResult;
         }).catch((ex) => {
-            logger.error(`exception encountered `,ex);
+            logger.error(`exception encountered `, ex);
+            logger.telemetry(Metrics.CPError, 1);
             return JSON.stringify(response);
         });
     }

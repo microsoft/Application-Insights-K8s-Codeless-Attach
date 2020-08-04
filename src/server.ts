@@ -1,7 +1,7 @@
 ﻿import fs = require("fs");
 import https = require("https");
 import { ContentProcessor } from "./ContentProcessor";
-import { logger } from "./LoggerWrapper";
+import { logger, Metrics } from "./LoggerWrapper";
 import { NamespaceLabeler } from "./NamespaceLabeler";
 import request = require("request");
 
@@ -25,6 +25,7 @@ try {
 
 https.createServer( (req, res) => {
     logger.info(`received request with url: ${req.url}, method: ${req.method}, content-type: ${req.headers["content-type"]}`);
+    logger.telemetry(Metrics.Request, 1);
     if (req.method === "POST" && req.headers["content-type"] === "application/json") {
         let body = "";
         req.on("data", (chunk) => {
@@ -35,14 +36,17 @@ https.createServer( (req, res) => {
                 logger.info("done processing request");
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(updatedConfig);
+                logger.telemetry(Metrics.Success, 1);
             }).catch((error) => {
-                logger.error(`error while processing request`,error);
+                logger.error(`error while processing request`, error);
+                logger.telemetry(Metrics.Fail, 1);
             });
         });
     } else {
         logger.error("unaccepable method, returning 404", req.method);
         res.writeHead(404);
         res.end();
+        logger.telemetry(Metrics.Error, 1);
     }
 
 }).listen(port);

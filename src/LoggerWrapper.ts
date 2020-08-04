@@ -1,5 +1,6 @@
 ﻿import { configure, getLogger, Logger } from "log4js";
 import applicationInsights  = require('applicationinsights')
+import { MetricTelemetry } from "applicationinsights/out/Declarations/Contracts";
 
 configure({
     appenders: {
@@ -24,8 +25,6 @@ configure({
         },
     },
 });
-
-
 
 class LocalLogger {
     private log: Logger = getLogger("default");
@@ -103,7 +102,48 @@ class LocalLogger {
         }
         return "320dcf98-173f-429b-ab39-df8b4951fb94"
     }
+
+    public telemetry(metric: Metrics, occurs: number) {
+        if (metric == null) {
+            this.log.error("invalid metric")
+        }
+
+        if (this.client == null) {
+            this.client = new applicationInsights.TelemetryClient(this.getKey());
+        }
+
+        const telemetryItem:MetricTelemetry = {
+            name: metric,
+            value: occurs,
+            count: 1
+        }
+
+        this.client.trackMetric(telemetryItem);
+        this.client.flush();
+    }
 }
 
 export const logger = LocalLogger.Instance();
+
+export enum Metrics {
+    // namespace metrics
+    Namespaces = "namespaces", // namespaces in cluster
+    NamespaceError = "namespaceError", // namespace list error
+    NamespacePatched = "namespacePatched", // patch operations
+    NamespaceFail = "namespaceFail", // patch fail
+    NamespaceSkipped = "namespaceSkipped", // patch skip operations
+    // client request metrics
+    Request = "request", // incoming request
+    Success = "requestSuccess", // 200
+    Fail = "requestFail", // 500
+    Error = "requestError", // 404
+    // content processor metrics
+    CPSuccess = "cpSuccess",
+    CPFail = "cpFail",
+    CPError = "cpError",
+    CPContainers = "cpContainers",
+    CPStart = "cpStart",
+    CPValidationFail = "cpValidationFail",
+    CPValidationPass = "cpValidationPass"
+}
 

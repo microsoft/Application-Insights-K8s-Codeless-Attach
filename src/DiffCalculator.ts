@@ -1,6 +1,6 @@
 ﻿import { isNullOrUndefined } from "util";
 import { AddedTypes } from "./AddedTypes";
-import { logger } from "./LoggerWrapper";
+import { logger, Metrics } from "./LoggerWrapper";
 import { DeployReplica, IRootObject } from "./RequestDefinition";
 
 export class DiffCalculator {
@@ -39,6 +39,7 @@ export class DiffCalculator {
         }
 
         const length = updateTarget["containers"].length;
+        logger.telemetry(Metrics.CPContainers, length);
 
         for (let i = 0; i < length; i++) {
             if (updateTarget["containers"][i].env) {
