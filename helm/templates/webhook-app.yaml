@@ -24,6 +24,11 @@ spec:
               value: {{ .Values.app.telemetryIkey }}
             - name: TELEMETRY_CONN_STRING
               value: {{ .Values.app.telemetryConnString }} 
+            - name: CLUSTER_RESOURCE_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: container-azm-ms-aks-k8scluster
+                  key: CLUSTER_RESOURCE_ID
           ports:
             - containerPort: 1337
           resources:

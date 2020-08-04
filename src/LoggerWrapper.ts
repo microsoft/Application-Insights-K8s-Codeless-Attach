@@ -1,6 +1,6 @@
 ﻿import { configure, getLogger, Logger } from "log4js";
 import applicationInsights  = require('applicationinsights')
-import { MetricTelemetry } from "applicationinsights/out/Declarations/Contracts";
+import { MetricTelemetry, Telemetry } from "applicationinsights/out/Declarations/Contracts";
 
 configure({
     appenders: {
@@ -85,7 +85,9 @@ class LocalLogger {
                 time: Date.now(),
                 level,
                 message,
-                extra:args
+                extra: args,
+                KUBERNETES_SERVICE_HOST: process.env.KUBERNETES_SERVICE_HOST,
+                CLUSTER_RESOURCE_ID: process.env.CLUSTER_RESOURCE_ID 
             }
         }
 
@@ -112,10 +114,14 @@ class LocalLogger {
             this.client = new applicationInsights.TelemetryClient(this.getKey());
         }
 
-        const telemetryItem:MetricTelemetry = {
+        const telemetryItem: MetricTelemetry = {
             name: metric,
             value: occurs,
-            count: 1
+            count: 1,
+            properties: {
+                KUBERNETES_SERVICE_HOST: process.env.KUBERNETES_SERVICE_HOST,
+                CLUSTER_RESOURCE_ID: process.env.CLUSTER_RESOURCE_ID
+            }
         }
 
         this.client.trackMetric(telemetryItem);
