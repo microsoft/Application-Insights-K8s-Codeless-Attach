@@ -1,5 +1,5 @@
 ﻿import { isNullOrUndefined } from "util";
-import { logger } from "./LoggerWrapper";
+import { logger, Metrics } from "./LoggerWrapper";
 import { IRootObject } from "./RequestDefinition";
 
 export class TemplateValidator {
@@ -16,7 +16,7 @@ export class TemplateValidator {
             || (content.request.operation !== "CREATE"
                 && content.request.operation !== "UPDATE")) {
 
-            logger.error("invalid incoming operation", content.request.operation);
+            logger.error("invalid incoming operation");
             returnValue = false;
         }
         else if (isNullOrUndefined(content.kind)
@@ -32,7 +32,8 @@ export class TemplateValidator {
             returnValue = false;
         }
 
-        logger.info(`succesfully validated content`,content);
+        logger.info(`succesfully validated content`, content);
+        logger.telemetry(returnValue ? Metrics.CPValidationPass : Metrics.CPValidationFail, 1);
         return returnValue;
     }
 }
