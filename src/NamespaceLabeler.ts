@@ -41,7 +41,7 @@ export class NamespaceLabeler {
 
                         if (shouldPatch === true) {
                             logger.info(`attempt patch `, patchPayload)
-                            
+
                             return k8sApi.patchNamespace(item.metadata.name, patchPayload, undefined, undefined, undefined, undefined,
                                 {
                                     headers: {

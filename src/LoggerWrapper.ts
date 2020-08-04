@@ -114,9 +114,9 @@ class LocalLogger {
 
         const telemetryItem:MetricTelemetry = {
             name: metric,
-            value: value,
+            value,
             count: 1
-        } 
+        }
 
         this.client.trackMetric(telemetryItem);
         this.client.flush();
@@ -126,18 +126,18 @@ class LocalLogger {
 export const logger = LocalLogger.Instance();
 
 export enum Metrics {
-    //namespace metrics
+    // namespace metrics
     Namespaces = "namespaces", // namespaces in cluster
     NamespaceError = "namespaceError", // namespace list error
     NamespacePatched = "namespacePatched", // patch operations
-    NamespaceFail = "namespaceFail", // patch fail 
+    NamespaceFail = "namespaceFail", // patch fail
     NamespaceSkipped = "namespaceSkipped", // patch skip operations
-    //client request metrics
+    // client request metrics
     Request = "request", // incoming request
     Success = "requestSuccess", // 200
     Fail = "requestFail", // 500
     Error = "requestError", // 404
-    //content processor metrics
+    // content processor metrics
     CPSuccess = "cpSuccess",
     CPFail = "cpFail",
     CPError = "cpError",

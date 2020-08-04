@@ -43,7 +43,7 @@ export class ContentProcessor {
             } else {
                 logger.telemetry(Metrics.CPFail, 1);
             }
-           
+
             const finalResult = JSON.stringify(response);
             logger.info(`determined final response`,finalResult);
             return finalResult;
