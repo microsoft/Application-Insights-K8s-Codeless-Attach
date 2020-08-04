@@ -103,7 +103,7 @@ class LocalLogger {
         return "320dcf98-173f-429b-ab39-df8b4951fb94"
     }
 
-    public telemetry(metric: Metrics, value: number) {
+    public telemetry(metric: Metrics, occurs: number) {
         if (metric == null) {
             this.log.error("invalid metric")
         }
@@ -114,7 +114,7 @@ class LocalLogger {
 
         const telemetryItem:MetricTelemetry = {
             name: metric,
-            value,
+            value: occurs,
             count: 1
         }
 
