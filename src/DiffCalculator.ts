@@ -7,23 +7,23 @@ export class DiffCalculator {
     public static async CalculateDiff(content: IRootObject, extraData: DeployReplica): Promise<object> {
 
         if (isNullOrUndefined(content)) {
-            logger.error("null content");
+            logger.error("null content", this.uid(content));
             return null;
         }
 
         /* tslint:disable */
-        logger.info(`calculating diff`);
+        logger.info(`calculating diff`, this.uid(content));
         const updatedContent: IRootObject = JSON.parse(JSON.stringify(content));
 
         let updateTarget: object;
 
         try {
             updateTarget = updatedContent.request.object.spec.template.spec;
-            logger.info(`updating request.object.spec.template.spec`);
+            logger.info(`updating request.object.spec.template.spec`, this.uid(content));
         }
         catch (ex) {
             updateTarget = updatedContent.request.object.spec;
-            logger.info(`updating request.object.spec`);
+            logger.info(`updating request.object.spec`, this.uid(content));
         }
 
         if (updateTarget["initContainers"]) {
@@ -39,7 +39,7 @@ export class DiffCalculator {
         }
 
         const length = updateTarget["containers"].length;
-        logger.telemetry(Metrics.CPContainers, length);
+        logger.telemetry(Metrics.CPContainers, length, this.uid(content));
 
         for (let i = 0; i < length; i++) {
             if (updateTarget["containers"][i].env) {
@@ -62,7 +62,14 @@ export class DiffCalculator {
                 value: updatedContent.request.object.spec
             }];
         /* tslint:enable */
-        logger.info(`determined diff`, jsonDiff);
+        logger.info(`determined diff`, this.uid(content), jsonDiff);
         return jsonDiff;
+    }
+
+    private static uid(content: IRootObject): string {
+        if (content && content.request && content.request.uid) {
+            return content.request.uid;
+        }
+        return "";
     }
 }

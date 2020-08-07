@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "96e09753-043b-4c2d-a95c-2be9263f72b6",
+		"name": "MWH",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "mwh1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0af0e721-8e98-40b0-8dc5-a901364f44a3",
+						"exec": [
+							"pm.test(\"Request Allowed\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.response.allowed).to.eql(true);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"kind\": \"Testing\", \"apiVersion\": \"admission.k8s.io/v1beta1\", \"request\": { \"uid\": \"26897b2e-1609-11ea-a591-d6dc29b985cb\", \"kind\": { \"group\": \"\", \"version\": \"v1\", \"kind\": \"Pod\" }, \"resource\": { \"group\": \"\", \"version\": \"v1\", \"resource\": \"pods\" }, \"namespace\": \"default\", \"operation\": \"CREATE\", \"userInfo\": { \"username\": \"aksService\", \"groups\": [\"system:masters\", \"system:authenticated\"] }, \"object\": { \"kind\": \"Pod\", \"apiVersion\": \"v1\", \"metadata\": { \"generateName\": \"statistics-service-5547698479-\", \"creationTimestamp\": null, \"labels\": { \"io.kompose.service\": \"statistics-service\", \"pod-template-hash\": \"5547698479\" }, \"ownerReferences\": [{ \"apiVersion\": \"apps/v1\", \"kind\": \"ReplicaSet\", \"name\": \"statistics-service-5547698479\", \"uid\": \"7508732f-1607-11ea-a591-d6dc29b985cb\", \"controller\": true, \"blockOwnerDeletion\": true }] }, \"spec\": { \"volumes\": [{ \"name\": \"default-token-ctb67\", \"secret\": { \"secretName\": \"default-token-ctb67\" } }], \"containers\": [{ \"name\": \"statistics-service\", \"image\": \"gearamaaks.azurecr.io/piggymetrics-statistics-service\", \"env\": [{ \"name\": \"CONFIG_SERVICE_PASSWORD\", \"value\": \"rose98074\" }, { \"name\": \"MONGODB_DATABASE\", \"value\": \"piggymetrics\" }, { \"name\": \"MONGODB_URI\", \"value\": \"mongodb://piggymetrics:2EQgQfLMZS0OYyhruMIdk9JWUBodsHmaHa9WXPJ7Ex5gsovcmB9ElHlXJQsjqnOYnN8aWMbV6bLGZ13VZhCu9A==@piggymetrics.documents.azure.com:10255/?ssl=true&replicaSet=globaldb\" }, { \"name\": \"RABBITMQ_HOST\", \"value\": \"40.87.124.184\" }, { \"name\": \"RABBITMQ_PASSWORD\", \"value\": \"rose98074\" }, { \"name\": \"RABBITMQ_PORT\", \"value\": \"5672\" }, { \"name\": \"RABBITMQ_USERNAME\", \"value\": \"rabbitmq\" }, { \"name\": \"STATISTICS_SERVICE_PASSWORD\", \"value\": \"XUoJBrTtqXBonU5zMVzSUtrLPKRQztLUQE4poDoIR1QdcDfGgnGgJO5wbFC7xCEL\" }], \"resources\": {}, \"volumeMounts\": [{ \"name\": \"default-token-ctb67\", \"readOnly\": true, \"mountPath\": \"/var/run/secrets/kubernetes.io/serviceaccount\" }], \"terminationMessagePath\": \"/dev/termination-log\", \"terminationMessagePolicy\": \"File\", \"imagePullPolicy\": \"Always\" }], \"restartPolicy\": \"Always\", \"terminationGracePeriodSeconds\": 30, \"dnsPolicy\": \"ClusterFirst\", \"serviceAccountName\": \"default\", \"serviceAccount\": \"default\", \"securityContext\": {}, \"schedulerName\": \"default-scheduler\", \"tolerations\": [{ \"key\": \"node.kubernetes.io/not-ready\", \"operator\": \"Exists\", \"effect\": \"NoExecute\", \"tolerationSeconds\": 300 }, { \"key\": \"node.kubernetes.io/unreachable\", \"operator\": \"Exists\", \"effect\": \"NoExecute\", \"tolerationSeconds\": 300 }], \"priority\": 0, \"enableServiceLinks\": true }, \"status\": {} }, \"oldObject\": null, \"dryRun\": false } }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://40.125.97.181/",
+					"protocol": "https",
+					"host": [
+						"40",
+						"125",
+						"97",
+						"181"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mwh2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6024587e-488f-4aed-999e-a91dc9493305",
+						"exec": [
+							"pm.test(\"Request Allowed\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.response.allowed).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kind\": \"Testing\",\r\n    \"apiVersion\": \"admission.k8s.io/v1beta1\",\r\n    \"request\": {\r\n        \"uid\": \"cf481665-e586-11e9-8636-beff4de305b8\",\r\n        \"kind\": {\r\n            \"group\": \"\",\r\n            \"version\": \"v1\",\r\n            \"kind\": \"Pod\"\r\n        },\r\n        \"resource\": {\r\n            \"group\": \"\",\r\n            \"version\": \"v1\",\r\n            \"resource\": \"pods\"\r\n        },\r\n        \"namespace\": \"default\",\r\n        \"operation\": \"CREATE\",\r\n        \"userInfo\": {\r\n            \"username\": \"aksService\",\r\n            \"groups\": [\r\n                \"system:masters\",\r\n                \"system:authenticated\"\r\n            ]\r\n        },\r\n        \"object\": {\r\n            \"kind\": \"Pod\",\r\n            \"apiVersion\": \"v1\",\r\n            \"metadata\": {\r\n                \"generateName\": \"quieting-garfish-ibm-ope-7459f598b4-\",\r\n                \"creationTimestamp\": null,\r\n                \"labels\": {\r\n                    \"app\": \"quieting-garfish-ibm-ope\",\r\n                    \"chart\": \"ibm-open-liberty-spring-1.10.0\",\r\n                    \"heritage\": \"Tiller\",\r\n                    \"pod-template-hash\": \"7459f598b4\",\r\n                    \"release\": \"quieting-garfish\"\r\n                },\r\n                \"annotations\": {\r\n                    \"productID\": \"OpenLiberty_67365423789_18002_151_00000\",\r\n                    \"productName\": \"Open Liberty\",\r\n                    \"productVersion\": \"19.0.0.5\"\r\n                },\r\n                \"ownerReferences\": [\r\n                    {\r\n                        \"apiVersion\": \"apps/v1\",\r\n                        \"kind\": \"ReplicaSet\",\r\n                        \"name\": \"quieting-garfish-ibm-ope-7459f598b4\",\r\n                        \"uid\": \"b67a9438-e586-11e9-8636-beff4de305b8\",\r\n                        \"controller\": true,\r\n                        \"blockOwnerDeletion\": true\r\n                    }\r\n                ]\r\n            },\r\n            \"spec\": {\r\n                \"volumes\": [\r\n                    {\r\n                        \"name\": \"liberty-overrides\",\r\n                        \"configMap\": {\r\n                            \"name\": \"quieting-garfish-ibm-ope\",\r\n                            \"items\": [\r\n                                {\r\n                                    \"key\": \"include-configmap.xml\",\r\n                                    \"path\": \"include-configmap.xml\"\r\n                                }\r\n                            ],\r\n                            \"defaultMode\": 420\r\n                        }\r\n                    },\r\n                    {\r\n                        \"name\": \"liberty-config\",\r\n                        \"configMap\": {\r\n                            \"name\": \"quieting-garfish-ibm-ope\",\r\n                            \"defaultMode\": 420\r\n                        }\r\n                    },\r\n                    {\r\n                        \"name\": \"quieting-garfish-ibm-ope-token-njwn6\",\r\n                        \"secret\": {\r\n                            \"secretName\": \"quieting-garfish-ibm-ope-token-njwn6\"\r\n                        }\r\n                    }\r\n                ],\r\n                \"containers\": [\r\n                    {\r\n                        \"name\": \"ibm-open-liberty-spring\",\r\n                        \"image\": \"openliberty/open-liberty:springBoot2-ubi-min\",\r\n                        \"env\": [\r\n                            {\r\n                                \"name\": \"WLP_LOGGING_CONSOLE_FORMAT\",\r\n                                \"value\": \"json\"\r\n                            },\r\n                            {\r\n                                \"name\": \"WLP_LOGGING_CONSOLE_LOGLEVEL\",\r\n                                \"value\": \"info\"\r\n                            },\r\n                            {\r\n                                \"name\": \"WLP_LOGGING_CONSOLE_SOURCE\",\r\n                                \"value\": \"message,trace,accessLog,ffdc\"\r\n                            },\r\n                            {\r\n                                \"name\": \"KUBERNETES_NAMESPACE\",\r\n                                \"valueFrom\": {\r\n                                    \"fieldRef\": {\r\n                                        \"apiVersion\": \"v1\",\r\n                                        \"fieldPath\": \"metadata.namespace\"\r\n                                    }\r\n                                }\r\n                            },\r\n                            {\r\n                                \"name\": \"IIOP_ENDPOINT_HOST\",\r\n                                \"valueFrom\": {\r\n                                    \"fieldRef\": {\r\n                                        \"apiVersion\": \"v1\",\r\n                                        \"fieldPath\": \"status.podIP\"\r\n                                    }\r\n                                }\r\n                            },\r\n                            {\r\n                                \"name\": \"KEYSTORE_REQUIRED\",\r\n                                \"value\": \"true\"\r\n                            }\r\n                        ],\r\n                        \"resources\": {},\r\n                        \"volumeMounts\": [\r\n                            {\r\n                                \"name\": \"liberty-overrides\",\r\n                                \"readOnly\": true,\r\n                                \"mountPath\": \"/config/configDropins/overrides/include-configmap.xml\",\r\n                                \"subPath\": \"include-configmap.xml\"\r\n                            },\r\n                            {\r\n                                \"name\": \"liberty-config\",\r\n                                \"readOnly\": true,\r\n                                \"mountPath\": \"/etc/wlp/configmap\"\r\n                            },\r\n                            {\r\n                                \"name\": \"quieting-garfish-ibm-ope-token-njwn6\",\r\n                                \"readOnly\": true,\r\n                                \"mountPath\": \"/var/run/secrets/kubernetes.io/serviceaccount\"\r\n                            }\r\n                        ],\r\n                        \"livenessProbe\": {\r\n                            \"httpGet\": {\r\n                                \"path\": \"/\",\r\n                                \"port\": 9443,\r\n                                \"scheme\": \"HTTPS\"\r\n                            },\r\n                            \"initialDelaySeconds\": 20,\r\n                            \"timeoutSeconds\": 1,\r\n                            \"periodSeconds\": 5,\r\n                            \"successThreshold\": 1,\r\n                            \"failureThreshold\": 3\r\n                        },\r\n                        \"readinessProbe\": {\r\n                            \"httpGet\": {\r\n                                \"path\": \"/\",\r\n                                \"port\": 9443,\r\n                                \"scheme\": \"HTTPS\"\r\n                            },\r\n                            \"initialDelaySeconds\": 2,\r\n                            \"timeoutSeconds\": 1,\r\n                            \"periodSeconds\": 5,\r\n                            \"successThreshold\": 1,\r\n                            \"failureThreshold\": 3\r\n                        },\r\n                        \"terminationMessagePath\": \"/dev/termination-log\",\r\n                        \"terminationMessagePolicy\": \"File\",\r\n                        \"imagePullPolicy\": \"IfNotPresent\",\r\n                        \"securityContext\": {\r\n                            \"capabilities\": {\r\n                                \"drop\": [\r\n                                    \"ALL\"\r\n                                ]\r\n                            },\r\n                            \"privileged\": false,\r\n                            \"readOnlyRootFilesystem\": false,\r\n                            \"allowPrivilegeEscalation\": false\r\n                        }\r\n                    }\r\n                ],\r\n                \"restartPolicy\": \"Always\",\r\n                \"terminationGracePeriodSeconds\": 30,\r\n                \"dnsPolicy\": \"ClusterFirst\",\r\n                \"serviceAccountName\": \"quieting-garfish-ibm-ope\",\r\n                \"serviceAccount\": \"quieting-garfish-ibm-ope\",\r\n                \"securityContext\": {\r\n                    \"runAsUser\": 1001,\r\n                    \"runAsNonRoot\": true\r\n                },\r\n                \"imagePullSecrets\": [\r\n                    {\r\n                        \"name\": \"sa-default\"\r\n                    }\r\n                ],\r\n                \"affinity\": {\r\n                    \"nodeAffinity\": {\r\n                        \"requiredDuringSchedulingIgnoredDuringExecution\": {\r\n                            \"nodeSelectorTerms\": [\r\n                                {\r\n                                    \"matchExpressions\": [\r\n                                        {\r\n                                            \"key\": \"beta.kubernetes.io/arch\",\r\n                                            \"operator\": \"In\",\r\n                                            \"values\": [\r\n                                                \"amd64\",\r\n                                                \"ppc64le\",\r\n                                                \"s390x\"\r\n                                            ]\r\n                                        }\r\n                                    ]\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"preferredDuringSchedulingIgnoredDuringExecution\": [\r\n                            {\r\n                                \"weight\": 2,\r\n                                \"preference\": {\r\n                                    \"matchExpressions\": [\r\n                                        {\r\n                                            \"key\": \"beta.kubernetes.io/arch\",\r\n                                            \"operator\": \"In\",\r\n                                            \"values\": [\r\n                                                \"amd64\"\r\n                                            ]\r\n                                        }\r\n                                    ]\r\n                                }\r\n                            },\r\n                            {\r\n                                \"weight\": 2,\r\n                                \"preference\": {\r\n                                    \"matchExpressions\": [\r\n                                        {\r\n                                            \"key\": \"beta.kubernetes.io/arch\",\r\n                                            \"operator\": \"In\",\r\n                                            \"values\": [\r\n                                                \"ppc64le\"\r\n                                            ]\r\n                                        }\r\n                                    ]\r\n                                }\r\n                            },\r\n                            {\r\n                                \"weight\": 2,\r\n                                \"preference\": {\r\n                                    \"matchExpressions\": [\r\n                                        {\r\n                                            \"key\": \"beta.kubernetes.io/arch\",\r\n                                            \"operator\": \"In\",\r\n                                            \"values\": [\r\n                                                \"s390x\"\r\n                                            ]\r\n                                        }\r\n                                    ]\r\n                                }\r\n                            }\r\n                        ]\r\n                    },\r\n                    \"podAntiAffinity\": {\r\n                        \"preferredDuringSchedulingIgnoredDuringExecution\": [\r\n                            {\r\n                                \"weight\": 100,\r\n                                \"podAffinityTerm\": {\r\n                                    \"labelSelector\": {\r\n                                        \"matchExpressions\": [\r\n                                            {\r\n                                                \"key\": \"app\",\r\n                                                \"operator\": \"In\",\r\n                                                \"values\": [\r\n                                                    \"quieting-garfish-ibm-ope\"\r\n                                                ]\r\n                                            },\r\n                                            {\r\n                                                \"key\": \"release\",\r\n                                                \"operator\": \"In\",\r\n                                                \"values\": [\r\n                                                    \"quieting-garfish\"\r\n                                                ]\r\n                                            }\r\n                                        ]\r\n                                    },\r\n                                    \"topologyKey\": \"kubernetes.io/hostname\"\r\n                                }\r\n                            }\r\n                        ]\r\n                    }\r\n                },\r\n                \"schedulerName\": \"default-scheduler\",\r\n                \"tolerations\": [\r\n                    {\r\n                        \"key\": \"node.kubernetes.io/not-ready\",\r\n                        \"operator\": \"Exists\",\r\n                        \"effect\": \"NoExecute\",\r\n                        \"tolerationSeconds\": 300\r\n                    },\r\n                    {\r\n                        \"key\": \"node.kubernetes.io/unreachable\",\r\n                        \"operator\": \"Exists\",\r\n                        \"effect\": \"NoExecute\",\r\n                        \"tolerationSeconds\": 300\r\n                    }\r\n                ],\r\n                \"priority\": 0,\r\n                \"enableServiceLinks\": true\r\n            },\r\n            \"status\": {}\r\n        },\r\n        \"oldObject\": null,\r\n        \"dryRun\": false\r\n    }\r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "https://40.125.97.181/",
+					"protocol": "https",
+					"host": [
+						"40",
+						"125",
+						"97",
+						"181"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7340dd59-12dc-4939-b47d-5a3d81de6677",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e0c6bca9-ee91-424b-bdee-d443b6077133",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"status 200\"] = responseCode.code === 200",
+					"",
+					"pm.test(\"Patch Type\", function () {",
+					"    var jsonData = pm.response.json();",
+					"    pm.expect(jsonData.response.patchtype).to.eql(\"JSONPATCH\");",
+					"});",
+					"",
+					"pm.test(\"UID\", function () {",
+					"    var jsonData = pm.response.json();",
+					"    pm.expect(jsonData.response.uid).to.eql(jsonData.request.uid);",
+					"});"
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
