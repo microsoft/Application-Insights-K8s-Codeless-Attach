@@ -23,7 +23,7 @@ try {
     logger.info("loaded certs from local");
 }
 
-https.createServer( (req, res) => {
+https.createServer(options, (req, res) => {
     logger.info(`received request with url: ${req.url}, method: ${req.method}, content-type: ${req.headers["content-type"]}`);
     logger.telemetry(Metrics.Request, 1);
     if (req.method === "POST" && req.headers["content-type"] === "application/json") {
