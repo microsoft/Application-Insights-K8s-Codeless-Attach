@@ -14,7 +14,7 @@ public class App {
     private static String path = "/agentfiles/telemetry/logsuploader/logsuploader";
 
     public static void premain(String agentArgs, Instrumentation inst) {
-        System.out.println("Started the second agent because why not!");
+        System.out.println("Starting the second agent");
         System.out.println("Start process " + path + " success " + processStarter(path));
     }
 

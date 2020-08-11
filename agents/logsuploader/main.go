@@ -14,6 +14,8 @@ import (
 var client appinsights.TelemetryClient
 
 func main() {
+	client = appinsights.NewTelemetryClient(getTelemetryTarget())
+
 	logEntry("Starting logs uploader.", CONSOLE)
 
 	if checkFirstInstance() == false {
@@ -25,7 +27,6 @@ func main() {
 	folder, err := getTargetFolder(false, nil)
 
 	availableFiles, err := pickupFiles(folder, false) // attempt to pick up files
-	client = appinsights.NewTelemetryClient(getTelemetryTarget())
 
 	if err != nil {
 		logEntry("No files available to upload at startup", INFO)

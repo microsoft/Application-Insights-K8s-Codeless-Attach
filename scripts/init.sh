@@ -7,11 +7,6 @@ namespace="kube-system"
 [ -z ${title} ] && title=app-monitoring-webhook
 [ -z ${namespace} ] && namespace=aks-webhook-ns
 
-if [ ! -x "$(command -v dos2unix)" ]; then
-    echo "dos2unix not found"
-    exit 1
-fi
-
 if [ ! -x "$(command -v openssl)" ]; then
     echo "openssl not found"
     exit 1
@@ -88,9 +83,6 @@ if [[ ${serverCert} == '' ]]; then
     exit 1
 fi
 echo ${serverCert} | openssl base64 -d -A -out ${tmpdir}/server-cert.pem
-
-dos2unix ${tmpdir}/server-key.pem
-dos2unix ${tmpdir}/server-cert.pem
 
 # create the secret with CA cert and server cert/key
 echo "create the secret with CA cert and server cert/key"

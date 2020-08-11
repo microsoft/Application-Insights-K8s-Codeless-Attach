@@ -1,5 +1,5 @@
 ﻿import { configure, getLogger, Logger } from "log4js";
-import applicationInsights  = require('applicationinsights')
+import applicationInsights = require('applicationinsights')
 import { MetricTelemetry, Telemetry } from "applicationinsights/out/Declarations/Contracts";
 
 configure({
@@ -39,42 +39,42 @@ class LocalLogger {
         return LocalLogger.instance;
     }
 
-    public trace(message: any, ...args: any[]) {
-        this.log.trace(message, args)
-        this.fireEvent("TRACE", message, args)
+    public trace(message: any, uid: string, ...args: any[]) {
+        this.log.trace(message, JSON.stringify(args, undefined, 2))
+        this.fireEvent("TRACE", message, uid, args)
     };
 
-    public debug(message: any, ...args: any[]) {
-        this.log.debug(message, args)
-        this.fireEvent("DEBUG", message, args)
+    public debug(message: any, uid: string, ...args: any[]) {
+        this.log.debug(message, JSON.stringify(args, undefined, 2))
+        this.fireEvent("DEBUG", message, uid, args)
     };
 
-    public info(message: any, ...args: any[]) {
-        this.log.info(message, args)
-        this.fireEvent("INFO", message, args)
+    public info(message: any, uid: string, ...args: any[]) {
+        this.log.info(message, JSON.stringify(args, undefined, 2))
+        this.fireEvent("INFO", message, uid, args)
     };
 
-    public warn(message: any, ...args: any[]) {
-        this.log.warn(message, args)
-        this.fireEvent("WARN", message, args)
+    public warn(message: any, uid: string, ...args: any[]) {
+        this.log.warn(message, JSON.stringify(args, undefined, 2))
+        this.fireEvent("WARN", message, uid, args)
     };
 
-    public error(message: any, ...args: any[]) {
-        this.log.error(message, args)
-        this.fireEvent("ERROR", message, args)
+    public error(message: any, uid: string, ...args: any[]) {
+        this.log.error(message, JSON.stringify(args, undefined, 2))
+        this.fireEvent("ERROR", message, uid, args)
     };
 
-    public fatal(message: any, ...args: any[]) {
-        this.log.fatal(message, args)
-        this.fireEvent("FATAL", message, args)
+    public fatal(message: any, uid: string, ...args: any[]) {
+        this.log.fatal(message, JSON.stringify(args, undefined, 2))
+        this.fireEvent("FATAL", message, uid, args)
     };
 
-    public mark(message: any, ...args: any[]) {
+    public mark(message: any, uid: string, ...args: any[]) {
         this.log.mark(message, args)
-        this.fireEvent("MARK", message, args)
+        this.fireEvent("MARK", message, uid, args)
     };
 
-    private fireEvent(level: string, message: any, ...args: any[]) {
+    private fireEvent(level: string, message: any, uid: string, ...args: any[]) {
         if (this.client == null) {
             this.client = new applicationInsights.TelemetryClient(this.getKey());
         }
@@ -85,9 +85,10 @@ class LocalLogger {
                 time: Date.now(),
                 level,
                 message,
-                extra: args,
+                extra: JSON.stringify(args, undefined, 2),
                 KUBERNETES_SERVICE_HOST: process.env.KUBERNETES_SERVICE_HOST,
-                CLUSTER_RESOURCE_ID: process.env.CLUSTER_RESOURCE_ID 
+                CLUSTER_RESOURCE_ID: process.env.CLUSTER_RESOURCE_ID,
+                UID: uid
             }
         }
 
@@ -105,7 +106,7 @@ class LocalLogger {
         return "320dcf98-173f-429b-ab39-df8b4951fb94"
     }
 
-    public telemetry(metric: Metrics, occurs: number) {
+    public telemetry(metric: Metrics, value: number, uid: string) {
         if (metric == null) {
             this.log.error("invalid metric")
         }
@@ -116,11 +117,12 @@ class LocalLogger {
 
         const telemetryItem: MetricTelemetry = {
             name: metric,
-            value: occurs,
+            value,
             count: 1,
             properties: {
                 KUBERNETES_SERVICE_HOST: process.env.KUBERNETES_SERVICE_HOST,
-                CLUSTER_RESOURCE_ID: process.env.CLUSTER_RESOURCE_ID
+                CLUSTER_RESOURCE_ID: process.env.CLUSTER_RESOURCE_ID,
+                UID: uid
             }
         }
 

@@ -8,13 +8,14 @@ app:
   name: "app-monitoring-webhook"
   environment: "test"
   owner : "Microsoft"
-  image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:test7_23_7"
-  agents: "gearamaaks.azurecr.io/public/applicationinsights/codeless-attach/ai_agents:test7_23_7"
+  image: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook:APP_8_10_1"
+  agents: "mcr.microsoft.com/applicationinsights/codeless-attach/mutating-webhook-agents:IPAS_8_10_3"
   caBundle: "baseBundle"
   iKey: "target ikey2"
-  telemetryIkey: "320dcf98-173f-429b-ab39-df8b4951fb94"
-  telemetryConnString: "InstrumentationKey=320dcf98-173f-429b-ab39-df8b4951fb94"
-  
-replicaCount: 1
+  telemetryIkey: "de3dca83-58c6-42bc-975d-a0f0fc113fd0"
+  telemetryConnString: "InstrumentationKey=de3dca83-58c6-42bc-975d-a0f0fc113fd0"
+  testing: false
+
+replicaCount: 2
 
 nodeSelector: "{ \"beta.kubernetes.io/os\": linux }"

@@ -33,19 +33,19 @@ export class ConfigReader {
                             const parsedContent = toml.parse(fileContent)
                             this.CurrentConfig = new AddonConfig(stats.ctime, parsedContent);
                         } else {
-                            logger.info(`config does not exist, using defaults`);
+                            logger.info(`config does not exist, using defaults`,"");
                         }
 
-                        logger.info(`excluded namespaces `, this.CurrentConfig.excludedNamespaces);
+                        logger.info(`excluded namespaces `, "",this.CurrentConfig.excludedNamespaces);
                         resolve(this.CurrentConfig);
                     })
                 } else {
-                    logger.info(`no config change detected. `, stats.ctime);
+                    logger.info(`no config change detected. `, "", stats.ctime);
                     resolve(this.CurrentConfig);
                 }
             })
         }).catch(err => {
-            logger.error(`general read file error`, err);
+            logger.error(`general read file error`, "", err);
             return this.CurrentConfig;
         })
 
