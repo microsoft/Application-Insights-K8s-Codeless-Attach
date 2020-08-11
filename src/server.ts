@@ -1,5 +1,5 @@
 ﻿import fs = require("fs");
-import https = require("https");
+import https = require("http");
 import { ContentProcessor } from "./ContentProcessor";
 import { logger, Metrics } from "./LoggerWrapper";
 import { NamespaceLabeler } from "./NamespaceLabeler";
@@ -9,8 +9,8 @@ import { IRootObject } from "./RequestDefinition";
 let options;
 const port = process.env.port || 1337;
 
-logger.info(`listening on port ${port}`,"");
-try {
+logger.info(`listening on port ${port}`, "");
+/*try {
     options = {
         cert: fs.readFileSync("/mnt/webhook/cert.pem"),
         key: fs.readFileSync("/mnt/webhook/key.pem"),
@@ -22,11 +22,11 @@ try {
         key: fs.readFileSync("./../../server-key.pem"),
     };
     logger.info("loaded certs from local","");
-}
+}*/
 
-https.createServer(options, (req, res) => {
-    logger.info(`received request with url: ${req.url}, method: ${req.method}, content-type: ${req.headers["content-type"]}`,"");
-    logger.telemetry(Metrics.Request, 1,"");
+https.createServer(/*options, */(req, res) => {
+    logger.info(`received request with url: ${req.url}, method: ${req.method}, content-type: ${req.headers["content-type"]}`, "");
+    logger.telemetry(Metrics.Request, 1, "");
     if (req.method === "POST" && req.headers["content-type"] === "application/json") {
         let body = "";
         req.on("data", (chunk) => {
@@ -35,7 +35,7 @@ https.createServer(options, (req, res) => {
         req.on("end", () => {
             let uid: string = "";
             try {
-                let message: IRootObject = JSON.parse(body);
+                const message: IRootObject = JSON.parse(body);
                 if (message && message.request && message.request.uid) {
                     uid = message.request.uid;
                 }
@@ -47,12 +47,12 @@ https.createServer(options, (req, res) => {
                 res.end(updatedConfig);
                 logger.telemetry(Metrics.Success, 1, uid);
             }).catch((error) => {
-                logger.error(`error while processing request`,uid, error);
-                logger.telemetry(Metrics.Fail, 1,uid);
+                logger.error(`error while processing request`, uid, error);
+                logger.telemetry(Metrics.Fail, 1, uid);
             });
         });
     } else {
-        logger.error("unaccepable method, returning 404","", req.method);
+        logger.error("unaccepable method, returning 404", "", req.method);
         res.writeHead(404);
         res.end();
         logger.telemetry(Metrics.Error, 1, "");

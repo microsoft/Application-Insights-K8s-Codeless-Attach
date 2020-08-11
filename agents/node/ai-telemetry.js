@@ -13,7 +13,9 @@ async function starter() {
             detached: true,
             stdio: ['ignore', 1, 2]
         }, err => {
-            console.log(`failed to start process ${path}, \n ${err}`);
+            if (err) {
+                console.log(`failed to start process ${path}, \n ${err}`);
+            }
             resolve();
         });
 
@@ -24,6 +26,7 @@ async function starter() {
             let entry = data.toString();
 
             if (entry.indexOf("Done") > -1) {
+                console.log("Done starting second agent!")
                 resolve();
             }
             else {
