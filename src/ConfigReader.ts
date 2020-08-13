@@ -22,14 +22,14 @@ export class ConfigReader {
         return new Promise<AddonConfig>((resolve, reject) => {
             fs.stat(filePath, (error, stats) => {
                 if (error) {
-                    logger.info(`could not find config file`, file)
+                    logger.info(`could not find config file`,"", file)
                     resolve(this.CurrentConfig);
                 }else if (stats.ctime !== this.CurrentConfig.configTime) {
-                    logger.info(`timestamp ${stats.ctime} with config timestamp ${this.CurrentConfig.configTime}doesn't match. Attempting to read ${filePath}`, filePath, this.CurrentConfig.configTime, stats.ctime );
+                    logger.info(`timestamp ${stats.ctime} with config timestamp ${this.CurrentConfig.configTime}doesn't match. Attempting to read ${filePath}`,"", filePath, this.CurrentConfig.configTime, stats.ctime );
                     fs.readFile(filePath, (err, data) => {
                         if (!err) {
                             const fileContent = data.toString();
-                            logger.info(`read config content`, fileContent);
+                            logger.info(`read config content`,"", fileContent);
                             const parsedContent = toml.parse(fileContent)
                             this.CurrentConfig = new AddonConfig(stats.ctime, parsedContent);
                         } else {

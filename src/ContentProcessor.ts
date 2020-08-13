@@ -8,13 +8,14 @@ export class ContentProcessor {
 
     public static async TryUpdateConfig(message: string): Promise<string> {
         const response = {
-            apiVersion: "admission.k8s.io/v1beta1",
+            apiVersion: "admission.k8s.io/v1",
             kind: "AdmissionReview",
             request: undefined,
             response: {
                 allowed: false, // when error it is ignored as per the config
                 patch: undefined,
                 patchtype: "JSONPATCH",
+                patchType: "JSONPatch",
                 uid: "",
             },
         };
@@ -45,10 +46,10 @@ export class ContentProcessor {
             }
 
             const finalResult = JSON.stringify(response);
-            logger.info(`determined final response`, finalResult, instance.uid);
+            logger.info(`determined final response`, instance.uid, finalResult);
             return finalResult;
         }).catch((ex) => {
-            logger.error(`exception encountered `, ex,"");
+            logger.error(`exception encountered `, "", ex);
             logger.telemetry(Metrics.CPError, 1, "");
             return JSON.stringify(response);
         });
@@ -64,9 +65,9 @@ export class ContentProcessor {
 
         try {
             this.content = JSON.parse(message);
-            logger.info(`parsed incoming message content, Initialized ContentProcessor.`, message, this.uid);
+            logger.info(`parsed incoming message content, Initialized ContentProcessor.`, this.uid, message);
         } catch (ex) {
-            logger.error(`exception encountered parsing input`,ex,message, this.uid);
+            logger.error(`exception encountered parsing input`, this.uid, ex, message);
             throw ex;
         }
     }

@@ -1,9 +1,12 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.app.go.name }}
   {{- template "common.metadata" . }}
 spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app.go.name }}
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:

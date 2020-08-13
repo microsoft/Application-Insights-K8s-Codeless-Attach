@@ -1,5 +1,5 @@
 ﻿import fs = require("fs");
-import https = require("http");
+import https = require("https");
 import { ContentProcessor } from "./ContentProcessor";
 import { logger, Metrics } from "./LoggerWrapper";
 import { NamespaceLabeler } from "./NamespaceLabeler";
@@ -10,21 +10,21 @@ let options;
 const port = process.env.port || 1337;
 
 logger.info(`listening on port ${port}`, "");
-/*try {
+try {
     options = {
         cert: fs.readFileSync("/mnt/webhook/cert.pem"),
         key: fs.readFileSync("/mnt/webhook/key.pem"),
     };
-    logger.info("loaded certificates from /mnt","");
+    logger.info("loaded certificates from /mnt", "");
 } catch {
     options = {
         cert: fs.readFileSync("./../../server-cert.pem"),
         key: fs.readFileSync("./../../server-key.pem"),
     };
-    logger.info("loaded certs from local","");
-}*/
+    logger.info("loaded certs from local", "");
+}
 
-https.createServer(/*options, */(req, res) => {
+https.createServer(options, (req, res) => {
     logger.info(`received request with url: ${req.url}, method: ${req.method}, content-type: ${req.headers["content-type"]}`, "");
     logger.telemetry(Metrics.Request, 1, "");
     if (req.method === "POST" && req.headers["content-type"] === "application/json") {

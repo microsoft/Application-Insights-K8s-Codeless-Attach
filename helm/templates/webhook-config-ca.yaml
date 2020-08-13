@@ -1,4 +1,8 @@
+{{ if and (eq .Values.app.kVerMajor "1") (eq .Values.app.kVerMinor "15") }}
 apiVersion: admissionregistration.k8s.io/v1beta1
+{{ else }}
+apiVersion: admissionregistration.k8s.io/v1
+{{ end }}
 kind: MutatingWebhookConfiguration
 metadata:
   name: {{ .Values.app.name }}
@@ -16,7 +20,11 @@ webhooks:
         apiGroups: ["*"]
         apiVersions: ["*"]
         resources: ["pods"] 
-    failurePolicy: Ignore
+    #failurePolicy: Ignore
+    {{ if and (eq .Values.app.kVerMajor "1") (gt .Values.app.kVerMinor "15") }}
+    sideEffects: None
+    admissionReviewVersions: ["v1", "v1beta1"]
+    {{ end }}
     namespaceSelector:
       matchLabels:
         app-monitoring: enable

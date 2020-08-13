@@ -1,9 +1,18 @@
+{{ if and (eq .Values.app.kVerMajor "1") (eq .Values.app.kVerMinor "15") }}
 apiVersion: apps/v1beta1
+{{ else }}
+apiVersion: apps/v1
+{{ end }}
 kind: Deployment
 metadata:
   name: {{ .Values.app.name }}
   {{- template "common.metadata" . }}
 spec:
+  {{ if and (eq .Values.app.kVerMajor "1") (gt .Values.app.kVerMinor "15") }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  {{ end }}
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:

@@ -6,7 +6,7 @@ import { config } from "chai";
 export class TemplateValidator {
     public static ValidateContent(content: IRootObject) {
         let returnValue = true;
-        logger.info(`validating content`, this.uid(content));
+        logger.info(`validating content`, this.uid(content), content);
 
         if (isNullOrUndefined(content)) {
             logger.error("null content", this.uid(content));
@@ -29,11 +29,11 @@ export class TemplateValidator {
         else if (isNullOrUndefined(content.request.object)
             || isNullOrUndefined(content.request.object.spec)) {
 
-            logger.error("missing spec in template", this.uid(content));
+            logger.error("missing spec in template", this.uid(content), content);
             returnValue = false;
         }
 
-        logger.info(`succesfully validated content`, this.uid(content));
+        logger.info(`succesfully validated content`, this.uid(content), content);
         logger.telemetry(returnValue ? Metrics.CPValidationPass : Metrics.CPValidationFail, 1, this.uid(content));
         return returnValue;
     }
