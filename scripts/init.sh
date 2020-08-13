@@ -89,14 +89,26 @@ echo "create the secret with CA cert and server cert/key"
 kubectl create secret generic ${title} \
         --from-file=key.pem=${tmpdir}/server-key.pem \
         --from-file=cert.pem=${tmpdir}/server-cert.pem \
-        --dry-run -o yaml |
+        --dry-run=client -o yaml |
     kubectl -n ${namespace} apply -f -
 
 export CA_BUNDLE=$(kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n')
 #cat ./values._aml | envsubst > ./values.yaml
 
+kVer=`kubectl version --short=true`
+kVer="${kVer#*\Server Version: v}"
+part1="${kVer%.*}"
+kVerMajor="${part1%.*}"
+kVerMinor="${part1#*\.}"
+kVerRev="${kVer#*\.}"
+kVerRev="${kVerRev#*\.}"
+echo "found kubernetes server version ${kVer} "
+
 cat <<EOF >> ./values.yaml
 app:
   iKey: "<target ikey>" # instrumentation key of Application Insights resource to send telemetry to
+  kVerMajor: "${kVerMajor}"
+  kVerMinor: "${kVerMinor}"
+  kVerRev: "${kVerRev}"
   caBundle: "${CA_BUNDLE}"
 EOF

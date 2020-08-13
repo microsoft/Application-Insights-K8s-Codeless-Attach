@@ -12,18 +12,18 @@ export class DiffCalculator {
         }
 
         /* tslint:disable */
-        logger.info(`calculating diff`, this.uid(content));
+        logger.info(`calculating diff`, this.uid(content), content);
         const updatedContent: IRootObject = JSON.parse(JSON.stringify(content));
 
         let updateTarget: object;
 
         try {
             updateTarget = updatedContent.request.object.spec.template.spec;
-            logger.info(`updating request.object.spec.template.spec`, this.uid(content));
+            logger.info(`updating request.object.spec.template.spec`, this.uid(content), content);
         }
         catch (ex) {
             updateTarget = updatedContent.request.object.spec;
-            logger.info(`updating request.object.spec`, this.uid(content));
+            logger.info(`updating request.object.spec`, this.uid(content), content);
         }
 
         if (updateTarget["initContainers"]) {

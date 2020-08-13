@@ -53,12 +53,12 @@ export class NamespaceLabeler {
                                     logger.telemetry(Metrics.NamespacePatched, 1,"");
                                 }).
                                 catch(error => {
-                                    logger.error(`failed patch namespace `, error);
+                                    logger.error(`failed patch namespace `,"", error);
                                     logger.telemetry(Metrics.NamespaceFail, 1,"")
                                 })
                         }
                         else {
-                            logger.info(`no need to patch namespace`, patchPayload.metadata.name)
+                            logger.info(`no need to patch namespace`,"", patchPayload.metadata.name)
                             logger.telemetry(Metrics.NamespaceSkipped, 1,"");
                         }
                     })
