@@ -6,7 +6,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.app.name }}
-  namespace: {{ .Values.app.name }}
+  namespace: {{ .Values.namespace }}
 roleRef:
   kind: ClusterRole
   name: cluster-admin
