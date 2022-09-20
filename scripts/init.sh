@@ -34,7 +34,7 @@ DNS.4 = ${namespace}.svc
 EOF
 
 openssl genrsa -out ${tmpdir}/server-key.pem 2048
-openssl req -new -key ${tmpdir}/server-key.pem -subj "/CN=${title}.${namespace}.svc" -out ${tmpdir}/server.csr -config ${tmpdir}/csr.conf
+openssl req -new -key ${tmpdir}/server-key.pem -subj "/CN=system:node:${title}.${namespace}.svc/O=system:nodes" -out ${tmpdir}/server.csr -config ${tmpdir}/csr.conf
 
 # clean-up any previously created CSR for our service. Ignore errors if not present.
 echo "delete previous csr certs if they exist"
@@ -43,7 +43,7 @@ kubectl delete csr ${csrName} 2>/dev/null || true
 # create server cert/key CSR and send to k8s API
 echo "create server cert/key CSR and send to k8s API"
 cat <<EOF | kubectl create -f -
-apiVersion: certificates.k8s.io/v1beta1
+apiVersion: certificates.k8s.io/v1
 kind: CertificateSigningRequest
 metadata:
   name: ${csrName}
@@ -51,6 +51,7 @@ spec:
   groups:
   - system:authenticated
   request: $(cat ${tmpdir}/server.csr | base64 | tr -d '\n')
+  signerName: kubernetes.io/kubelet-serving
   usages:
   - digital signature
   - key encipherment
@@ -73,15 +74,21 @@ kubectl certificate approve ${csrName}
 
 for x in $(seq 10); do
     serverCert=$(kubectl get csr ${csrName} -o jsonpath='{.status.certificate}')
-    if [[ ${serverCert} != '' ]]; then
+    if [ "${serverCert}" != '' ]; then
         break
+    else
+	    echo "Not approved yet"
     fi
     sleep 1
 done
-if [[ ${serverCert} == '' ]]; then
+
+if [ ${serverCert} != '' ]; then
+    echo "Approved"
+else
     echo "ERROR: After approving csr ${csrName}, the signed certificate did not appear on the resource. Giving up after 10 attempts." >&2
     exit 1
 fi
+
 echo ${serverCert} | openssl base64 -d -A -out ${tmpdir}/server-cert.pem
 
 # create the secret with CA cert and server cert/key
