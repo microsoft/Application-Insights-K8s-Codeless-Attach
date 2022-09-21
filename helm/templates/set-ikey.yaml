@@ -6,3 +6,11 @@ metadata:
 data:
   ikey: {{ .Values.app.iKey }}
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otlp
+  namespace: default
+data:
+  otlpMetricsEndpoint: {{ .Values.app.otlpMetricsEndpoint }}
+  otlpTracesEndpoint: {{ .Values.app.otlpTracesEndpoint }}

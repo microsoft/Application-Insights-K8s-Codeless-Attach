@@ -1,11 +1,11 @@
-﻿import { SettingsRoot } from "./ConfigTypes"
+﻿import { SettingsRoot } from "./ConfigTypes";
 
 export class AddonConfig {
     private namespaces: string[] = ["kube-system"];
     private iKeys: Map<string, string> = new Map<string, string>();
     private timestamp: Date;
     public constructor(timestamp: Date, entries: SettingsRoot) {
-        this.timestamp = timestamp
+        this.timestamp = timestamp;
         this.iKeys.set("ALL_DEFAULT", process.env.ALL_APPINSIGHTS_INSTRUMENTATIONKEY);
         if (entries != null &&
             entries["application-monitoring-settings"] != null &&
@@ -18,15 +18,15 @@ export class AddonConfig {
                 if (this.namespaces.indexOf(item) < 0) {
                     this.namespaces.push(item);
                 }
-            })
+            });
         }
 
         if (entries != null &&
             entries.IKEYS != null &&
             entries.IKEYS.length > 0) {
             entries.IKEYS.forEach((item) => {
-                this.iKeys.set(item.namespace, item.ikey)
-            })
+                this.iKeys.set(item.namespace, item.ikey);
+            });
         }
     }
 

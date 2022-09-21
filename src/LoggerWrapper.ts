@@ -1,6 +1,6 @@
-﻿import { configure, getLogger, Logger } from "log4js";
-import applicationInsights = require('applicationinsights')
+﻿import applicationInsights = require("applicationinsights");
 import { MetricTelemetry, Telemetry } from "applicationinsights/out/Declarations/Contracts";
+import { configure, getLogger, Logger } from "log4js";
 
 configure({
     appenders: {
@@ -40,39 +40,39 @@ class LocalLogger {
     }
 
     public trace(message: any, uid: string, ...args: any[]) {
-        this.log.trace(message, JSON.stringify(args, undefined, 2))
-        this.fireEvent("TRACE", message, uid, args)
-    };
+        this.log.trace(message, JSON.stringify(args, undefined, 2));
+        this.fireEvent("TRACE", message, uid, args);
+    }
 
     public debug(message: any, uid: string, ...args: any[]) {
-        this.log.debug(message, JSON.stringify(args, undefined, 2))
-        this.fireEvent("DEBUG", message, uid, args)
-    };
+        this.log.debug(message, JSON.stringify(args, undefined, 2));
+        this.fireEvent("DEBUG", message, uid, args);
+    }
 
     public info(message: any, uid: string, ...args: any[]) {
-        this.log.info(message, JSON.stringify(args, undefined, 2))
-        this.fireEvent("INFO", message, uid, args)
-    };
+        this.log.info(message, JSON.stringify(args, undefined, 2));
+        this.fireEvent("INFO", message, uid, args);
+    }
 
     public warn(message: any, uid: string, ...args: any[]) {
-        this.log.warn(message, JSON.stringify(args, undefined, 2))
-        this.fireEvent("WARN", message, uid, args)
-    };
+        this.log.warn(message, JSON.stringify(args, undefined, 2));
+        this.fireEvent("WARN", message, uid, args);
+    }
 
     public error(message: any, uid: string, ...args: any[]) {
-        this.log.error(message, JSON.stringify(args, undefined, 2))
-        this.fireEvent("ERROR", message, uid, args)
-    };
+        this.log.error(message, JSON.stringify(args, undefined, 2));
+        this.fireEvent("ERROR", message, uid, args);
+    }
 
     public fatal(message: any, uid: string, ...args: any[]) {
-        this.log.fatal(message, JSON.stringify(args, undefined, 2))
-        this.fireEvent("FATAL", message, uid, args)
-    };
+        this.log.fatal(message, JSON.stringify(args, undefined, 2));
+        this.fireEvent("FATAL", message, uid, args);
+    }
 
     public mark(message: any, uid: string, ...args: any[]) {
-        this.log.mark(message, args)
-        this.fireEvent("MARK", message, uid, args)
-    };
+        this.log.mark(message, args);
+        this.fireEvent("MARK", message, uid, args);
+    }
 
     private fireEvent(level: string, message: any, uid: string, ...args: any[]) {
         if (this.client == null) {
@@ -88,27 +88,27 @@ class LocalLogger {
                 extra: JSON.stringify(args, undefined, 2),
                 KUBERNETES_SERVICE_HOST: process.env.KUBERNETES_SERVICE_HOST,
                 CLUSTER_RESOURCE_ID: process.env.CLUSTER_RESOURCE_ID,
-                UID: uid
-            }
-        }
+                UID: uid,
+            },
+        };
 
-        this.client.trackEvent(event)
+        this.client.trackEvent(event);
         this.client.flush();
     }
 
     private getKey(): string {
         if (process.env.TELEMETRY_IKEY) {
-            return process.env.TELEMETRY_IKEY
+            return process.env.TELEMETRY_IKEY;
         }
         if (process.env.TELEMETRY_CONN_STRING) {
-            return process.env.TELEMETRY_CONN_STRING
+            return process.env.TELEMETRY_CONN_STRING;
         }
-        return "320dcf98-173f-429b-ab39-df8b4951fb94"
+        return "320dcf98-173f-429b-ab39-df8b4951fb94";
     }
 
     public telemetry(metric: Metrics, value: number, uid: string) {
         if (metric == null) {
-            this.log.error("invalid metric")
+            this.log.error("invalid metric");
         }
 
         if (this.client == null) {
@@ -122,9 +122,9 @@ class LocalLogger {
             properties: {
                 KUBERNETES_SERVICE_HOST: process.env.KUBERNETES_SERVICE_HOST,
                 CLUSTER_RESOURCE_ID: process.env.CLUSTER_RESOURCE_ID,
-                UID: uid
-            }
-        }
+                UID: uid,
+            },
+        };
 
         this.client.trackMetric(telemetryItem);
         this.client.flush();
@@ -152,6 +152,5 @@ export enum Metrics {
     CPContainers = "cpContainers",
     CPStart = "cpStart",
     CPValidationFail = "cpValidationFail",
-    CPValidationPass = "cpValidationPass"
+    CPValidationPass = "cpValidationPass",
 }
-

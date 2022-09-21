@@ -1,4 +1,4 @@
-﻿
+
 export interface IKind {
     group: string;
     version: string;
@@ -150,4 +150,3 @@ export class DeployReplica {
     public deploymentName: string;
     public namespace: string;
 }
-

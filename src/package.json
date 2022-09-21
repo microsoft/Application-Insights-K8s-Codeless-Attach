@@ -17,14 +17,15 @@
     "@types/node": "14.0.27",
     "applicationinsights": "^1.8.3",
     "chai": "4.2.0",
-    "log4js": "6.3.0",
+    "dot-prop": "5.1.1",
+    "http-proxy-agent": "2.1.0",
+    "https-proxy-agent": "2.2.3",
+    "log4js": "^6.6.1",
     "mocha": "8.1.0",
     "toml": "3.0.0",
     "ts-node": "8.10.2",
-    "typings": "2.1.1",
-    "dot-prop": "5.1.1",
-    "http-proxy-agent": "2.1.0",
-    "https-proxy-agent": "2.2.3"
+    "tsc": "^2.0.4",
+    "typings": "2.1.1"
   },
   "engines": {
     "node": "^8.0.0"

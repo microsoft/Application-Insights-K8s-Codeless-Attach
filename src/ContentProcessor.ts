@@ -1,9 +1,9 @@
-﻿import k8s = require('@kubernetes/client-node');;
+﻿import k8s = require("@kubernetes/client-node");
 import { isNullOrUndefined } from "util";
+import { DiffCalculator } from "./DiffCalculator";
 import { logger, Metrics } from "./LoggerWrapper";
 import { DeployReplica, IRootObject } from "./RequestDefinition";
-import { TemplateValidator } from './TemplateValidator';
-import { DiffCalculator } from './DiffCalculator'
+import { TemplateValidator } from "./TemplateValidator";
 export class ContentProcessor {
 
     public static async TryUpdateConfig(message: string): Promise<string> {

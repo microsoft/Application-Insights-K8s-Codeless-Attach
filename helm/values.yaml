@@ -14,6 +14,8 @@ app:
   iKey: "target ikey2"
   telemetryIkey: "de3dca83-58c6-42bc-975d-a0f0fc113fd0"
   telemetryConnString: "InstrumentationKey=de3dca83-58c6-42bc-975d-a0f0fc113fd0"
+  otlpMetricsEndpoint: "10.0.168.41:80"
+  otlpTracesEndpoint: "https://southcentralus-0.in.int.applicationinsights.azure.com/4e16e46d-7205-48dc-bf0c-86d8b257084f/v1/traces"
   testing: false
   kVerMajor: "1"
   kVerMinor: "15"

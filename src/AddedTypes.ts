@@ -1,5 +1,5 @@
-﻿import { DeployReplica } from "./RequestDefinition";
-import { ConfigReader } from './ConfigReader';
+﻿import { ConfigReader } from "./ConfigReader";
+import { DeployReplica } from "./RequestDefinition";
 
 export class AddedTypes {
     public static init_containers() {
@@ -20,7 +20,25 @@ export class AddedTypes {
         const returnValue = [
             {
                 name: "JAVA_TOOL_OPTIONS",
-                value: "-javaagent:/agentfiles/telemetry/java/ai-telemetry.jar -javaagent:/agentfiles/java/applicationinsights-agent-codeless.jar  -Dsite.logdir=/var/log",
+                value: "-javaagent:/agentfiles/applicationinsights-agent-3.4.1-BETA-SNAPSHOT.jar  -Dsite.logdir=/var/log",
+            },
+            {
+                name: "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
+                valueFrom: {
+                    configMapKeyRef: {
+                        name: "otlp",
+                        key: "otlpMetricsEndpoint",
+                    },
+                },
+            },
+            {
+                name: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+                valueFrom: {
+                    configMapKeyRef: {
+                        name: "otlp",
+                        key: "otlpTracesEndpoint",
+                    },
+                },
             },
             {
                 name: "NODE_OPTIONS",
@@ -28,7 +46,7 @@ export class AddedTypes {
             },
             {
                 name: "APPINSIGHTS_INSTRUMENTATIONKEY",
-                value: (await ConfigReader.ReadConfig()).retrieveIkey(extraData.namespace)
+                value: (await ConfigReader.ReadConfig()).retrieveIkey(extraData.namespace),
             },
             {
                 name: "TELEMETRY_IKEY",
@@ -75,7 +93,7 @@ export class AddedTypes {
         return [{
             mountPath: "/agentfiles",
             name: "agent-volume",
-        }]
+        }];
     }
 
     public static volumes() {

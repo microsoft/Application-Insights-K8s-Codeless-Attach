@@ -1,9 +1,9 @@
 ﻿import fs = require("fs");
 import https = require("https");
+import request = require("request");
 import { ContentProcessor } from "./ContentProcessor";
 import { logger, Metrics } from "./LoggerWrapper";
 import { NamespaceLabeler } from "./NamespaceLabeler";
-import request = require("request");
 import { IRootObject } from "./RequestDefinition";
 
 let options;
