@@ -14,3 +14,4 @@ metadata:
 data:
   otlpMetricsEndpoint: {{ .Values.app.otlpMetricsEndpoint }}
   otlpTracesEndpoint: {{ .Values.app.otlpTracesEndpoint }}
+  connectionString: {{ .Values.app.connectionString }}
