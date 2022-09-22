@@ -31,22 +31,27 @@ export class AddedTypes {
                     }
                 }
             },
-            {
-                name: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
-                valueFrom: {
-                    configMapKeyRef: {
-                        name: "otlp",
-                        key: "otlpTracesEndpoint",
-                    }
-                }
-            },
+            // {
+            //     name: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+            //     valueFrom: {
+            //         configMapKeyRef: {
+            //             name: "otlp",
+            //             key: "otlpTracesEndpoint",
+            //         }
+            //     }
+            // },
             {
                 name: "NODE_OPTIONS",
                 value: "--require /agentfiles/telemetry/node/ai-telemetry.js --require /agentfiles/node/build/src/Loader.js",
             },
             {
-                name: "APPINSIGHTS_INSTRUMENTATIONKEY",
-                value: (await ConfigReader.ReadConfig()).retrieveIkey(extraData.namespace),
+                name: "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                valueFrom: {
+                    configMapKeyRef: {
+                        name: "otlp",
+                        key: "connectionString"
+                    },
+                }
             },
             {
                 name: "TELEMETRY_IKEY",
